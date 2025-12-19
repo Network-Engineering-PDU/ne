@@ -1,0 +1,1287 @@
+/* STYLES  */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+.cleafix {
+  display: block;
+  clear: both;
+}
+/* ESTILOS TEXTOS  */
+h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000;
+}
+
+h2 {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  text-align: left;
+}
+h3 {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-align: left;
+  color: #70940e;
+}
+h4 {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-align: left;
+  color: #70940e;
+}
+h5 {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-align: left;
+  color: #70940e;
+}
+h6 {
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: left;
+  color: #70940e;
+}
+
+p,
+a {
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: #000;
+}
+.little {
+  font-size: 0.7rem;
+}
+.little2 {
+  font-size: 1rem;
+}
+.superLittle {
+  font-size: 0.65rem;
+  vertical-align: top;
+  text-align: center;
+}
+.bold {
+  font-weight: 500;
+}
+a {
+  color: #497a03;
+  text-decoration: none;
+}
+a:hover {
+  color: #2e4907;
+  font-weight: bolder;
+}
+.clearfix {
+  display: block;
+  clear: both;
+}
+header {
+  flex: 1 1 auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 100%;
+  position: relative;
+}
+.bkgLogin {
+  width: 100%;
+  height: auto;
+  background-image: url(../assets/img/LoginBackground.jpg);
+  background-size: cover;
+  background-position: center bottom;
+}
+.logincontainer {
+  height: 100vh;
+}
+.card {
+  border: 1px solid #497a03;
+  padding: 50px;
+}
+.card3 {
+  border: 1px solid #497a03;
+  padding: 20px;
+  border-radius: 0px 0px 10px 10px;
+}
+
+/* NAV TABS  */
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  color: #fff;
+  background-color: #497a03;
+  border-color: #497a03;
+  border-radius: 10px 10px 0px 0px;
+  padding: 10px;
+}
+.nav-tabs .nav-link {
+  margin-bottom: -1px;
+  background: 0 0;
+  border: 1px solid #86bc39;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 10px;
+}
+/* FIN NAV TABS  */
+.cardBig {
+  border: 1px solid #497a03;
+  padding: 50px;
+  margin: 20px;
+  border-radius: 10px;
+}
+.cardBig:hover {
+  border: 2px solid #497a03;
+  padding: 50px;
+  margin: 20px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.75);
+}
+button {
+  background-color: #fff;
+}
+.entradas {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  background-image: url(../assets/svg/Entradas.svg);
+  background-size: cover;
+  background-position: center bottom;
+  display: inline-block;
+  vertical-align: middle;
+}
+.salidas {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  background-image: url(../assets/svg/salidas.svg);
+  background-size: cover;
+  background-position: center bottom;
+  display: inline-block;
+  vertical-align: middle;
+}
+.settings {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  background-image: url(../assets/svg/Settings.svg);
+  background-size: cover;
+  background-position: center bottom;
+  display: inline-block;
+  vertical-align: middle;
+}
+.coms {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  background-image: url(../assets/svg/coms.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  display: inline-block;
+  vertical-align: middle;
+}
+.ambiente {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  background-image: url(../assets/svg/medioambiente.svg);
+  background-size: cover;
+  background-position: center bottom;
+  display: inline-block;
+  vertical-align: middle;
+}
+.form-control {
+  border: 1px solid #70940e;
+}
+.form-label,
+.form-check-label {
+  /* color: #70940e; */
+}
+form.login > div > input {
+  border: 1px solid #fff;
+  border-bottom: 1px solid #666;
+  font-family: "Roboto", sans-serif;
+}
+label {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+.btnRed {
+  width: 100%;
+  border-radius: 10px;
+  color: #fff;
+  background-color: #e00e0e;
+  border-color: #fff;
+  font-size: 0.9rem;
+}
+.btn-primary {
+  width: 100%;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #86bc39;
+  border-color: #fff;
+  font-size: 0.9rem;
+}
+.btn-primary2 {
+  width: 100%;
+  border-radius: 5px;
+  color: #333;
+  background-color: #fff;
+  border-color: #86bc39;
+  font-size: 0.9rem;
+}
+.btn-primary:hover {
+  width: 100%;
+  color: #fff;
+  background-color: #497a03;
+  border-color: #497a03;
+}
+
+.btn-none {
+  width: 100%;
+  color: #333;
+  background-color: #fff;
+  border-color: transparent;
+}
+.btn-secondary {
+  /* width: 100%; */
+  border-radius: 5px;
+  color: #497a03;
+  background-color: #fff;
+  border-color: #497a03;
+  text-align: left;
+}
+
+.btn-secondary:hover {
+  /* width: 100%; */
+  color: #333;
+  background-color: #fff;
+  border-color: #86bc39;
+}
+.btn-outline-secondary {
+  background-color: #497a03;
+  border: 1px solid #497a03;
+  color: #fff;
+}
+.btn-outline-secondary:hover {
+  color: #fff;
+  background-color: #2e4907;
+  border-color: #2e4907;
+}
+.outletIconWhite {
+  width: 15px;
+  height: 15px;
+  margin: 10px;
+  background-image: url(../assets/svg/outletIconWhite.svg);
+  background-size: contain;
+  background-position: center center;
+  display: inline-block;
+  vertical-align: middle;
+}
+.outletIconGreen {
+  width: 15px;
+  height: 15px;
+  margin: 10px;
+  background-image: url(../assets/svg/salidas.svg);
+  background-size: contain;
+  background-position: center center;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.outletGroupIconWhite {
+  width: 15px;
+  height: 15px;
+  margin: 10px;
+  background-image: url(../assets/svg/outletsGroupsWhite.svg);
+  background-size: contain;
+  background-position: center center;
+  display: inline-block;
+  vertical-align: middle;
+}
+.iconUpload {
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+  background-image: url(../assets/svg/iconUpload.svg);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.outletGroupIconGreen {
+  width: 15px;
+  height: 15px;
+  margin: 10px;
+  background-image: url(../assets/svg/outletsGroupsGreen.svg);
+  background-size: contain;
+  background-position: center center;
+  display: inline-block;
+  vertical-align: middle;
+}
+.imageSocket {
+  width: 30px;
+  height: 30px;
+  background-image: url(../assets/img/imgSocket.jpg);
+  background-size: contain;
+  background-position: center top;
+  background-repeat: no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  transition: transform 0.2s; /* Animation */
+  cursor: pointer;
+}
+.imageSocket2 {
+  width: 20px;
+  height: 20px;
+  background-image: url(../assets/img/imgSocket.jpg);
+  background-size: contain;
+  background-position: center top;
+  background-repeat: no-repeat;
+  display: inline-block;
+  vertical-align: middle;
+  transition: transform 0.2s; /* Animation */
+  cursor: pointer;
+}
+.imageSocket:hover {
+  width: 100px;
+  height: 100px;
+  background-image: url(../assets/img/imgSocket.jpg);
+  background-size: contain;
+  background-position: center center;
+  display: inline-block;
+  vertical-align: middle;
+  transform: scale(1.5);
+  z-index: 40;
+  border: 1px solid #497a03;
+  border-radius: 10px;
+}
+
+.borderGreen {
+  border: 1px solid #497a03;
+  border-radius: 10px;
+  padding: 8px;
+  color: #000;
+  position: relative;
+}
+.Log {
+  width: 30px;
+  height: 30px;
+  background-image: url(../assets/svg/logIcon.svg);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 10px;
+  margin-right: 20px;
+}
+.Edit {
+  width: 28px;
+  height: 28px;
+  background-image: url(../assets/svg/editIcon.svg);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 10px;
+  margin-right: 20px;
+}
+.iconHosts {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/iconHosts.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconSNMPSetup {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/iconSNMPSetup.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconNetworkSetup {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/iconNetworkSetup.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.Trash {
+  width: 28px;
+  height: 28px;
+  background-image: url(../assets/svg/trash.svg);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 10px;
+  margin-right: 20px;
+}
+.iconTrashWhite {
+  width: 28px;
+  height: 28px;
+  background-image: url(../assets/svg/trashwhite.svg);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 10px;
+  margin-right: 20px;
+}
+.iconAdd {
+  width: 28px;
+  height: 28px;
+  background-image: url(../assets/svg/iconAdd.svg);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 10px;
+  margin-right: 20px;
+}
+/* LOGOS  */
+.logoCompany {
+  background-image: url("../assets/svg/logo.svg");
+  width: 250px;
+  height: 80px;
+  background-repeat: no-repeat;
+  margin-bottom: 30px;
+  display: block;
+}
+.logoCompany2 {
+  background-image: url("../assets/svg/logo.svg");
+  width: 150px;
+  height: 45px;
+  background-repeat: no-repeat;
+  margin: 10px;
+  display: inline-block;
+}
+
+/* .active {
+  color: #497a03 !important;
+  font-weight: bolder !important;
+} */
+.navbar {
+  border-bottom: 1px solid #000;
+}
+.navbar-toggler-icon {
+  width: 35px;
+  height: 35px;
+  background-image: url(../assets/svg/menuIcon.svg);
+  background-position: center center;
+  background-size: cover;
+  vertical-align: middle;
+}
+.navbar-toggler {
+  text-align: right;
+  border: 1px solid #86bc39;
+  vertical-align: top;
+}
+.navbar-toggler:active {
+  text-align: right;
+  border: 2px solid #86bc39;
+}
+
+/* ICONS MENU  */
+.iconEntradas {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconEntradas.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconSalidas {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconSalidas.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconSettings {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconSettings.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconComs {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconComs.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconMedioambiente {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconAmbiente.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconPhase {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/phase.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconOutlets5 {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/iconSalidasSelected.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconUsers {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconUsers.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconProfile {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/profile.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconProfileBig {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/profileBIG.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconLogout {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/IconLogout.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconECOaaS {
+  width: 205px;
+  height: 55px;
+  background-image: url(../assets/svg/logoECOaaS.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconEntradasSelected,
+.iconEntradas:hover {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconEntradasSelected.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconProfileSelected,
+.iconProfile:hover {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/profileBIG.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconSalidasSelected,
+.iconSalidas:hover {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconSalidasSelected.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconSettingsSelected,
+.iconSettings:hover {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconSettingsSelected.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconComsSelected,
+.iconComs:hover {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconComsSelected.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconMedioambienteSelected,
+.iconMedioambiente:hover {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconAmbienteSelected.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconUsersSelected,
+.iconUsers:hover {
+  width: 45px;
+  height: 45px;
+  background-image: url(../assets/svg/iconUsersSelected.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+}
+.iconWarn {
+  width: 55px;
+  height: 55px;
+  background-image: url(../assets/svg/iconWarn.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  /*margin-left: 55px;*/
+  display: inline-block;
+  text-align: center;
+}
+.iconRestart {
+  width: 35px;
+  height: 35px;
+  background-image: url(../assets/svg/iconRestart.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.iconTrashWhite {
+  width: 35px;
+  height: 35px;
+  background-image: url(../assets/svg/iconTrashWhite.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.iconUnitsSetup {
+  width: 35px;
+  height: 35px;
+  background-image: url(../assets/svg/iconUnitsSetup.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.iconAddnewSensor {
+  width: 35px;
+  height: 35px;
+  background-image: url(../assets/svg/iconTycheTools.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.imageWind {
+  width: 25px;
+  height: 25px;
+  background-image: url(../assets/svg/wind.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.imageAlarm {
+  width: 20px;
+  height: 20px;
+  background-image: url(../assets/svg/alarm.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.imageSmoke {
+  width: 20px;
+  height: 20px;
+  background-image: url(../assets/svg/smoke.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.imageTT {
+  width: 20px;
+  height: 20px;
+  background-image: url(../assets/svg/tt.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.imageTemp {
+  width: 20px;
+  height: 20px;
+  background-image: url(../assets/svg/temp.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.imageHum {
+  width: 20px;
+  height: 20px;
+  background-image: url(../assets/svg/hum.svg);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#tension {
+  width: 100%;
+  height: 200px;
+  background-image: url(../assets/img/Tension.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+#corriente {
+  width: 100%;
+  height: 200px;
+  background-image: url(../assets/img/Intensidad.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+#potencia {
+  width: 100%;
+  height: 200px;
+  background-image: url(../assets/img/Potencia.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+#factor {
+  width: 100%;
+  height: 200px;
+  background-image: url(../assets/img/Factor-de-potencia.png);
+  background-position: center center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* FIN ICONS MENU  */
+.nav-link {
+  color: #333;
+  font-weight: 500;
+  padding: 0px;
+}
+.nav-item {
+  line-height: 1;
+}
+.nav-link::selection {
+  color: #497a03;
+  font-weight: bolder;
+}
+.nav-link:focus,
+.nav-link:hover {
+  color: #497a03;
+  font-weight: bolder;
+}
+.green {
+  background-color: #497a03 !important;
+  color: #fff !important;
+}
+/* TEXT COLOR  */
+.textDarkGreen {
+  color: #497a03;
+}
+.textWhite {
+  color: #fff;
+}
+.textGreen {
+  color: #86bc39;
+}
+.textGrey {
+  color: #333;
+}
+.textRed {
+  color: #e00e0e;
+}
+.bold {
+  font-weight: bolder;
+}
+.light {
+  font-weight: normal !important;
+}
+.registro {
+  line-height: 190px;
+  vertical-align: middle;
+}
+.admin {
+  line-height: 90px;
+  vertical-align: middle;
+}
+.modal-content {
+  border-radius: 15px;
+  border: 1px solid #70940e;
+}
+.modal-header {
+  border-bottom: 1px solid #fff;
+}
+.borderbottomGreen {
+  border-bottom: 1px solid #70940e;
+}
+.borderRed {
+  border: 1px solid red;
+}
+
+.chartInputs {
+  height: 400px;
+  width: 100%;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  border-color: #a9e89dfd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px #b3f1a699;
+  outline: 0 none;
+}
+
+.form-check-input:checked {
+  background-color: #86bc39;
+  border-color: #86bc39;
+}
+.bottomLine {
+  border-bottom: 1px solid green;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #fff;
+}
+
+/* SELECT  */
+
+.form-select {
+  color: #497a03;
+  border: 3px solid #497a03;
+  border-radius: 0rem;
+  margin-top: 10px;
+}
+
+input.green {
+  border: 3px solid #497a03;
+  border-radius: 0rem;
+  margin-top: 10px;
+}
+
+thead {
+  border-bottom: 2px solid #497a03;
+}
+
+.iconSystemInfo {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/info.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconUserBig {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/iconUsersSelected.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconAmbiente {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/iconAmbienteSelected.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  z-index: 300;
+}
+.iconUpload {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/Upload.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  z-index: 300;
+}
+.iconTools {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/Tools.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  z-index: 300;
+}
+.iconPDUProfiles {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/PDU\ PROFILES.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  z-index: 300;
+}
+.iconPDUInfo {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/PDU\ INFO.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  z-index: 300;
+}
+.iconCA {
+  width: 65px;
+  height: 65px;
+  background-image: url(../assets/svg/CA\ Files.svg);
+  background-position: center bottom;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 15px;
+  display: inline-block;
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  z-index: 300;
+}
+.ml-50 {
+  margin-left: 80px;
+  font-weight: 500;
+}
+.large-chexbox{
+  height: 25px!important;
+  width: 55px!important;
+}
+
+/* MEDIAQUERY  */
+/*ExtraSmall devices (landscape phones, 0px and up)*/
+@media (min-width: 0px) {
+  .superLittle {
+    font-size: 1rem;
+  }
+  .iconEntradasSelected,
+  .iconEntradas,
+  .iconSalidas,
+  .iconSalidasSelected,
+  .iconSettings,
+  .iconSettingsSelected,
+  .iconComs,
+  .iconComsSelected,
+  .iconMedioambiente,
+  .iconMedioambienteSelected,
+  .iconUsers,
+  .iconUsersSelected,
+  .iconProfile,
+  .iconProfileSelected,
+  .iconLogout {
+    display: none;
+  }
+  .solomovil {
+    display: inline-block;
+  }
+  .soloescritorio {
+    display: none;
+  }
+  .input-group > .form-control,
+  .input-group > .form-select {
+    min-width: 150px;
+  }
+  .logoCompany2 {
+    background-image: url("../assets/svg/logo.svg");
+    width: 150px;
+    height: 45px;
+    background-repeat: no-repeat;
+    margin: 0px;
+    margin-left: 30px;
+    display: inline-block;
+  }
+}
+
+/*Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) {
+  .superLittle {
+    font-size: 1rem;
+  }
+  .iconEntradasSelected,
+  .iconEntradas,
+  .iconSalidas,
+  .iconSalidasSelected,
+  .iconSettings,
+  .iconSettingsSelected,
+  .iconComs,
+  .iconComsSelected,
+  .iconMedioambiente,
+  .iconMedioambienteSelected,
+  .iconUsers,
+  .iconUsersSelected,
+  .iconProfile,
+  .iconProfileSelected,
+  .iconLogout {
+    display: none;
+  }
+  .solomovil {
+    display: inline-block;
+  }
+  .soloescritorio {
+    display: none;
+  }
+  .logoCompany2 {
+    background-image: url("../assets/svg/logo.svg");
+    width: 150px;
+    height: 45px;
+    background-repeat: no-repeat;
+    margin: 0px;
+    margin-left: 30px;
+    display: inline-block;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .superLittle {
+    font-size: 1rem;
+  }
+  .iconEntradasSelected,
+  .iconEntradas,
+  .iconSalidas,
+  .iconSalidasSelected,
+  .iconSettings,
+  .iconSettingsSelected,
+  .iconComs,
+  .iconComsSelected,
+  .iconMedioambiente,
+  .iconMedioambienteSelected,
+  .iconUsers,
+  .iconUsersSelected,
+  .iconProfile,
+  .iconProfileSelected,
+  .iconLogout {
+    display: none;
+  }
+  .solomovil {
+    display: inline-block;
+  }
+  .soloescritorio {
+    display: none;
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .superLittle {
+    font-size: 0.65rem;
+    vertical-align: top;
+    text-align: center;
+  }
+  .iconEntradasSelected,
+  .iconEntradas,
+  .iconSalidas,
+  .iconSalidasSelected,
+  .iconSettings,
+  .iconSettingsSelected,
+  .iconComs,
+  .iconComsSelected,
+  .iconMedioambiente,
+  .iconMedioambienteSelected,
+  .iconUsers,
+  .iconUsersSelected,
+  .iconProfile,
+  .iconProfileSelected,
+  .iconLogout {
+    display: inline-block;
+  }
+  .solomovil {
+    display: none;
+  }
+  .soloescritorio {
+    display: inline-block;
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+  .superLittle {
+    font-size: 0.65rem;
+    vertical-align: top;
+    text-align: center;
+  }
+  .solomovil {
+    display: none;
+  }
+  .soloescritorio {
+    display: inline-block;
+  }
+}

@@ -1,0 +1,459 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block scripts %}
+    <script src="{% static 'js/app/settings.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col">
+                    <h1 class="text-center">
+                        {% translate 'CONFIGURACIONES' %}
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <!-- 1st COL -->
+                <div class="col-lg-6">
+                    <!-- SYSTEM INFO -->
+                    <div class="row">
+                        <div class="col pt-4">
+                            <div class="borderGreen p-4">
+                                <div class="iconAbsolute">
+                                    <span class="iconSystemInfo"></span>
+                                </div>
+                                <h3 class="textGreen ml-50 little2">
+                                    {% translate 'Información de Sistema' %}
+                                </h3>
+                                <div class="row pt-3">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Nombre del Producto' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsSystemInfoProductName"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Producto P/N' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsSystemInfoProductPn"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Producto S/N' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsSystemInfoProductSn"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'LAN MAC' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsSystemInfoLanMac"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Versión de Software' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsSystemInfoSwVersion"></span>
+                                    </div>
+                                </div>
+{#                                <div class="row">#}
+{#                                    <div class="col">#}
+{#                                        <h4 class="textGreen">#}
+{#                                            {% translate 'SNMP NMS' %}#}
+{#                                        </h4>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="row">#}
+{#                                    <div class="col">#}
+{#                                        <p class="bold pb-0">#}
+{#                                            System Name </br>#}
+{#                                            <span class="little light">#}
+{#                                                {% translate 'Nombre de sistema, ejemplo PDU' %}#}
+{#                                            </span>#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div class="col">#}
+{#                                        <div class="input-group mb-3">#}
+{#                                            <input id="inputSettingsSnmpNmsSystemName" type="text" class="form-control" value="">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="row">#}
+{#                                    <div class="col">#}
+{#                                        <p class="bold pb-0">#}
+{#                                            System Contact <br/>#}
+{#                                            <span class="little light">#}
+{#                                                {% translate 'Información de Contacto' %}#}
+{#                                            </span>#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div class="col">#}
+{#                                        <div class="input-group mb-3">#}
+{#                                            <input id="inputSettingsSnmpNmsSystemContact" type="text" class="form-control" value="">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="row">#}
+{#                                    <div class="col">#}
+{#                                        <p class="bold pb-0">#}
+{#                                            {% translate 'Localización de Sistema' %}#}
+{#                                            <br/>#}
+{#                                            <span class="little light">#}
+{#                                                {% translate 'Donde se usa el equipo' %}#}
+{#                                            </span>#}
+{#                                        </p>#}
+{#                                    </div>#}
+{#                                    <div class="col">#}
+{#                                        <div class="input-group mb-3">#}
+{#                                            <input id="inputSettingsSnmpNmsSystemLocation" type="text" class="form-control" value="{{ snmp_nms.system_location }}">#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="row">#}
+{#                                    <div class="col">#}
+{#                                        <a onclick="SETTINGS.get_snmp_nms($(this));" class="btn btn-primary2">#}
+{#                                            {% translate 'Deshacer' %}#}
+{#                                        </a>#}
+{#                                    </div>#}
+{#                                    <div class="col">#}
+{#                                        <a onclick="SETTINGS.update_snmp_nms($(this));" class="btn btn-primary">#}
+{#                                            {% translate 'Guardar Cambios' %}#}
+{#                                        </a>#}
+{#                                    </div>#}
+{#                                </div>#}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SYSTEM INFO -->
+
+                    <!-- CA CERT -->
+                    <div class="row">
+                        <div class="col pt-4">
+                            <div class="borderGreen p-4">
+                                <div class="iconAbsolute"><span class="iconCA"></span></div>
+                                <h3 class="textGreen ml-50 little2">
+                                    {% translate 'Subir Certificado CA' %}
+                                </h3>
+                                <div class="row">
+                                    <div class="col pt-2 mb-2">
+                                        <p class="bold">
+                                            {% translate 'Seleccione fichero para subir' %}
+                                        </p>
+                                        <p>
+                                            {% translate 'Formato Certificado (*.crt)' %}
+                                        </p>
+                                        <form>
+                                            <div class="form-group">
+                                                <input type="file" class="form-control-file" id="inputFile_ca-cert" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <a href="{% url 'settings' %}" class="btn btn-primary2">
+                                            {% translate 'Deshacer' %}
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a onclick="SETTINGS.upload_file($(this), 'ca-cert');" class="btn btn-primary">
+                                            {% translate 'Guardar Cambios' %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END CA CERT -->
+
+                    <!-- CA KEY -->
+                    <div class="row">
+                        <div class="col pt-4">
+                            <div class="borderGreen p-4">
+                                <div class="iconAbsolute"><span class="iconCA"></span></div>
+                                <h3 class="textGreen ml-50 little2">
+                                    {% translate 'Subir LLave de Certificado' %}
+                                </h3>
+                                <div class="row">
+                                    <div class="col pt-2">
+                                        <p class="bold mb-2">
+                                            {% translate 'Seleccione fichero para subir' %}
+                                        </p>
+                                        <p>
+                                            {% translate 'Formato Certificado (*.key)' %}
+                                        </p>
+                                        <form>
+                                            <div class="form-group">
+                                                <input type="file" class="form-control-file" id="inputFile_ca-key" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col">
+                                        <a href="{% url 'settings' %}" class="btn btn-primary2">
+                                            {% translate 'Deshacer' %}
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a onclick="SETTINGS.upload_file($(this), 'ca-key');" class="btn btn-primary">
+                                            {% translate 'Guardar Cambios' %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END CA KEY -->
+
+                </div>
+
+                <!-- END 1st COL -->
+
+                <!-- 2nd COL -->
+                <div class="col-lg-6">
+
+                    <!-- PDU INFO -->
+                    <div class="row">
+                        <div class="col pt-4">
+                            <div class="borderGreen p-4">
+                                <div class="iconAbsolute"><span class="iconPDUInfo"></span></div>
+                                <h3 class="textGreen ml-50 little2">
+                                    {% translate 'Información PDU' %}
+                                </h3>
+                                <div class="row pt-3 mb-2">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Cantidad de Outlets' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsPduInfoOutletCount"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Corriente Nominal' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsPduInfoRatedCurrent"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Controlador' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsPduInfoController"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Tipo' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsPduInfoType"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END PDU INFO -->
+
+                    <!-- TOOLS -->
+                    <div class="row">
+                        <div class="col pt-4">
+                            <div class="borderGreen p-4 mb-2">
+                                <div class="iconAbsolute"><span class="iconTools"></span></div>
+                                <h3 class="textGreen ml-50 little2">
+                                    {% translate 'Herramientas' %}
+                                </h3>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class=" bold pt-2 pb-0 mb-0">
+                                            {% translate 'Reiniciar Sistema' %}
+                                        </p>
+                                        <p class="">
+                                            {% translate 'Resetear la terminal' %}
+                                        </p>
+                                    </div>
+                                    <div class="col pt-4">
+                                        <!-- Button trigger modal -->
+                                        <a onclick="SETTINGS.show_modal_for_system_reboot_or_factory_reset($(this), 'system-reboot');" class="btn btnRed">
+                                            {% translate 'REINICIAR PDU' %}
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class=" bold pt-2 pb-0 mb-0">
+                                            {% translate 'Resetear de Fábrica' %}
+                                        </p>
+                                        <p class="textRed" style="font-style: italic; font-size: 11px">
+                                            {% translate '¡La configuración actual se perderá después de restaurarla!' %}
+                                        </p>
+                                    </div>
+                                    <div class="col pt-4">
+                                        <!-- Button trigger modal -->
+                                        <a onclick="SETTINGS.show_modal_for_system_reboot_or_factory_reset($(this), 'factory-reset');" class="btn btnRed">
+                                            {% translate 'RESTAURAR CONFIGURACIONES DE FABRICA' %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END TOOLS -->
+
+{#                    <!-- PDU PROFILES -->#}
+{#                    <div class="row">#}
+{#                        <div class="col pt-4">#}
+{#                            <div class="borderGreen p-4">#}
+{#                                <div class="iconAbsolute"><span class="iconPDUProfiles"></span></div>#}
+{#                                <h3 class="textGreen ml-50 little2">#}
+{#                                    {% translate 'Perfiles PDU' %}#}
+{#                                </h3>#}
+{#                                <div class="row">#}
+{#                                    <div class="col">#}
+{#                                        <p class="textGreen pt-2">#}
+{#                                            {% translate 'Configuraciones Históricas' %}#}
+{#                                        </p>#}
+{#                                        <div class="table-responsive">#}
+{#                                            <table class="table">#}
+{#                                                <tbody>#}
+{#                                                    <tr>#}
+{#                                                        <th scope="row" class="bold little2">#}
+{#                                                            {% translate 'Perfil #1' %}#}
+{#                                                        </th>#}
+{#                                                        <td class="little2">2015-07-10 13:30:48</td>#}
+{#                                                        <td>#}
+{#                                                            <a href="" type="button" class="btn btn-secondary little" data-bs-toggle="modal" data-bs-target="#openLogOutput">#}
+{#                                                                <span class="Restore"></span> {% translate 'Restaurar desde perfil' %}#}
+{#                                                            </a>#}
+{#                                                        </td>#}
+{#                                                        <td>#}
+{#                                                            <a href="" type="button" class="btn btn-secondary little" data-bs-toggle="modal" data-bs-target="#openEditOutput">#}
+{#                                                                {% translate 'Backup desde perfil' %}#}
+{#                                                            </a>#}
+{#                                                        </td>#}
+{#                                                    </tr>#}
+{#                                                    <tr>#}
+{#                                                        <th scope="row" class="bold little2">#}
+{#                                                            {% translate 'Perfil #1' %}</th>#}
+{#                                                        <td class="little2">2015-07-10 13:30:48</td>#}
+{#                                                        <td>#}
+{#                                                            <a href="" type="button" class="btn btn-secondary little" data-bs-toggle="modal" data-bs-target="#openLogOutput">#}
+{#                                                                <span class="Restore"></span> {% translate 'Restore from profile' %}#}
+{#                                                            </a>#}
+{#                                                        </td>#}
+{#                                                        <td>#}
+{#                                                            <a href="" type="button" class="btn btn-secondary little" data-bs-toggle="modal" data-bs-target="#openEditOutput">#}
+{#                                                                {% translate 'Backup desde perfil' %}#}
+{#                                                            </a>#}
+{#                                                        </td>#}
+{#                                                    </tr>#}
+{#                                                </tbody>#}
+{#                                            </table>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <!-- END PDU PROFILES -->#}
+
+                    <!-- SOFTWARE UPDATE -->
+                    <div class="row">
+                        <div class="col pt-4">
+                            <div class="borderGreen p-4">
+                                <div class="iconAbsolute"><span class="iconUpload"></span></div>
+                                <h3 class="textGreen ml-50 little2">
+                                    {% translate 'Subir Actualización de Software' %}
+                                </h3>
+                                <div class="row">
+                                    <div class="col pt-2">
+                                        <p class="bold mb-0">
+                                            {% translate 'Seleccione fichero para subir' %}
+                                        </p>
+                                        <p class="mb-0">
+                                            {% translate "*.bin files - PDU's Firmware y software" %}
+                                        </p>
+                                        <form>
+                                            <div class="form-group">
+                                                <input type="file" class="form-control-file" id="inputFile_swupdate" />
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col">
+                                        <a href="{% url 'settings' %}" class="btn btn-primary2">
+                                            {% translate 'Deshacer' %}
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a onclick="SETTINGS.upload_file($(this), 'swupdate');" class="btn btn-primary">
+                                            {% translate 'Guardar Cambios' %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END SOFTWARE UPDATE -->
+
+                </div>
+                <!-- END 2nd COL -->
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block modals %}
+
+    <!-- Modal Restart PDU -->
+    <div class="modal fade" id="modalSettingsRestartOrRestoreFactory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODAL -->
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row pt-3">
+                <!-- Breadcrumbs  -->
+                <div class="col">
+                    <p class="little">
+                        /{% translate 'Perfil' %}
+                    </p>
+                </div>
+                <!-- fin breadcrumbs  -->
+            </div>
+            <div class="row pt-3">
+                <div class="col">
+                    <h1 class="text-center">
+                        {% translate 'PROFILE' %}
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col pt-4">
+                    <div class="borderGreen p-4">
+                        <div class="iconAbsolute"><span class="iconProfileBig"></span></div>
+                        <h3 class="textGreen ml-50 little2">Luis Pérez</h3>
+                        <div class="row pt-3">
+                            <p>
+                                <b>E-mail</b>: luis.perez@nee.com
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

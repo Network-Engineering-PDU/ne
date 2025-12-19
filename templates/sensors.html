@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block scripts %}
+    <script>
+        const SENSORS_URL = {% url 'sensors' %};
+    </script>
+    <script src="{% static 'js/app/sensors.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col">
+                    <h1 class="text-center">
+                        {% translate 'SENSORES' %}
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-4">
+                    <div class="borderGreen p-4 mb-2">
+                        <div class="iconAbsolute"><span class="iconAmbiente"></span></div>
+                        <h3 class="textGreen ml-50 little2">
+                            {% translate 'Sensores y Datos' %}
+                        </h3>
+                        <ul class="nav nav-tabs pt-3" id="myTabSensores" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#sensorsTab" type="button" role="tab" aria-controls="home" aria-selected="true">
+                                     {% translate 'Sensores' %}
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#dataTab" type="button" role="tab" aria-controls="profile" aria-selected="false">
+                                    {% translate 'Datos' %}
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content card3" id="myTabContent">
+                            <div class="tab-pane fade show active" id="sensorsTab" role="tabpanel" aria-labelledby="outputstab">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center w-10">No.</th>
+                                            <th scope="col" class="text-center">{% translate 'Dirección Mac' %}</th>
+                                            <th scope="col" class="text-center w-25">{% translate 'Nombre' %}</th>
+                                            <th scope="col" class="text-center w-25">{% translate 'Ultimo valor bateria' %}</th>
+                                            <th scope="col" class="text-center w-25">{% translate 'Ultimos datos recibidos' %}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for sensor in sensors %}
+                                            <tr>
+                                                <th scope="row" class="text-center">{{ forloop.counter }}</th>
+                                                <td class="text-center">{{ sensor.mac_address }}</td>
+                                                <td class="text-center">
+                                                    <input onblur="SENSORS.update_sensor_name($(this), {{ sensor.id }})" id="inputSensorName_{{ sensor.id }}" type="text" class="form-control text-center" value="{{ sensor.name|default_if_none:'' }}">
+                                                </td>
+                                                <td class="text-center">{{ sensor.last_battery_value|default_if_none:''}}</td>
+                                                <td class="text-center">{{ sensor.last_data_received|date:'d-m-Y H:i' }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="dataTab" role="tabpanel" aria-labelledby="groupstab">
+                                <div class="table-responsive">
+                                    <table class="table table-borderless table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="text-center">{% translate 'Fecha/Hora' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Sensor' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Temperatura (ºC)' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Humedad (%)' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Presión (Pa)' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Rssi (dB)' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Bateria' %}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for data in data_sensors %}
+                                            <tr>
+                                                <th scope="row" class="text-center">{{ data.data_datetime|date:'d-m-Y H:i' }}</th>
+                                                <td class="text-center">{{ data.sensor }}</td>
+                                                <td class="text-center">{{ data.temperature }}</td>
+                                                <td class="text-center">{{ data.humidity }}</td>
+                                                <td class="text-center">{{ data.pressure }}</td>
+                                                <td class="text-center">{{ data.rssi }}</td>
+                                                <td class="text-center">{{ data.battery }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-3">
+                    <a onclick="SENSORS.add_new_sensor($(this));" class="btn btn-primary">
+                        {% translate 'Adicionar Nuevo Sensor' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block modals %}
+
+    <!-- Modal New Sensor and communication with Gateway and Django backend -->
+    <div class="modal fade" id="modalSensorsNew" tabindex="-1" aria-labelledby="modalSensorsNew" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN MODAL -->
+
+{% endblock %}

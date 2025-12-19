@@ -1,0 +1,708 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block scripts %}
+    <script src="{% static 'js/app/coms.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col">
+                    <h1 class="text-center">
+                        {% translate 'COMS' %}
+                    </h1>
+                </div>
+            </div>
+            <div class="row pt-4">
+                <!-- Network Settings -->
+                <div class="col-lg-6">
+                    <div class="borderGreen p-4 h-100">
+                        <div class="iconAbsolute"><span class="iconNetworkSetup"></span></div>
+                        <h3 class="textGreen ml-50 little2">
+                            {% translate 'Configuración de Red' %}
+                        </h3>
+                        <div class="row pt-4">
+                            <div class="col">
+                                <p class="bold pb-0 pt-2">
+                                    {% translate 'Tipo de Conexión' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="form-check">
+                                    <input onclick="COMS.update_network_setup_form();" class="form-check-input" type="radio" name="radioOptionConnectionType" id="radioComsConnectionTypeEthernet" value="ethernet" checked>
+                                    <label class="form-check-label" for="inlineRadio1">
+                                        {% translate 'Ethernet' %} <span class="small" id="spanComsConnectionTypeEthernet"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input onclick="COMS.update_network_setup_form();" class="form-check-input" type="radio" name="radioOptionConnectionType" id="radioComsConnectionTypeWifi" value="wifi">
+                                    <label class="form-check-label" for="inlineRadio2">
+                                        {% translate 'Wi-Fi' %} <span class="small" id="spanComsConnectionTypeWifi"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col">
+                                <p class="bold pb-0">
+                                    {% translate 'DHCP' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="form-check form-switch">
+                                    <input onclick="COMS.update_network_setup_form();" class="large-chexbox form-check-input" type="checkbox" id="checkboxComsDHCPEnable">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col">
+                                <p class="bold pb-0">
+                                    {% translate 'Dirección IP' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input id="inputComsConnectionTypeIPAddress" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pb-0">
+                                    {% translate 'Máscara Subnet' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input id="inputComsConnectionTypeSubnetMask" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pb-0">
+                                    {% translate 'Gateway IP' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input id="inputComsConnectionTypeGatewayIp" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pb-0">
+                                    {% translate 'DNS Preferido' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input id="inputComsConnectionTypeDNS" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pb-0">
+                                    {% translate 'WiFi SSID' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input id="inputComsConnectionTypeWifiSSID" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pb-0">
+                                    {% translate 'Contraseña WiFi' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <input id="inputComsConnectionTypeWifiPassword" type="password" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Buttons Save and Discard-->
+                        <div class="row pt-2">
+                            <div class="col">
+                                <a href="{% url 'coms' %}" class="btn btn-primary2">
+                                    {% translate 'Deshacer' %}
+                                </a>
+                            </div>
+                            <div class="col">
+                                <a onclick="COMS.update_network_setup($(this));" class="btn btn-primary">
+                                    {% translate 'Guardar Cambios' %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END Network Setup -->
+
+                <div class="col-lg-6">
+                    <!-- Services -->
+                    <div class="borderGreen p-4 mb-4">
+                        <div class="iconAbsolute"><span class="iconNetworkSetup"></span></div>
+                        <h3 class="textGreen ml-50 little2">
+                            {% translate 'Servicios' %}
+                        </h3>
+{#                        <div class="row pt-3">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 mb-0">#}
+{#                                    {% translate 'Activar HTTP' %}#}
+{#                                </p>#}
+{#                                <p class="little">#}
+{#                                    {% translate 'Servidor Web' %}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="form-check form-switch">#}
+{#                                    <input class="large-chexbox form-check-input" type="checkbox" id="checkboxComsHTTPEnable">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 mb-0">#}
+{#                                    {% translate 'Activar TELNET' %}#}
+{#                                </p>#}
+{#                                <p class="little">#}
+{#                                    {% translate 'Interface de Línea de Comando' %}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="form-check form-switch">#}
+{#                                    <input class="large-chexbox form-check-input" type="checkbox" id="checkboxComsTELNETEnable">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pt-2">
+                                    {% translate 'SSH' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="form-check form-switch">
+                                    <input id="checkboxComsSSHEnable" onclick="COMS.update_service($(this), 'ssh');" class="large-chexbox form-check-input" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pt-2">
+                                    {% translate 'SNMP' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="form-check form-switch">
+                                    <input id="checkboxComsSNMPEnable" class="large-chexbox form-check-input" onclick="COMS.update_service($(this), 'snmp');" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold pt-2">
+                                    {% translate 'Modbus' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="form-check form-switch">
+                                    <input id="checkboxComsModbusEnable" class="large-chexbox form-check-input" onclick="COMS.update_service($(this), 'modbus');" type="checkbox">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="bold">
+                                    {% translate 'Dirección Modbus' %}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <div class="input-group">
+                                    <input id="inputComsSnmpSetupModbusAddress" onblur="COMS.update_service($(this), 'addr_modbus');" type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+{#                        <!-- Buttons Save and Discard-->#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <a onclick="COMS.get_services($(this));" class="btn btn-primary2">#}
+{#                                    {% translate 'Deshacer' %}#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <a onclick="COMS.update_services($(this));" class="btn btn-primary">#}
+{#                                    {% translate 'Guardar Cambios' %}#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+                    </div>
+                    <!-- END Services -->
+
+                    <!-- Hosts -->
+                    <div class="borderGreen p-4">
+                        <div class="iconAbsolute"><span class="iconHosts"></span></div>
+                        <h3 class="textGreen ml-50 little2">
+                            {% translate 'Hosts' %}
+                        </h3>
+                        <td class="col">
+                            <p class="">
+                                {% blocktranslate %}Para poder acceder a otras PDU PowerIT® desde esta PDU sin tener que memorizar sus IP, puede guardarlas aquí, agregándolas una por una.{% endblocktranslate %}
+                            </p>
+                            {% if hosts %}
+                                <table class="table table-borderless ">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" class="col-6">{% translate 'NOMBRE' %}</th>
+                                        <th scope="col">{% translate 'URL' %}</th>
+                                        <th scope="col" class="col-1"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for host in hosts %}
+                                        <tr host_id="{{ host.id }}" host_name="{{ host.name }}" host_ip="{{ host.ip }}">
+                                            <td>{{ host.name }}</td>
+                                            <td>{{ host.ip }}</td>
+                                            <td>
+                                                <a onclick="COMS.show_modal_for_hosts($(this), 'edit');" class="Edit" style="cursor: pointer"></a>
+                                                <a onclick="COMS.show_modal_for_hosts($(this), 'delete');" class="Trash" style="cursor: pointer"></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                            <div class="row">
+                                <div class="col">
+                                    <a onclick="COMS.show_modal_for_hosts($(this), 'add');" class="btn btn-primary2">
+                                        <span class="iconAdd"></span> {% translate 'Adicionar Host' %}
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </div>
+                    <!-- END Hosts -->
+                </div>
+{#                <!-- SNMP Setup -->#}
+{#                <div class="col-lg-6">#}
+{#                    <div class="borderGreen p-4">#}
+{#                        <div class="iconAbsolute">#}
+{#                            <span class="iconSNMPSetup"></span>#}
+{#                        </div>#}
+{#                        <h3 class="textGreen ml-50 little2">#}
+{#                            SNMP Setup#}
+{#                        </h3>#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 ">#}
+{#                                    {% translate 'Activar Relay' %}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="form-check form-switch">#}
+{#                                    <input id="checkboxComsSnmpSetupRelayEnable" class="large-chexbox form-check-input" type="checkbox">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 ">#}
+{#                                    {% translate 'Alarma para SNMP Trap' %}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="form-check form-switch">#}
+{#                                    <input id="checkboxComsSnmpSetupAlarmToSmpTrapEnable" class="large-chexbox form-check-input" type="checkbox">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 mb-0">#}
+{#                                    {% translate 'Alarma para Email' %}#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="form-check form-switch">#}
+{#                                    <input id="checkboxComsSnmpSetupAlarmToEmailEnable" class="large-chexbox form-check-input" type="checkbox">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row pt-3">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 mb-0">#}
+{#                                    {% translate 'Tiempo de Autorefesh Web' %}#}
+{#                                </p>#}
+{#                                <p class="little">#}
+{#                                    6 to 60000 (s)#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="input-group mb-3">#}
+{#                                    <input id="inputComsSnmpSetupWebAutoRefreshTime" type="text" class="form-control">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 mb-0">#}
+{#                                    {% translate 'Tiempo de Vida Web' %}#}
+{#                                </p>#}
+{#                                <p class="little">#}
+{#                                    60 to 60000 (s)#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="input-group mb-3">#}
+{#                                    <input id="inputComsSnmpSetupWebLifetime" type="text" class="form-control">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 mb-0">#}
+{#                                    {% translate 'Tiempo de Sistema' %}#}
+{#                                </p>#}
+{#                                <p class="little">#}
+{#                                    {% translate 'Formato: ' %} 2000-01-02 12:24:25#}
+{#                                </p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="input-group mb-3">#}
+{#                                    <input id="inputComsSnmpSetupSystemTime" type="text" class="form-control" placeholder="2000-01-02 12:24:25">#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="row pt-2 pb-2">#}
+{#                            <div class="col">#}
+{#                                <a onclick="COMS.get_snmp_setup($(this));" class="btn btn-primary2">#}
+{#                                    {% translate 'Deshacer' %}#}
+{#                                </a>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <a onclick="COMS.update_snmp_setup($(this));" class="btn btn-primary">#}
+{#                                    {% translate 'Guardar Cambios' %}#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <hr/>#}
+{#                        <div class="row">#}
+{#                            <div class="col">#}
+{#                                <p class="bold pb-0 mb-0">#}
+{#                                    {% translate 'Detalles SNMP' %}#}
+{#                                </p>#}
+{#                                <p class="little">SNMP for NMS</p>#}
+{#                            </div>#}
+{#                            <div class="col">#}
+{#                                <div class="col">#}
+{#                                    <!-- Trigger modal snmp details -->#}
+{#                                    <a onclick="COMS.get_snmp_details_settings($(this));" class="btn btn-primary2 textGreen little" style="cursor: pointer">#}
+{#                                        {% translate 'Configuración Detalles SNMP' %}#}
+{#                                    </a>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <!-- END SNMP Setup -->#}
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+<!-- MODALS -->
+{% block modals %}
+
+    <!-- Modal SNMP DETAIL SETTINGS-->
+    <div class="modal fade" id="modalSnmpDetailSettings" tabindex="-1" aria-labelledby="modalSnmpDetailSettings" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body justify-content-center">
+                    <p class="bold textGreen">
+                        {% translate 'Configuraciones Detalles SNMP' %}
+                    </p>
+                    <!-- 1st Row -->
+                    <div class="row">
+                        <!-- General Settings -->
+                        <div class="col">
+                            <div class="borderGreen p-3 mb-3">
+                                <p class="textGreen">
+                                    {% translate 'Configuraciones Generales' %}
+                                </p>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold pt-2">
+                                            {% translate 'Puerto SNMP' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <div class="input-group mb-3">
+                                            <input id="inputComsSnmpDetailsSettingsPort" type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Alarma para SNMP Trap' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check form-switch">
+                                            <input id="checkboxComsSnmpDetailsSettingsAlarmToTrap" class="large-chexbox form-check-input" type="checkbox">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SNMP v1v2 -->
+                        <div class="col">
+                            <div class="borderGreen p-3 mb-3">
+                                <p class="textGreen">
+                                    {% translate 'SNMP v1/v2c' %}
+                                </p>
+                                <div class="row pt-1">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Comunidad Lectura' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptionsSNMPDetailsV1V2Read" id="radioComsDetailsSettingsSNMPV1V2ReadCommunityPublic" value="Public">
+                                            <label class="form-check-label" for="radioComsDetailsSettingsSNMPDetailsV1V2ReadCommunityPublic">
+                                                {% translate 'Público' %}
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptionsSNMPDetailsV1V2Read" id="radioComsDetailsSettingsSNMPV1V2ReadCommunityPrivate" value="Private">
+                                            <label class="form-check-label" for="radioComsDetailsSettingsSNMPDetailsV1V2ReadCommunityPrivate">
+                                                {% translate 'Privado' %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-1">
+                                    <div class="col">
+                                        <p class="bold">
+                                            {% translate 'Comunidad Escritura' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptionsSNMPDetailsV1V2Write" id="radioComsDetailsSettingsSNMPV1V2WriteCommunityPublic" value="Public">
+                                            <label class="form-check-label" for="radioComsDetailsSettingsSNMPDetailsV1V2WriteCommunityPublic">
+                                                {% translate 'Público' %}
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptionsSNMPDetailsV1V2Write" id="radioComsDetailsSettingsSNMPV1V2WriteCommunityPrivate" value="Private">
+                                            <label class="form-check-label" for="radioComsDetailsSettingsSNMPDetailsV1V2WriteCommunityPrivate">
+                                                {% translate 'Privado' %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End 1st Row -->
+
+                    <!-- 2nd Row -->
+                    <div class="row">
+                        <!-- Trap Settings -->
+                        <div class="col">
+                            <div class="borderGreen p-3 mb-3">
+                                <p class="textGreen">
+                                    {% translate 'Configuraciones Trap' %}
+                                </p>
+                                <table class="table table-borderless table-sm align-middle">
+                                    <tbody>
+                                    <tr>
+                                        <td class="bold" style="width: 20%">
+                                            {% translate 'Manager 1' %}
+                                        </td>
+                                        <td>
+                                            <input id="inputComsSnmpDetailsSettingsManager1Name" type="text" class="form-control">
+                                        </td>
+                                        <td style="width: 30%">
+                                            <input id="inputComsSnmpDetailsSettingsManager1Ip" type="text" class="form-control" value="192.168.0.12">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bold" style="width: 20%">
+                                            {% translate 'Manager 2' %}
+                                        </td>
+                                        <td>
+                                            <input id="inputComsSnmpDetailsSettingsManager2Name" type="text" class="form-control">
+                                        </td>
+                                        <td style="width: 30%">
+                                            <input id="inputComsSnmpDetailsSettingsManager2Ip" type="text" class="form-control" value="192.168.0.14">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bold" style="width: 20%">
+                                            {% translate 'Manager 3' %}
+                                        </td>
+                                        <td>
+                                            <input id="inputComsSnmpDetailsSettingsManager3Name" type="text" class="form-control">
+                                        </td>
+                                        <td style="width: 30%">
+                                            <input id="inputComsSnmpDetailsSettingsManager3Ip" type="text" class="form-control" value="192.168.0.16">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bold" style="width: 20%">
+                                            {% translate 'Manager 4' %}
+                                        </td>
+                                        <td>
+                                            <input id="inputComsSnmpDetailsSettingsManager4Name" type="text" class="form-control">
+                                        </td>
+                                        <td style="width: 30%">
+                                            <input id="inputComsSnmpDetailsSettingsManager4Ip" type="text" class="form-control" value="192.168.0.18">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- SNMP v3 -->
+                        <div class="col">
+                            <div class="borderGreen p-3 mb-3">
+                                <p class="textGreen">
+                                    {% translate 'SNMP v3' %}
+                                </p>
+                                <div class="row">
+                                    <div class="col-4">
+                                        <p class="bold">
+                                            {% translate 'Usuario USM' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptionsSNMPV3UsmUser" id="radioComsDetailsSettingsSNMPV3UsmUserReadWrite" value="rw">
+                                            <label class="form-check-label" for="radioComsDetailsSettingsSNMPV3UsmUserReadWrite">
+                                                ReadWrite (rw)
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="radioOptionsSNMPV3UsmUser" id="radioComsDetailsSettingsSNMPV3UsmUserRead" value="r">
+                                            <label class="form-check-label" for="radioComsDetailsSettingsSNMPV3UsmUserRead">
+                                                {% translate 'Lectura (r)' %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pb-1">
+                                    <div class="col-4">
+                                        <p class="bold">
+                                            {% translate 'Nivel de Seguridad' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <input id="inputComsSNMPDetailsSecurityLevel" type="text" class="form-control w-75">
+                                    </div>
+                                </div>
+                                <div class="row pb-1">
+                                    <div class="col-4">
+                                        <p class="bold">
+                                            {% translate 'Accesos Correctos' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <input id="inputComsSNMPDetailsAccessRight" type="text" class="form-control w-75">
+                                    </div>
+                                </div>
+                                <div class="row pb-1">
+                                    <div class="col-4">
+                                        <p class="bold">
+                                            {% translate 'Auto Algoritmo' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <input id="inputComsSNMPDetailsAutoAlgorithm" type="text" class="form-control w-75">
+                                    </div>
+                                </div>
+                                <div class="row pb-1">
+                                    <div class="col-4">
+                                        <p class="bold">
+                                            {% translate 'Auth Contraseña' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <input id="inputComsSNMPDetailsAuthPassword" type="password" class="form-control w-75">
+                                    </div>
+                                </div>
+                                <div class="row pb-1">
+                                    <div class="col-4">
+                                        <p class="bold">
+                                            {% translate 'Privacidad Algoritmo' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <input id="inputComsSNMPDetailsPrivacyAlgorithm" type="password" class="form-control w-75">
+                                    </div>
+                                </div>
+                                <div class="row pb-1">
+                                    <div class="col-4">
+                                        <p class="bold">
+                                            {% translate 'Privacidad Contraseña' %}
+                                        </p>
+                                    </div>
+                                    <div class="col">
+                                        <input id="inputComsSNMPDetailsPrivacyPassword" type="password" class="form-control w-75">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End 2nd Row -->
+                </div>
+                <div class="modal-footer">
+                    <div class="col">
+                        <a class="btn btn-primary2" data-bs-dismiss="modal" aria-label="Close">
+                            {% translate 'Deshacer' %}
+                        </a>
+                    </div>
+                    <div class="col">
+                        <a onclick="COMS.update_snmp_details_settings($(this));" class="btn btn-primary">
+                            {% translate 'Guardar Cambios' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN Modal SNMP DETAIL SETTINGS-->
+
+    <!-- Modal CRUD HOSTS -->
+    <div class="modal fade" id="modalComsHost" tabindex="-1" aria-labelledby="modalComsHost" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center"></div>
+                <div class="modal-footer">
+                    <a id="btnComsHost" onclick="COMS.submit_host($(this));" class="btn btn-primary2 bold textGreen"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN Modal CRUD HOSTS -->
+
+{% endblock %}

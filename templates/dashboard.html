@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6 col-sm-12 ">
+                    <a href="{% url 'inputs' %}">
+                        <button class="cardBig align-items-center">
+                            <div class="entradas text-center"></div>
+                            <p class="text-center">
+                                {% translate 'Entradas' %}
+                            </p>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <a href="{% url 'outputs' %}">
+                        <button class="cardBig align-items-center">
+                            <div class="salidas text-center"></div>
+                            <p class="text-center">
+                                {% translate 'Salidas' %}
+                            </p>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <a href="{% url 'settings' %}">
+                        <button class="cardBig align-items-center">
+                            <div class="settings text-center"></div>
+                            <p class="text-center">
+                                {% translate 'Ajustes' %}
+                            </p>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <a href="{% url 'coms' %}">
+                        <button class="cardBig align-items-center">
+                            <div class="coms text-center"></div>
+                            <p class="text-center">
+                                {% translate 'Coms' %}
+                            </p>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <a href="{% url 'sensors' %}">
+                        <button class="cardBig align-items-center">
+                            <div class="ambiente text-center"></div>
+                            <p class="text-center">
+                                {% translate 'Sensores' %}
+                            </p>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

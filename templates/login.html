@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+    <header class="bkgLogin ">
+        <div class="container ">
+            <div class="row logincontainer d-flex justify-content-center align-items-center">
+
+                <div class="col-sm-4 col-sm-offset-4 card ">
+                    <div class="logoCompany"></div>
+                    <p>
+                        {% translate 'Bienvenido a PDUSoftware. Inicie sesión con las credenciales proporcionadas.' %}
+                    </p>
+                    <form class="login">
+                        <!-- User input -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="inputUsername">
+                                {% translate 'User' %}
+                            </label>
+                            <input type="text" id="inputUsername" class="form-control"  />
+                        </div>
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="inputPassword">
+                                {% translate 'Password' %}
+                            </label>
+                            <input type="password" id="inputPassword" class="form-control" />
+                        </div>
+                        <!-- 2 column grid layout for inline styling -->
+                        <div class="row mb-4">
+                            <div class="col ">
+                                {#                                <!-- Checkbox -->#}
+                                {#                                <div class="form-check">#}
+                                {#                                    <input class="form-check-input" type="checkbox" value="" id="checkboxRememberMe" checked />#}
+                                {#                                    <label class="form-check-label" for="checkboxRememberMe"> Remember me </label>#}
+                                {#                                </div>#}
+                            </div>
+                            {#                            <div class="col text-end">#}
+                            {#                                <!-- Simple link -->#}
+                            {#                                <a href="{% url 'forgot_password' %}" class="text-end">Forgot password?</a>#}
+                            {#                            </div>#}
+                        </div>
+                        <!-- Submit button -->
+                        <button id="btnLogin" type="button" class="btn btn-primary mb-4">
+                            {% translate 'Ingresar' %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script>
+
+        $(function (){
+
+            const LOADER = '<div class="spinner-border spinner-border-sm" role="status"></div>';
+
+            const user_required_msg = "{% translate 'El Usuario es requerido' %}";
+            const password_required_msg = "{% translate 'La Contraseña es requerida' %}";
+
+            let inputUsername = $("#inputUsername");
+            let inputPassword = $("#inputPassword");
+            let btnLogin = $("#btnLogin");
+
+            btnLogin.click(function (){
+                let elem = $(this);
+                let originalText = elem.html();
+
+                let username = inputUsername.val();
+                let password = inputPassword.val();
+
+                if (!username || username === ''){
+                    alert(user_required_msg);
+                    return false;
+                }
+                if (!password || password === ''){
+                    alert(password_required_msg);
+                    return false;
+                }
+
+                // send to server si hay elementos en la lista
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'login' %}",
+                    dataType: "json",
+                    data: {
+                        "username": username,
+                        "password": password,
+                        "next": "{{ next }}"
+                    },
+                    beforeSend: function (){
+                        elem.attr('disabled', true).html(LOADER);
+                    },
+                    success: function(response) {
+                        elem.attr('disabled', false).html(originalText);
+                        if (response.result === 'ok'){
+                            setTimeout(function () {
+                                location.href = response.redirect_to;
+                            }, 300);
+                        }else{
+                            alert(response.message);
+                        }
+                    },
+                    error: function(response) {
+                        elem.attr('disabled', false).html(originalText);
+                        alert(response.message);
+                    }
+                });
+
+            });
+
+            // Enable Return Key
+            inputUsername.keypress(function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnLogin.click();
+                }
+            });
+            inputPassword.keypress(function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnLogin.click();
+                }
+            });
+
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block scripts %}
+    <script src="{% static 'js/app/users.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col">
+                    <h1 class="text-center">
+                        {% translate 'USUARIOS' %}
+                    </h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col pt-4">
+                    <div class="borderGreen p-4">
+                        <div class="iconAbsolute">
+                            <span class="iconUserBig"></span>
+                        </div>
+                        <h3 class="textGreen ml-50 little2">
+                            {% translate 'Usuarios' %}
+                        </h3>
+                        <div class="row pt-3">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">{% translate 'Usuario' %}</th>
+                                        <th scope="col">{% translate 'Nombre' %}</th>
+                                        <th scope="col">{% translate 'Apellidos' %}</th>
+                                        {% if user.is_superuser %}
+                                            <th scope="col" class="col-1">
+                                                {% translate 'Acciones' %}
+                                            </th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- avoid overwriting authenticated user with this forloop user, that's why is called "u" instead "user" -->
+                                    {% for u in users %}
+                                        {% with user_id=u.id username=u.username first_name=u.first_name last_name=u.last_name %}
+                                            <tr user_id="{{ user_id }}" username={{ username }} first_name="{{ first_name }}" last_name="{{ last_name }}">
+                                                <td>{{ username }}</td>
+                                                <td>{{ first_name }}</td>
+                                                <td>{{ last_name }}</td>
+                                                {% if user.is_superuser %}
+                                                    <td>
+                                                        <a onclick="USERS.show_modal_for_users($(this), 'edit');" class="Edit" style="cursor: pointer"></a>
+                                                        <a onclick="USERS.show_modal_for_users($(this), 'delete');" class="Trash" style="cursor: pointer"></a>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endwith %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% if user.is_superuser %}
+                        <div class="row pt-3 justify-content-end">
+                            <div class="col-3">
+                                <a onclick="USERS.show_modal_for_users($(this), 'add');" class="btn btn-primary2">
+                                    <span class="iconAdd"></span> {% translate 'Adicionar Usuario' %}
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block modals %}
+
+    <!-- Modal CRUD USERS -->
+    <div class="modal fade" id="modalUsers" tabindex="-1" aria-labelledby="modalUsers" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center"></div>
+                <div class="modal-footer">
+                    <a id="btnUserSubmit" onclick="USERS.submit_user($(this));" class="btn btn-primary2 bold textGreen"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- FIN Modal CRUD USERS -->
+
+{% endblock %}

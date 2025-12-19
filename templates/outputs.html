@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+{% load i18n %}
+
+{% block scripts %}
+    <script src="{% static 'js/app/outputs.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <section>
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col">
+                    <h1 class="text-center">
+                        {% translate 'SALIDAS' %}
+                    </h1>
+                </div>
+            </div>
+            <div class="row pt-2 mb-3">
+                <div class="col">
+                    <div class="borderGreen p-4 mb-2">
+                        <div class="iconAbsolute"><span class="iconOutlets5"></span></div>
+                        <h3 class="textGreen ml-50 little2">
+                            {% translate 'Salidas' %}
+                        </h3>
+                        <div class="row">
+                            <div class="col">
+                                <div class="table-responsive mt-4">
+                                    <p id="divOutputsInvalidLicense" class="text-danger" style="display: none; font-style: italic">
+                                        {% translate 'No se muestran los outlets debido a licencia inválida' %}
+                                    </p>
+                                    <!-- TABLA OUTLETS -->
+                                    <table id="tableOutputsData" class="table table-sm table-borderless" style="display: none">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" style="min-width: 100px;">{% translate 'Nombre' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Tipo de Socket' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Voltaje' %} <br/>(V)</th>
+                                            <th scope="col" class="text-center">{% translate 'Corriente' %}<br/>(A)</th>
+                                            <th scope="col" class="text-center">{% translate 'Potencia Aparente' %}<br/>(VA)</th>
+                                            <th scope="col" class="text-center">{% translate 'Potencia Activa' %}<br/>(W)</th>
+                                            <th scope="col" class="text-center">{% translate 'Power Reactiva' %}<br/>(VAr)</th>
+                                            <th scope="col" class="text-center">{% translate 'Factor de Potencia' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Energia' %}<br/>(kWh)</th>
+                                            <th scope="col" class="text-center">{% translate 'Fase Total' %}<br/>(º)</th>
+                                            <th scope="col" class="text-center">{% translate 'Fase V-I' %}<br/>(º)</th>
+                                            <th scope="col" class="text-center">{% translate 'Frecuencia' %}<br/>(Hz)</th>
+{#                                            <th scope="col" class="text-center">{% translate 'Limites' %}<br/>Min</th>#}
+{#                                            <th scope="col" class="text-center">{% translate 'Limites' %}<br/>Max</th>#}
+                                            <th scope="col" class="text-center" style="width: 30px;">{% translate 'Descargar' %}<br/>(csv)</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for output in outputs %}
+                                            {% with last_data=output.get_last_data %}
+                                                <tr>
+                                                    <th scope="row">{{ output }}</th>
+                                                    <td class="text-center" nowrap="">{{ output.socket_type }}</td>
+                                                    <td class="text-center">{{ last_data.voltage|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.current|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.apparent_power|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.active_power|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.reactive_power|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.power_factor|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.energy|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.phase_total|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.phase_vi|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.frequency|floatformat:2|intcomma }}</td>
+{#                                                    <td class="text-center">#}
+{#                                                        <input onblur="APP.update_low_and_high_limits($(this), 'Output', {{ output.id }})" id="inputLowLimit_{{ output.id }}" type="text" class="form-control" value="{{ output.low_limit }}">#}
+{#                                                    </td>#}
+{#                                                    <td class="text-center">#}
+{#                                                        <input onblur="APP.update_low_and_high_limits($(this), 'Output', {{ output.id }})" id="inputHighLimit_{{ output.id }}" type="text" class="form-control" value="{{ output.high_limit }}">#}
+{#                                                    </td>#}
+                                                    <td class="text-center">
+                                                        <!-- TRIGGER MODAL  -->
+                                                        <a href="{% url 'output_download_last_data' output.id %}" class="btn btn-secondary btn-sm">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                                <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                                            </svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endwith %}
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    <!-- FIN TABLA OUTLETS  -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
