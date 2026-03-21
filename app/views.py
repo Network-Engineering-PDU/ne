@@ -202,15 +202,7 @@ def settings(request):
                             file_url = fs.url(filename)
                             filename_path = os.path.join(MEDIA_ROOT, filename)
                             response = requests.post(f'{BASE_URL_PDU}/{endpoint}', json={"filename": filename_path}, verify=False)
-                            
-                            # Check if backend accepted the upload, or if auto-update is disabled
-                            response_data = response.json() if response.status_code == 200 else {}
-                            
-                            # Check if backend rejected due to auto-update being disabled
-                            if response.status_code != 200 or response_data.get('error'):
-                                return bad_json(message="Firmware updates are disabled. Please enable automatic updates in device settings to receive firmware updates.")
-                            
-                            return ok_json(data={'message': f"{_('Software update file received')}"})
+                            return ok_json(data={'message': f"{_('Fichero guardado correctamente')}"})
 
                         except Exception as ex:
                             return bad_json(message=f'Error in POST {endpoint}: {ex.__str__()}')
