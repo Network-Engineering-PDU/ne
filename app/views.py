@@ -202,7 +202,7 @@ def settings(request):
                             file_url = fs.url(filename)
                             filename_path = os.path.join(MEDIA_ROOT, filename)
                             response = requests.post(f'{BASE_URL_PDU}/{endpoint}', json={"filename": filename_path}, verify=False)
-                            return ok_json(data={'message': f"{_('Fichero guardado correctamente')}"})
+                            return ok_json(data={'message': f"{_('Software update file received')}"})
 
                         except Exception as ex:
                             return bad_json(message=f'Error in POST {endpoint}: {ex.__str__()}')

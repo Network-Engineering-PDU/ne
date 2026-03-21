@@ -204,6 +204,12 @@ let SETTINGS = {
                         setTimeout(function() {
                             elem.attr('disabled', false).html(originalText);
                         }, 1000);
+                        // Show confirmation message to user
+                        if (endpoint === 'swupdate') {
+                            setTimeout(function() {
+                                alert(response.message + '\n\n⚠️  The device will start the firmware update process.\nPlease do NOT disconnect the device until the update is complete.');
+                            }, 1100);
+                        }
                     }else{
                         if (elem !== undefined){
                             elem.attr('disabled', false).html(originalText);
