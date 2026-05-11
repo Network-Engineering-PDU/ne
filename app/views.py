@@ -199,10 +199,17 @@ def settings(request):
                             fs = FileSystemStorage(location=os.path.join(MEDIA_ROOT))
                             # Guarda el archivo
                             filename = fs.save(file.name, file)
-                            file_url = fs.url(filename)
                             filename_path = os.path.join(MEDIA_ROOT, filename)
                             response = requests.post(f'{BASE_URL_PDU}/{endpoint}', json={"filename": filename_path}, verify=False)
-                            return ok_json(data={'message': f"{_('Fichero guardado correctamente')}"})
+                            if response.status_code == 200:
+                                resp = response.json()
+                                if resp.get('is_pending'):
+                                    message = _("Update uploaded. Confirm it on the PDU display.")
+                                else:
+                                    message = _("Update uploaded. Device update will start shortly.")
+                                return ok_json(data={'message': f"{message}"})
+
+                            return bad_json(message=f'Error in POST {endpoint}: {response.text}')
 
                         except Exception as ex:
                             return bad_json(message=f'Error in POST {endpoint}: {ex.__str__()}')
