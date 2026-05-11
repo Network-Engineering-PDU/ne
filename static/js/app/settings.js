@@ -201,7 +201,6 @@ let SETTINGS = {
                 success: function(response) {
                     if (response.result === 'ok'){
                         console.log(response.message);
-                        alert(response.message);
                         setTimeout(function() {
                             elem.attr('disabled', false).html(originalText);
                         }, 1000);
