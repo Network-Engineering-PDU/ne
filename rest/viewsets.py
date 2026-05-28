@@ -1,4 +1,5 @@
 import datetime
+import logging
 import re
 
 from django.db import transaction, IntegrityError
@@ -171,6 +172,11 @@ class SensorsNewViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     }
     """
     def create(self, request, *args, **kwargs):
+        logger = logging.getLogger(__name__)
+        try:
+            logger.info("SensorsNew POST payload: %s", request.data)
+        except Exception:
+            pass
         try:
             with transaction.atomic():
 
@@ -222,6 +228,11 @@ class SensorsDataViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     }
     """
     def create(self, request, *args, **kwargs):
+        logger = logging.getLogger(__name__)
+        try:
+            logger.info("SensorsData POST payload: %s", request.data)
+        except Exception:
+            pass
         try:
             with transaction.atomic():
 
