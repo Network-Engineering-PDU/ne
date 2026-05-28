@@ -50,11 +50,16 @@
                                             <th scope="col" class="text-center">{% translate 'Dirección Mac' %}</th>
                                             <th scope="col" class="text-center w-25">{% translate 'Nombre' %}</th>
                                             <th scope="col" class="text-center w-25">{% translate 'Ultimo valor bateria' %}</th>
-                                            <th scope="col" class="text-center w-25">{% translate 'Ultimos datos recibidos' %}</th>
+                                            <th scope="col" class="text-center w-15">{% translate 'Temperatura' %}</th>
+                                            <th scope="col" class="text-center w-15">{% translate 'Humedad' %}</th>
+                                            <th scope="col" class="text-center w-15">{% translate 'Presión' %}</th>
+                                            <th scope="col" class="text-center w-15">{% translate 'RSSI' %}</th>
+                                            <th scope="col" class="text-center w-20">{% translate 'Acción' %}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         {% for sensor in sensors %}
+                                            {% with last_data=sensor.get_last_data_obj %}
                                             <tr>
                                                 <th scope="row" class="text-center">{{ forloop.counter }}</th>
                                                 <td class="text-center">{{ sensor.mac_address }}</td>
@@ -62,8 +67,15 @@
                                                     <input onblur="SENSORS.update_sensor_name($(this), {{ sensor.id }})" id="inputSensorName_{{ sensor.id }}" type="text" class="form-control text-center" value="{{ sensor.name|default_if_none:'' }}">
                                                 </td>
                                                 <td class="text-center">{{ sensor.last_battery_value|default_if_none:''}}</td>
-                                                <td class="text-center">{{ sensor.last_data_received|date:'d-m-Y H:i' }}</td>
+                                                <td class="text-center">{{ last_data.temperature|default_if_none:'N/A' }}</td>
+                                                <td class="text-center">{{ last_data.humidity|default_if_none:'N/A' }}</td>
+                                                <td class="text-center">{{ last_data.pressure|default_if_none:'N/A' }}</td>
+                                                <td class="text-center">{{ last_data.rssi|default_if_none:'N/A' }}</td>
+                                                <td class="text-center">
+                                                    <a href="{% url 'sensor_detail' sensor.id %}" class="btn btn-sm btn-primary">{% translate 'Ver' %}</a>
+                                                </td>
                                             </tr>
+                                            {% endwith %}
                                         {% endfor %}
                                         </tbody>
                                     </table>
