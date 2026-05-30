@@ -489,44 +489,9 @@ def sensor_update_name(request, sensor_id):
 def check_new_sensor(request):
     data = {'title': _('Sensor - Comprobar Nuevo')}
     add_global_data(request, data)
-    sensors = Sensor.objects.filter(is_new=True)
-    sensor_list = [
-        {
-            'id': sensor.id,
-            'mac_address': sensor.mac_address,
-            'name': sensor.name or '',
-        }
-        for sensor in sensors
-    ]
-    return ok_json(data={'sensors': sensor_list})
-
-
-@login_required()
-def sensor_detail(request, sensor_id):
-    data = {'title': _('Sensor')}
-    add_global_data(request, data)
-    try:
-        sensor = Sensor.objects.get(id=sensor_id)
-    except Sensor.DoesNotExist:
-        return bad_json(message=_('Sensor no encontrada'))
-
-    data['sensor'] = sensor
-    data['latest_data'] = sensor.get_last_data_obj()
-    data['sensor_history'] = DataSensor.objects.filter(sensor=sensor).order_by('-data_datetime')[:50]
-    return render(request, 'sensor_detail.html', data)
-
-
-@login_required()
-def accept_new_sensor(request, sensor_id):
-    data = {'title': _('Sensor - Aceptar Nuevo')}
-    add_global_data(request, data)
-    try:
-        sensor = Sensor.objects.get(id=sensor_id, is_new=True)
-        sensor.is_new = False
-        sensor.save()
+    if Sensor.objects.filter(is_new=True).exists():
         return ok_json()
-    except Sensor.DoesNotExist:
-        return bad_json(message=_('Sensor no encontrada'))
+    return bad_json(error=7)
 
 
 @login_required()

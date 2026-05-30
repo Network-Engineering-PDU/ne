@@ -28,47 +28,6 @@ let SENSORS = {
     },
 
     // Modal for New Sensor (execute start-scan in gw and then make polling to db to see if there is a new sensor)
-    render_new_sensor_list: function(sensors) {
-        if (!sensors || sensors.length === 0) {
-            modalSensorsNew.find('.modal-body').html(
-                '<div class="text-center">' +
-                    '<p class="bold">No BLE devices found yet.</p>' +
-                    '<p class="text-muted fst-italic">Keep the devices powered on and within range.</p>' +
-                '</div>'
-            );
-            return;
-        }
-
-        let html = '<div class="table-responsive"><table class="table table-striped">';
-        html += '<thead><tr><th>MAC</th><th>Nombre</th><th></th></tr></thead><tbody>';
-        sensors.forEach(function(sensor) {
-            html += '<tr>' +
-                `<td class="text-center">${sensor.mac_address}</td>` +
-                `<td class="text-center">${sensor.name || '-'}</td>` +
-                '<td class="text-center">' +
-                    `<button class="btn btn-sm btn-success" onclick="SENSORS.accept_new_sensor(${sensor.id})">` +
-                        'Agregar' +
-                    '</button>' +
-                '</td>' +
-            '</tr>';
-        });
-        html += '</tbody></table></div>';
-        html += '<div class="text-center"><small class="text-muted">Seleccione un dispositivo para agregar como sensor.</small></div>';
-        modalSensorsNew.find('.modal-body').html(html);
-    },
-
-    render_scan_spinner: function() {
-        modalSensorsNew.find('.modal-body').html(
-            '<div class="d-flex justify-content-center">' + SPINNER + '</div>' +
-                  '<div class="row pt-3">' +
-                        '<div class="col text-center">' +
-                            `<p class="bold">Scanning for BLE devices...</p>` +
-                            '<p class="text-muted fst-italic">Please power on the devices and keep them close.</p>' +
-                        '</div>' +
-                 '</div>'
-        );
-    },
-
     check_new_sensor: function () {
         $.ajax({
             url: `/${LANG_CODE}/check_new_sensor`,
@@ -76,8 +35,14 @@ let SENSORS = {
             data: {},
             dataType: 'json',
             success: function(response) {
-                if (response.result === 'ok' && response.data && response.data.sensors && response.data.sensors.length > 0){
-                    SENSORS.render_new_sensor_list(response.data.sensors);
+                if (response.result === 'ok'){
+                    setTimeout(function (){
+                        modalSensorsNew.modal('hide');
+                    }, 1000);
+
+                    setTimeout(function (){
+                        window.location.href = SENSORS_URL;
+                    }, 1700);
                 }
                 else{
                     setTimeout(function (){
@@ -89,32 +54,20 @@ let SENSORS = {
                 alert('Error: ' + JSON.stringify(response));
             }
         });
-    },
 
-    accept_new_sensor: function(sensor_id) {
-        $.ajax({
-            url: `/${LANG_CODE}/sensors/${sensor_id}/accept_new`,
-            type: 'POST',
-            data: {},
-            dataType: 'json',
-            success: function(response) {
-                if (response.result === 'ok'){
-                    modalSensorsNew.modal('hide');
-                    setTimeout(function (){
-                        window.location.href = SENSORS_URL;
-                    }, 500);
-                } else {
-                    alert('Warning: ' + response.message);
-                }
-            },
-            error: function (response) {
-                alert('Error: ' + JSON.stringify(response));
-            }
-        });
     },
 
     add_new_sensor: function (){
-        SENSORS.render_scan_spinner();
+        // body
+        modalSensorsNew.find('.modal-body').html(
+            '<div class="d-flex justify-content-center">' + SPINNER + '</div>' +
+                  '<div class="row pt-3">' +
+                        '<div class="col text-center">' +
+                            `<p class="bold">Scanning a new TycheTools sensor...</p>` +
+                            '<p class="text-muted fst-italic">Please, power on the device to add it to de network</p>' +
+                        '</div>' +
+                 '</div>'
+        )
 
         // Start Scanning (Gateway)
         $.ajax({
@@ -127,6 +80,7 @@ let SENSORS = {
             success: function(response) {
                 if (response.result === 'ok'){
                     console.log(response.message);
+                    // Hacer polling a backend verificando si hay algun sensor nuevo
                     setTimeout(function (){
                         SENSORS.check_new_sensor();
                     }, 1500);
