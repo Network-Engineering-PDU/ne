@@ -151,7 +151,7 @@ function formatNumber(value) {
     if (value === null || value === undefined || value === '') {
         return '--';
     }
-    const parsed = parseFloat(value);
+    const parsed = Math.abs(parseFloat(value));
     if (Number.isNaN(parsed)) {
         return '--';
     }
@@ -199,7 +199,7 @@ function addDataPointToChart(chartKey, lineId, timestamp, value) {
 
     const dataPoint = {
         date: timestamp,
-        value: value === null || value === undefined ? 0 : parseFloat(value) || 0,
+        value: value === null || value === undefined ? 0 : Math.abs(parseFloat(value) || 0),
     };
 
     series.data.push(dataPoint);

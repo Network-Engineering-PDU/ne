@@ -68,6 +68,9 @@ def normalize_pdu_last_data(data):
             data['phase_vi'] = data['phase']
         if 'phase_total' not in data:
             data['phase_total'] = data.get('phase_total', 0)
+        for key in ('active_power', 'power_factor', 'energy'):
+            if data.get(key) is not None:
+                data[key] = abs(data[key])
         return data
     return data
 
@@ -88,10 +91,10 @@ def map_pdu_input_to_ui(pdu_data, input_obj):
         'voltage': pdu_data.get('voltage'),
         'current': pdu_data.get('current'),
         'apparent_power': pdu_data.get('apparent_power'),
-        'active_power': pdu_data.get('active_power'),
+        'active_power': abs(pdu_data.get('active_power')) if pdu_data.get('active_power') is not None else None,
         'reactive_power': pdu_data.get('reactive_power'),
-        'power_factor': pdu_data.get('power_factor'),
-        'energy': pdu_data.get('energy'),
+        'power_factor': abs(pdu_data.get('power_factor')) if pdu_data.get('power_factor') is not None else None,
+        'energy': abs(pdu_data.get('energy')) if pdu_data.get('energy') is not None else None,
         'phase_vi': pdu_data.get('phase_vi', pdu_data.get('phase')),
         'frequency': pdu_data.get('frequency'),
         'timestamp': int(time.time() * 1000),
@@ -136,10 +139,10 @@ def build_input_live_record(input_obj):
             'voltage': last_data.voltage,
             'current': last_data.current,
             'apparent_power': last_data.apparent_power,
-            'active_power': last_data.active_power,
+            'active_power': abs(last_data.active_power),
             'reactive_power': last_data.reactive_power,
-            'power_factor': last_data.power_factor,
-            'energy': last_data.energy,
+            'power_factor': abs(last_data.power_factor),
+            'energy': abs(last_data.energy),
             'phase_vi': last_data.phase_vi,
             'frequency': last_data.frequency,
             'timestamp': int(last_data.data_summary.data_datetime.timestamp() * 1000),
