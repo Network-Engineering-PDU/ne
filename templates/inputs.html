@@ -12,6 +12,7 @@
         const DATA_FOR_CHARTS = {{ data_for_charts|safe }};
     </script>
     <script src="{% static 'js/app/chart_inputs.js' %}"></script>
+    <script src="{% static 'js/app/live_power.js' %}"></script>
 
 {% endblock %}
 
@@ -48,6 +49,52 @@
                             {% for input in inputs %}
                                 {% with last_data=input.get_last_data %}
                                     <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="tab_{{ input.id }}" role="tabpanel" aria-labelledby="inputstab">
+                                        <div class="px-4">
+                                            <h5>{% translate 'Live Readings' %}</h5>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm table-borderless align-middle">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Voltaje (V)' %}</td>
+                                                            <td class="text-end w-20"><span id="live_voltage_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Corriente (A)' %}</td>
+                                                            <td class="text-end"><span id="live_current_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Potencia Aparente (VA)' %}</td>
+                                                            <td class="text-end"><span id="live_apparent_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Potencia Activa (W)' %}</td>
+                                                            <td class="text-end"><span id="live_active_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Potencia Reactiva (VAr)' %}</td>
+                                                            <td class="text-end"><span id="live_reactive_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Factor Potencia' %}</td>
+                                                            <td class="text-end"><span id="live_pf_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Energia' %}</td>
+                                                            <td class="text-end"><span id="live_energy_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Fase V-I (º)' %}</td>
+                                                            <td class="text-end"><span id="live_phasevi_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="bold">{% translate 'Frecuencia (Hz)' %}</td>
+                                                            <td class="text-end"><span id="live_freq_{{ input.id }}">--</span></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
                                         <div class="table-responsive px-4">
                                             <table class="table table-borderless align-middle">
                                                 <tbody>

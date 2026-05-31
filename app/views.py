@@ -20,6 +20,46 @@ from app.models import Input, Output, Host, Sensor, DataSensor
 from ne.settings import BASE_URL_PDU, MEDIA_ROOT
 
 
+@login_required()
+def pdu_live_inputs(request):
+    """Return latest data for all inputs from local DB to be used as 'live' readings."""
+    try:
+        inputs = Input.objects.all()
+        data = []
+        for inp in inputs:
+            last = inp.get_last_data()
+            if last:
+                data.append({
+                    'line_id': inp.line_id,
+                    'voltage': last.voltage,
+                    'current': last.current,
+                    'apparent_power': last.apparent_power,
+                    'active_power': last.active_power,
+                    'reactive_power': last.reactive_power,
+                    'power_factor': last.power_factor,
+                    'energy': last.energy,
+                    'phase_vi': last.phase_vi,
+                    'frequency': last.frequency,
+                })
+            else:
+                data.append({
+                    'line_id': inp.line_id,
+                    'voltage': None,
+                    'current': None,
+                    'apparent_power': None,
+                    'active_power': None,
+                    'reactive_power': None,
+                    'power_factor': None,
+                    'energy': None,
+                    'phase_vi': None,
+                    'frequency': None,
+                })
+
+        return ok_json(data={'data': data})
+    except Exception as ex:
+        return bad_json(message=ex.__str__())
+
+
 def add_global_data(request, data):
     data['user'] = request.user
     data['remoteaddr'] = request.META['REMOTE_ADDR']
