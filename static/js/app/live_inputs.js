@@ -13,8 +13,18 @@ const MAX_CHART_POINTS = 60;
 const POLL_INTERVAL = 2000;
 
 document.addEventListener('DOMContentLoaded', function () {
-    initializeCharts();
+    // Poll first — table updates must not depend on chart init
     startLivePolling();
+
+    if (typeof am5 !== 'undefined' && typeof am5.ready === 'function') {
+        am5.ready(function () {
+            try {
+                initializeCharts();
+            } catch (error) {
+                console.error('Chart init failed:', error);
+            }
+        });
+    }
 });
 
 function initializeCharts() {
@@ -75,20 +85,26 @@ function startLivePolling() {
 
 async function fetchAndUpdateData() {
     try {
-        const response = await fetch(LIVE_DATA_URL);
+        const response = await fetch(LIVE_DATA_URL, {
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' },
+        });
+
         if (!response.ok) {
-            console.error('Failed to fetch live data:', response.status);
+            console.error('Failed to fetch live data:', response.status, LIVE_DATA_URL);
             return;
         }
 
         const payload = await response.json();
         const inputs = payload.inputs || payload.data?.inputs || [];
-        const result = (payload.result || '').toLowerCase();
 
-        if (inputs.length && (result === 'ok' || result === 'success')) {
-            inputs.forEach(updateInputTable);
-            inputs.forEach(updateCharts);
+        if (!inputs.length) {
+            console.warn('Live data response has no inputs:', payload);
+            return;
         }
+
+        inputs.forEach(updateInputTable);
+        inputs.forEach(updateCharts);
     } catch (error) {
         console.error('Error fetching live data:', error);
     }

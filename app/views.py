@@ -60,12 +60,42 @@ def normalize_pdu_last_data(data):
     if data is None:
         return None
     if isinstance(data, dict):
+        # PDU API (port 8001) field names -> UI field names
+        # GET /inputs/{n}/data returns:
+        #   voltage, current, active_power, reactive_power, apparent_power,
+        #   power_factor, phase, frequency, energy
         if 'phase' in data and 'phase_vi' not in data:
             data['phase_vi'] = data['phase']
         if 'phase_total' not in data:
             data['phase_total'] = data.get('phase_total', 0)
         return data
     return data
+
+
+def map_pdu_input_to_ui(pdu_data, input_obj):
+    """
+    Map PDU API JSON to the structure used by inputs.html and live_inputs.js.
+
+    PDU response example (inputs/0/data = Input 1):
+        voltage, current, active_power, reactive_power, apparent_power,
+        power_factor, phase, frequency, energy
+    """
+    pdu_data = normalize_pdu_last_data(pdu_data) or {}
+    return {
+        'id': input_obj.id,
+        'line_id': input_obj.line_id,
+        'name': str(input_obj),
+        'voltage': pdu_data.get('voltage'),
+        'current': pdu_data.get('current'),
+        'apparent_power': pdu_data.get('apparent_power'),
+        'active_power': pdu_data.get('active_power'),
+        'reactive_power': pdu_data.get('reactive_power'),
+        'power_factor': pdu_data.get('power_factor'),
+        'energy': pdu_data.get('energy'),
+        'phase_vi': pdu_data.get('phase_vi', pdu_data.get('phase')),
+        'frequency': pdu_data.get('frequency'),
+        'timestamp': int(time.time() * 1000),
+    }
 
 
 def get_pdu_input_data(line_id):
@@ -95,21 +125,7 @@ def last_data_to_dict(last_data):
 def build_input_live_record(input_obj):
     pdu_data = get_pdu_input_data(input_obj.line_id)
     if pdu_data:
-        return {
-            'id': input_obj.id,
-            'line_id': input_obj.line_id,
-            'name': str(input_obj),
-            'voltage': pdu_data.get('voltage'),
-            'current': pdu_data.get('current'),
-            'apparent_power': pdu_data.get('apparent_power'),
-            'active_power': pdu_data.get('active_power'),
-            'reactive_power': pdu_data.get('reactive_power'),
-            'power_factor': pdu_data.get('power_factor'),
-            'energy': pdu_data.get('energy'),
-            'phase_vi': pdu_data.get('phase_vi'),
-            'frequency': pdu_data.get('frequency'),
-            'timestamp': int(time.time() * 1000),
-        }
+        return map_pdu_input_to_ui(pdu_data, input_obj)
 
     last_data = input_obj.get_last_data()
     if last_data:
@@ -129,21 +145,7 @@ def build_input_live_record(input_obj):
             'timestamp': int(last_data.data_summary.data_datetime.timestamp() * 1000),
         }
 
-    return {
-        'id': input_obj.id,
-        'line_id': input_obj.line_id,
-        'name': str(input_obj),
-        'voltage': None,
-        'current': None,
-        'apparent_power': None,
-        'active_power': None,
-        'reactive_power': None,
-        'power_factor': None,
-        'energy': None,
-        'phase_vi': None,
-        'frequency': None,
-        'timestamp': int(time.time() * 1000),
-    }
+    return map_pdu_input_to_ui({}, input_obj)
 
 
 def login_user(request):
@@ -214,14 +216,8 @@ def inputs(request):
             'name': x.__str__(),
             'items': items,
         })
-    data['data_for_charts_json'] = json.dumps(data['data_for_charts'])
-    data['inputs_with_last'] = [
-        {
-            'input': input_obj,
-            'last_data': last_data_to_dict(
-                input_obj.get_last_data() or get_pdu_input_data(input_obj.line_id)
-            ),
-        }
+    data['inputs_live'] = [
+        {'input': input_obj, 'live': build_input_live_record(input_obj)}
         for input_obj in inputs
     ]
     return render(request, 'inputs.html', data)
