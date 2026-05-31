@@ -131,6 +131,11 @@ def export_last_data_to_csv(obj, live_data=None):
     def _fmt(val):
         return blank_value if val is None else f'{val}'
 
+    def _fmt_energy(val):
+        if val is None:
+            return blank_value
+        return f'{abs(val)}'
+
     def _has_measurements(data):
         if not data:
             return False
@@ -151,7 +156,7 @@ def export_last_data_to_csv(obj, live_data=None):
             _fmt(live_data.get('active_power')),
             _fmt(live_data.get('reactive_power')),
             _fmt(live_data.get('power_factor')),
-            _fmt(live_data.get('energy')),
+            _fmt_energy(live_data.get('energy')),
             _fmt(live_data.get('phase_total')),
             _fmt(live_data.get('phase_vi')),
             _fmt(live_data.get('frequency')),
@@ -167,7 +172,7 @@ def export_last_data_to_csv(obj, live_data=None):
             _fmt(last_data.active_power),
             _fmt(last_data.reactive_power),
             _fmt(last_data.power_factor),
-            _fmt(last_data.energy),
+            _fmt_energy(last_data.energy),
             _fmt(last_data.phase_total),
             _fmt(last_data.phase_vi),
             _fmt(last_data.frequency),

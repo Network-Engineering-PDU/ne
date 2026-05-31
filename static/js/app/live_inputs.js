@@ -173,7 +173,11 @@ function updateInputTable(input) {
     ].forEach(function (fieldName) {
         const cell = tabPane.querySelector(`[data-field="${fieldName}"]`);
         if (cell) {
-            cell.textContent = formatNumber(input[fieldName]);
+            let value = input[fieldName];
+            if (fieldName === 'energy' && value !== null && value !== undefined) {
+                value = Math.abs(parseFloat(value));
+            }
+            cell.textContent = formatNumber(value);
         }
     });
 }

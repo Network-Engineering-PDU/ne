@@ -68,6 +68,12 @@ def normalize_phase_vi(ph):
     return ph
 
 
+def positive_energy(value):
+    if value is None:
+        return None
+    return abs(value)
+
+
 def recalculate_power_from_phase(data):
     """Recompute P/Q/S/PF from V,I and corrected phase (matches pmb.py logic)."""
     if not isinstance(data, dict):
@@ -89,9 +95,9 @@ def recalculate_power_from_phase(data):
         data['apparent_power'] = voltage * current
         data['power_factor'] = math.cos(math.radians(ph))
 
-    # Legacy negative energy counter from before phase fix
-    if data.get('energy') is not None and data['energy'] < 0:
-        data['energy'] = abs(data['energy'])
+    # Energy is cumulative — always report magnitude
+    if data.get('energy') is not None:
+        data['energy'] = positive_energy(data['energy'])
 
     return data
 
@@ -127,7 +133,7 @@ def map_pdu_input_to_ui(pdu_data, input_obj):
         'active_power': pdu_data.get('active_power'),
         'reactive_power': pdu_data.get('reactive_power'),
         'power_factor': pdu_data.get('power_factor'),
-        'energy': pdu_data.get('energy'),
+        'energy': positive_energy(pdu_data.get('energy')),
         'phase_vi': pdu_data.get('phase_vi', pdu_data.get('phase')),
         'frequency': pdu_data.get('frequency'),
         'timestamp': int(time.time() * 1000),
@@ -152,7 +158,7 @@ def last_data_to_dict(last_data):
         'active_power': last_data.active_power,
         'reactive_power': last_data.reactive_power,
         'power_factor': last_data.power_factor,
-        'energy': last_data.energy,
+        'energy': positive_energy(last_data.energy),
         'phase_vi': last_data.phase_vi,
         'frequency': last_data.frequency,
     }
@@ -175,7 +181,7 @@ def build_input_live_record(input_obj):
             'active_power': last_data.active_power,
             'reactive_power': last_data.reactive_power,
             'power_factor': last_data.power_factor,
-            'energy': last_data.energy,
+            'energy': positive_energy(last_data.energy),
             'phase_vi': last_data.phase_vi,
             'frequency': last_data.frequency,
             'timestamp': int(last_data.data_summary.data_datetime.timestamp() * 1000),
