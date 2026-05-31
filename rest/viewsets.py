@@ -113,7 +113,7 @@ class PDUDataViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                     line_id = int(elem['line_id'])
                     try:
                         output_obj = Output.objects.get(line_id=line_id)
-                    except Input.DoesNotExist:
+                    except Output.DoesNotExist:
                         raise Exception(f'Output does not exist with line_id: {line_id}')
 
                     data_outputs_objects.append(
@@ -133,12 +133,14 @@ class PDUDataViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                         )
                     )
 
-                # bulk create
+                # Save inputs and outputs
                 if data_inputs_objects:
-                    DataInput.objects.bulk_create(data_inputs_objects)
+                    for data_input_obj in data_inputs_objects:
+                        data_input_obj.save()
                     print(f'Inputs data succesfully STORED! ({len(data_inputs_objects)} records)')
                 if data_outputs_objects:
-                    DataOutput.objects.bulk_create(data_outputs_objects)
+                    for data_output_obj in data_outputs_objects:
+                        data_output_obj.save()
                     print(f'Outputs data succesfully STORED! ({len(data_outputs_objects)} records)')
 
                 # delete old data (only keep last 60 mins of data)

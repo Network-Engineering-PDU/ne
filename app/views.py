@@ -111,7 +111,9 @@ def get_inputs_live_data(request):
                     'frequency': last_data.frequency,
                     'timestamp': int(last_data.data_summary.data_datetime.strftime("%s%f")) / 1000,
                 })
-        return ok_json(data={'inputs': inputs_data})
+        # Return in a structure expected by frontend polling code: { result: 'OK', data: { inputs: [...] } }
+        payload = {'result': 'OK', 'data': {'inputs': inputs_data}}
+        return ok_json(data=payload)
     except Exception as ex:
         print(ex.__str__())
         return bad_json(message=ex.__str__())
