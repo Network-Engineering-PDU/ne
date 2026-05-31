@@ -30,6 +30,7 @@ def pdu_live_inputs(request):
             last = inp.get_last_data()
             if last:
                 data.append({
+                    'id': inp.id,
                     'line_id': inp.line_id,
                     'voltage': last.voltage,
                     'current': last.current,
@@ -43,6 +44,7 @@ def pdu_live_inputs(request):
                 })
             else:
                 data.append({
+                    'id': inp.id,
                     'line_id': inp.line_id,
                     'voltage': None,
                     'current': None,
