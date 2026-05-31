@@ -35,7 +35,6 @@ urlpatterns += i18n_patterns(
     path('', views.login_user, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('inputs/', views.inputs, name='inputs'),
-    path('inputs/live_data/', views.get_inputs_live_data, name='get_inputs_live_data'),
     path('inputs/<int:input_id>/download_last_data', views.input_download_last_data, name='input_download_last_data'),
     path('outputs/', views.outputs, name='outputs'),
     path('outputs/<int:output_id>/download_last_data', views.output_download_last_data, name='output_download_last_data'),
