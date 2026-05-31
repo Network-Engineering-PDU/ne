@@ -89,6 +89,35 @@ def inputs(request):
 
 
 @login_required()
+def get_inputs_live_data(request):
+    """API endpoint for live input data - returns JSON with current values for all inputs"""
+    try:
+        inputs_data = []
+        for input_obj in Input.objects.all():
+            last_data = input_obj.get_last_data()
+            if last_data:
+                inputs_data.append({
+                    'id': input_obj.id,
+                    'line_id': input_obj.line_id,
+                    'name': str(input_obj),
+                    'voltage': last_data.voltage,
+                    'current': last_data.current,
+                    'active_power': last_data.active_power,
+                    'reactive_power': last_data.reactive_power,
+                    'apparent_power': last_data.apparent_power,
+                    'power_factor': last_data.power_factor,
+                    'energy': last_data.energy,
+                    'phase_vi': last_data.phase_vi,
+                    'frequency': last_data.frequency,
+                    'timestamp': int(last_data.data_summary.data_datetime.strftime("%s%f")) / 1000,
+                })
+        return ok_json(data={'inputs': inputs_data})
+    except Exception as ex:
+        print(ex.__str__())
+        return bad_json(message=ex.__str__())
+
+
+@login_required()
 def update_limits(request):
     data = {'title': _('Actualizar Limites')}
     add_global_data(request, data)

@@ -9,9 +9,10 @@
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <script>
-        const DATA_FOR_CHARTS = {{ data_for_charts|safe }};
+        const INPUTS_COUNT = {{ inputs.count }};
+        const LIVE_DATA_URL = "{% url 'get_inputs_live_data' %}";
     </script>
-    <script src="{% static 'js/app/chart_inputs.js' %}"></script>
+    <script src="{% static 'js/app/live_inputs.js' %}"></script>
 
 {% endblock %}
 
@@ -46,120 +47,96 @@
                         </ul>
                         <div class="tab-content card3 mb-3">
                             {% for input in inputs %}
-                                {% with last_data=input.get_last_data %}
-                                    <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="tab_{{ input.id }}" role="tabpanel" aria-labelledby="inputstab">
-                                        <div class="table-responsive px-4">
-                                            <table class="table table-borderless align-middle">
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Voltaje (V)' %}
-                                                        </td>
-                                                        <td class="text-end w-20">
-                                                            {{ last_data.voltage|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Corriente (A)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.current|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Potencia Aparente (VA)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.apparent_power|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Potencia Activa (W)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.active_power|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Potencia Reactiva (VAr)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.reactive_power|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Factor Potencia' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.power_factor|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Energia' %}
-                                                        </td>
-                                                        <td class="text-end">{{ last_data.energy|floatformat:2|intcomma }}</td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Fase Total (º)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.phase_total|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr> -->
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Fase V-I (º)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.phase_vi|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Frecuencia (Hz)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            {{ last_data.frequency|floatformat:2|intcomma }}
-                                                        </td>
-                                                    </tr>
-                                                    <!-- <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Límite Bajo (A)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            <input onblur="APP.update_low_and_high_limits($(this), 'Output', {{ input.id }})" id="inputLowLimit_{{ input.id }}" type="text" class="form-control w-50" value="{{ input.low_limit }}">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="bold">
-                                                            {% translate 'Límite Alto (A)' %}
-                                                        </td>
-                                                        <td class="text-end">
-                                                            <input onblur="APP.update_low_and_high_limits($(this), 'Output', {{ input.id }})" id="inputHighLimit_{{ input.id }}" type="text" class="form-control w-50" value="{{ input.high_limit }}">
-                                                        </td>
-                                                    </tr> -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="row pb-4">
-                                            <div class="col">
-                                                <a href="{% url 'input_download_last_data' input.id %}" class="btn btn-primary2">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                                        <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                                                        <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                                                    </svg> &nbsp; {% translate 'Descargar Fase de Corriente actual' %}
-                                                </a>
-                                            </div>
+                                <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="tab_{{ input.id }}" role="tabpanel" aria-labelledby="inputstab" data-input-id="{{ input.id }}">
+                                    <div class="table-responsive px-4">
+                                        <table class="table table-borderless align-middle">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Voltaje (V)' %}
+                                                    </td>
+                                                    <td class="text-end w-20" data-field="voltage">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Corriente (A)' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="current">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Potencia Aparente (VA)' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="apparent_power">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Potencia Activa (W)' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="active_power">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Potencia Reactiva (VAr)' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="reactive_power">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Factor Potencia' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="power_factor">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Energia' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="energy">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Fase V-I (º)' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="phase_vi">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="bold">
+                                                        {% translate 'Frecuencia (Hz)' %}
+                                                    </td>
+                                                    <td class="text-end" data-field="frequency">
+                                                        --
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row pb-4">
+                                        <div class="col">
+                                            <a href="{% url 'input_download_last_data' input.id %}" class="btn btn-primary2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                                                </svg> &nbsp; {% translate 'Descargar Fase de Corriente actual' %}
+                                            </a>
                                         </div>
                                     </div>
-                                {% endwith %}
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
