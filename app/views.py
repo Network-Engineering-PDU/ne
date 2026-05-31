@@ -28,6 +28,124 @@ def add_global_data(request, data):
     data['lang_code'] = request.LANGUAGE_CODE.lower()
 
 
+def get_pdu_base_urls():
+    candidates = [
+        BASE_URL_PDU.rstrip('/'),
+        'http://127.0.0.1:8001',
+    ]
+    seen = set()
+    for url in candidates:
+        if url and url not in seen:
+            seen.add(url)
+            yield url
+
+
+def get_pdu_local_data(endpoint):
+    for base_url in get_pdu_base_urls():
+        try:
+            response = requests.get(
+                f"{base_url}/{endpoint}",
+                verify=False,
+                timeout=5,
+            )
+            if response.status_code == 200:
+                return response.json()
+            print(f'PDU local data non-200 [{base_url}/{endpoint}]: {response.status_code}')
+        except Exception as ex:
+            print(f'PDU local data error [{base_url}/{endpoint}]: {ex}')
+    return None
+
+
+def normalize_pdu_last_data(data):
+    if data is None:
+        return None
+    if isinstance(data, dict):
+        if 'phase' in data and 'phase_vi' not in data:
+            data['phase_vi'] = data['phase']
+        if 'phase_total' not in data:
+            data['phase_total'] = data.get('phase_total', 0)
+        return data
+    return data
+
+
+def get_pdu_input_data(line_id):
+    if not line_id or line_id < 1:
+        return None
+    return normalize_pdu_last_data(get_pdu_local_data(f'inputs/{line_id - 1}/data'))
+
+
+def last_data_to_dict(last_data):
+    if last_data is None:
+        return {}
+    if isinstance(last_data, dict):
+        return normalize_pdu_last_data(last_data) or {}
+    return {
+        'voltage': last_data.voltage,
+        'current': last_data.current,
+        'apparent_power': last_data.apparent_power,
+        'active_power': last_data.active_power,
+        'reactive_power': last_data.reactive_power,
+        'power_factor': last_data.power_factor,
+        'energy': last_data.energy,
+        'phase_vi': last_data.phase_vi,
+        'frequency': last_data.frequency,
+    }
+
+
+def build_input_live_record(input_obj):
+    pdu_data = get_pdu_input_data(input_obj.line_id)
+    if pdu_data:
+        return {
+            'id': input_obj.id,
+            'line_id': input_obj.line_id,
+            'name': str(input_obj),
+            'voltage': pdu_data.get('voltage'),
+            'current': pdu_data.get('current'),
+            'apparent_power': pdu_data.get('apparent_power'),
+            'active_power': pdu_data.get('active_power'),
+            'reactive_power': pdu_data.get('reactive_power'),
+            'power_factor': pdu_data.get('power_factor'),
+            'energy': pdu_data.get('energy'),
+            'phase_vi': pdu_data.get('phase_vi'),
+            'frequency': pdu_data.get('frequency'),
+            'timestamp': int(time.time() * 1000),
+        }
+
+    last_data = input_obj.get_last_data()
+    if last_data:
+        return {
+            'id': input_obj.id,
+            'line_id': input_obj.line_id,
+            'name': str(input_obj),
+            'voltage': last_data.voltage,
+            'current': last_data.current,
+            'apparent_power': last_data.apparent_power,
+            'active_power': last_data.active_power,
+            'reactive_power': last_data.reactive_power,
+            'power_factor': last_data.power_factor,
+            'energy': last_data.energy,
+            'phase_vi': last_data.phase_vi,
+            'frequency': last_data.frequency,
+            'timestamp': int(last_data.data_summary.data_datetime.timestamp() * 1000),
+        }
+
+    return {
+        'id': input_obj.id,
+        'line_id': input_obj.line_id,
+        'name': str(input_obj),
+        'voltage': None,
+        'current': None,
+        'apparent_power': None,
+        'active_power': None,
+        'reactive_power': None,
+        'power_factor': None,
+        'energy': None,
+        'phase_vi': None,
+        'frequency': None,
+        'timestamp': int(time.time() * 1000),
+    }
+
+
 def login_user(request):
     data = {'title': _('Ingreso')}
     add_global_data(request, data)
@@ -79,13 +197,47 @@ def inputs(request):
     data = {'title': _('Entradas')}
     add_global_data(request, data)
     data['inputs'] = inputs = Input.objects.all()
-    data['data_for_charts'] = [
-        {
+    data['data_for_charts'] = []
+    for x in inputs:
+        items = x.get_data_for_charts()
+        if not items:
+            pdu_last = get_pdu_input_data(x.line_id)
+            if pdu_last:
+                items = [{
+                    'date': int(time.time() * 1000),
+                    'voltage': pdu_last.get('voltage', 0),
+                    'current': pdu_last.get('current', 0),
+                    'active_power': pdu_last.get('active_power', 0),
+                    'power_factor': pdu_last.get('power_factor', 0),
+                }]
+        data['data_for_charts'].append({
             'name': x.__str__(),
-            'items': x.get_data_for_charts()
-        } for x in inputs
+            'items': items,
+        })
+    data['data_for_charts_json'] = json.dumps(data['data_for_charts'])
+    data['inputs_with_last'] = [
+        {
+            'input': input_obj,
+            'last_data': last_data_to_dict(
+                input_obj.get_last_data() or get_pdu_input_data(input_obj.line_id)
+            ),
+        }
+        for input_obj in inputs
     ]
     return render(request, 'inputs.html', data)
+
+
+@login_required()
+def get_inputs_live_data(request):
+    try:
+        inputs_data = [
+            build_input_live_record(input_obj)
+            for input_obj in Input.objects.all()
+        ]
+        return ok_json(data={'inputs': inputs_data})
+    except Exception as ex:
+        print(ex.__str__())
+        return bad_json(message=ex.__str__())
 
 
 @login_required()
