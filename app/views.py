@@ -20,6 +20,17 @@ from app.models import Input, Output, Host, Sensor, DataSensor
 from ne.settings import BASE_URL_PDU, MEDIA_ROOT
 
 
+def fetch_pdu_input_live_data(line_id):
+    """Fetch live PDU input data directly from the PDU API if DB data is missing."""
+    try:
+        response = requests.get(f'{BASE_URL_PDU}/inputs/{line_id}/data', verify=False, timeout=5)
+        if response.status_code != 200:
+            return None
+        return response.json()
+    except Exception:
+        return None
+
+
 @login_required()
 def pdu_live_inputs(request):
     """Return latest data for all inputs from local DB to be used as 'live' readings."""
@@ -28,6 +39,24 @@ def pdu_live_inputs(request):
         data = []
         for inp in inputs:
             last = inp.get_last_data()
+            if not last:
+                pdu_data = fetch_pdu_input_live_data(inp.line_id)
+                if pdu_data:
+                    data.append({
+                        'id': inp.id,
+                        'line_id': inp.line_id,
+                        'voltage': pdu_data.get('voltage'),
+                        'current': pdu_data.get('current'),
+                        'apparent_power': pdu_data.get('apparent_power'),
+                        'active_power': pdu_data.get('active_power'),
+                        'reactive_power': pdu_data.get('reactive_power'),
+                        'power_factor': pdu_data.get('power_factor'),
+                        'energy': pdu_data.get('energy'),
+                        'phase_vi': pdu_data.get('phase_vi'),
+                        'frequency': pdu_data.get('frequency'),
+                    })
+                    continue
+
             if last:
                 data.append({
                     'id': inp.id,
