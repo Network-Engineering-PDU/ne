@@ -56,22 +56,55 @@ def get_pdu_local_data(endpoint):
     return None
 
 
+def normalize_phase_vi(ph):
+    if ph is None:
+        return 0
+    if ph > 180.0:
+        ph -= 360.0
+    elif ph < -180.0:
+        ph += 360.0
+    if abs(ph) > 90.0:
+        ph = ph - 180.0 if ph > 0 else ph + 180.0
+    return ph
+
+
+def recalculate_power_from_phase(data):
+    """Recompute P/Q/S/PF from V,I and corrected phase (matches pmb.py logic)."""
+    if not isinstance(data, dict):
+        return data
+
+    import math
+
+    ph = data.get('phase_vi', data.get('phase', 0)) or 0
+    ph = normalize_phase_vi(ph)
+
+    voltage = data.get('voltage') or 0
+    current = data.get('current') or 0
+
+    if voltage and current:
+        data['phase_vi'] = ph
+        data['phase'] = ph
+        data['active_power'] = voltage * current * math.cos(math.radians(ph))
+        data['reactive_power'] = voltage * current * math.sin(math.radians(ph))
+        data['apparent_power'] = voltage * current
+        data['power_factor'] = math.cos(math.radians(ph))
+
+    # Legacy negative energy counter from before phase fix
+    if data.get('energy') is not None and data['energy'] < 0:
+        data['energy'] = abs(data['energy'])
+
+    return data
+
+
 def normalize_pdu_last_data(data):
     if data is None:
         return None
     if isinstance(data, dict):
-        # PDU API (port 8001) field names -> UI field names
-        # GET /inputs/{n}/data returns:
-        #   voltage, current, active_power, reactive_power, apparent_power,
-        #   power_factor, phase, frequency, energy
         if 'phase' in data and 'phase_vi' not in data:
             data['phase_vi'] = data['phase']
         if 'phase_total' not in data:
             data['phase_total'] = data.get('phase_total', 0)
-        for key in ('active_power', 'power_factor', 'energy'):
-            if data.get(key) is not None:
-                data[key] = abs(data[key])
-        return data
+        return recalculate_power_from_phase(data)
     return data
 
 
@@ -91,10 +124,10 @@ def map_pdu_input_to_ui(pdu_data, input_obj):
         'voltage': pdu_data.get('voltage'),
         'current': pdu_data.get('current'),
         'apparent_power': pdu_data.get('apparent_power'),
-        'active_power': abs(pdu_data.get('active_power')) if pdu_data.get('active_power') is not None else None,
+        'active_power': pdu_data.get('active_power'),
         'reactive_power': pdu_data.get('reactive_power'),
-        'power_factor': abs(pdu_data.get('power_factor')) if pdu_data.get('power_factor') is not None else None,
-        'energy': abs(pdu_data.get('energy')) if pdu_data.get('energy') is not None else None,
+        'power_factor': pdu_data.get('power_factor'),
+        'energy': pdu_data.get('energy'),
         'phase_vi': pdu_data.get('phase_vi', pdu_data.get('phase')),
         'frequency': pdu_data.get('frequency'),
         'timestamp': int(time.time() * 1000),
@@ -139,10 +172,10 @@ def build_input_live_record(input_obj):
             'voltage': last_data.voltage,
             'current': last_data.current,
             'apparent_power': last_data.apparent_power,
-            'active_power': abs(last_data.active_power),
+            'active_power': last_data.active_power,
             'reactive_power': last_data.reactive_power,
-            'power_factor': abs(last_data.power_factor),
-            'energy': abs(last_data.energy),
+            'power_factor': last_data.power_factor,
+            'energy': last_data.energy,
             'phase_vi': last_data.phase_vi,
             'frequency': last_data.frequency,
             'timestamp': int(last_data.data_summary.data_datetime.timestamp() * 1000),
