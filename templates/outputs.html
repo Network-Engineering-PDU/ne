@@ -53,21 +53,21 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {% for item in outputs_with_last %}
-                                            {% with output=item.output last_data=item.last_data %}
+                                        {% for output in outputs %}
+                                            {% with last_data=output.get_last_data %}
                                                 <tr>
                                                     <th scope="row">{{ output }}</th>
                                                     <td class="text-center" nowrap="">{{ output.socket_type }}</td>
-                                                    <td class="text-center">{{ last_data.voltage|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.current|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.apparent_power|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.active_power|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.reactive_power|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.power_factor|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.energy|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.phase_total|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.phase_vi|default_if_none:'0'|floatformat:2|intcomma }}</td>
-                                                    <td class="text-center">{{ last_data.frequency|default_if_none:'0'|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.voltage|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.current|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.apparent_power|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.active_power|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.reactive_power|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.power_factor|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.energy|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.phase_total|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.phase_vi|floatformat:2|intcomma }}</td>
+                                                    <td class="text-center">{{ last_data.frequency|floatformat:2|intcomma }}</td>
 {#                                                    <td class="text-center">#}
 {#                                                        <input onblur="APP.update_low_and_high_limits($(this), 'Output', {{ output.id }})" id="inputLowLimit_{{ output.id }}" type="text" class="form-control" value="{{ output.low_limit }}">#}
 {#                                                    </td>#}

@@ -36,18 +36,18 @@
                             {% translate 'Fase' %}
                         </h3>
                         <ul class="nav nav-tabs pt-3" id="tabInputs" role="tablist">
-                            {% for item in inputs_with_last %}
+                            {% for input in inputs %}
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" data-bs-target="#tab_{{ item.input.id }}" type="button" role="tab" aria-controls="home" aria-selected="true">
-                                        {{ item.input }}
+                                    <button class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" data-bs-target="#tab_{{ input.id }}" type="button" role="tab" aria-controls="home" aria-selected="true">
+                                        {{ input }}
                                     </button>
                                 </li>
                             {% endfor %}
                         </ul>
                         <div class="tab-content card3 mb-3">
-                            {% for item in inputs_with_last %}
-                                {% with last_data=item.last_data %}
-                                    <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="tab_{{ item.input.id }}" role="tabpanel" aria-labelledby="inputstab">
+                            {% for input in inputs %}
+                                {% with last_data=input.get_last_data %}
+                                    <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="tab_{{ input.id }}" role="tabpanel" aria-labelledby="inputstab">
                                         <div class="table-responsive px-4">
                                             <table class="table table-borderless align-middle">
                                                 <tbody>
@@ -56,7 +56,7 @@
                                                             {% translate 'Voltaje (V)' %}
                                                         </td>
                                                         <td class="text-end w-20">
-                                                            {{ last_data.voltage|default_if_none:'0'|floatformat:2|intcomma }}
+                                                            {{ last_data.voltage|floatformat:2|intcomma }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -64,7 +64,7 @@
                                                             {% translate 'Corriente (A)' %}
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ last_data.current|default_if_none:'0'|floatformat:2|intcomma }}
+                                                            {{ last_data.current|floatformat:2|intcomma }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -72,7 +72,7 @@
                                                             {% translate 'Potencia Aparente (VA)' %}
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ last_data.apparent_power|default_if_none:'0'|floatformat:2|intcomma }}
+                                                            {{ last_data.apparent_power|floatformat:2|intcomma }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -80,7 +80,7 @@
                                                             {% translate 'Potencia Activa (W)' %}
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ last_data.active_power|default_if_none:'0'|floatformat:2|intcomma }}
+                                                            {{ last_data.active_power|floatformat:2|intcomma }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -88,7 +88,7 @@
                                                             {% translate 'Potencia Reactiva (VAr)' %}
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ last_data.reactive_power|default_if_none:'0'|floatformat:2|intcomma }}
+                                                            {{ last_data.reactive_power|floatformat:2|intcomma }}
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -96,14 +96,14 @@
                                                             {% translate 'Factor Potencia' %}
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ last_data.power_factor|default_if_none:'0'|floatformat:2|intcomma }}
+                                                            {{ last_data.power_factor|floatformat:2|intcomma }}
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td class="bold">
                                                             {% translate 'Energia' %}
                                                         </td>
-                                                        <td class="text-end">{{ last_data.energy|default_if_none:'0'|floatformat:2|intcomma }}</td>
+                                                        <td class="text-end">{{ last_data.energy|floatformat:2|intcomma }}</td>
                                                     </tr>
                                                     <!-- <tr>
                                                         <td class="bold">
@@ -126,7 +126,7 @@
                                                             {% translate 'Frecuencia (Hz)' %}
                                                         </td>
                                                         <td class="text-end">
-                                                            {{ last_data.frequency|default_if_none:'0'|floatformat:2|intcomma }}
+                                                            {{ last_data.frequency|floatformat:2|intcomma }}
                                                         </td>
                                                     </tr>
                                                     <!-- <tr>
@@ -150,7 +150,7 @@
                                         </div>
                                         <div class="row pb-4">
                                             <div class="col">
-                                                <a href="{% url 'input_download_last_data' item.input.id %}" class="btn btn-primary2">
+                                                <a href="{% url 'input_download_last_data' input.id %}" class="btn btn-primary2">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
                                                         <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
                                                         <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>

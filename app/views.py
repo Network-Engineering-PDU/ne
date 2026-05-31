@@ -28,17 +28,6 @@ def add_global_data(request, data):
     data['lang_code'] = request.LANGUAGE_CODE.lower()
 
 
-def get_pdu_local_data(endpoint):
-    try:
-        response = requests.get(f"{BASE_URL_PDU.rstrip('/')}/{endpoint}", verify=False, timeout=5)
-        if response.status_code == 200:
-            return response.json()
-    except Exception as ex:
-        print(f'PDU local data error [{endpoint}]: {ex}')
-    return None
-
-
-
 def login_user(request):
     data = {'title': _('Ingreso')}
     add_global_data(request, data)
@@ -70,29 +59,12 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('login'))
-def normalize_pdu_last_data(data):
-    if data is None:
-        return None
-    if isinstance(data, dict):
-        # normalize older payload keys
-        if 'phase' in data and 'phase_vi' not in data:
-            data['phase_vi'] = data['phase']
-        if 'phase_total' not in data:
-            data['phase_total'] = data.get('phase_total', 0)
-        return data
-    return data
 
 
-def get_pdu_input_data(line_id):
-    if not line_id or line_id < 1:
-        return None
-    return normalize_pdu_last_data(get_pdu_local_data(f'inputs/{line_id - 1}/data'))
-
-
-def get_pdu_output_data(line_id):
-    if not line_id or line_id < 1:
-        return None
-    return normalize_pdu_last_data(get_pdu_local_data(f'outputs/{line_id - 1}/data'))
+def forgot_password(request):
+    data = {'title': _('Olvidar Contraseña')}
+    add_global_data(request, data)
+    return render(request, 'forgot_password.html', data)
 
 
 @login_required()
@@ -107,31 +79,12 @@ def inputs(request):
     data = {'title': _('Entradas')}
     add_global_data(request, data)
     data['inputs'] = inputs = Input.objects.all()
-    data['data_for_charts'] = []
-    for x in inputs:
-        items = x.get_data_for_charts()
-        if not items:
-            pdu_last = get_pdu_input_data(x.line_id)
-            if pdu_last:
-                items = [{
-                    'date': int(time.time() * 1000),
-                    'voltage': pdu_last.get('voltage', 0),
-                    'current': pdu_last.get('current', 0),
-                    'active_power': pdu_last.get('active_power', 0),
-                    'power_factor': pdu_last.get('power_factor', 0),
-                }]
-        data['data_for_charts'].append({
+    data['data_for_charts'] = [
+        {
             'name': x.__str__(),
-            'items': items
-        })
-    data['inputs_with_last'] = []
-    for input_obj in inputs:
-        last_data = input_obj.get_last_data()
-        if last_data is None:
-            last_data = get_pdu_input_data(input_obj.line_id)
-        if last_data is None:
-            last_data = {}
-        data['inputs_with_last'].append({'input': input_obj, 'last_data': last_data})
+            'items': x.get_data_for_charts()
+        } for x in inputs
+    ]
     return render(request, 'inputs.html', data)
 
 
@@ -199,14 +152,6 @@ def outputs(request):
         return bad_json(message=f'Error in GET settings/license: {response.text}')
 
     data['outputs'] = Output.objects.all()
-    data['outputs_with_last'] = []
-    for output in data['outputs']:
-        last_data = output.get_last_data()
-        if last_data is None:
-            last_data = get_pdu_output_data(output.line_id)
-        if last_data is None:
-            last_data = {}
-        data['outputs_with_last'].append({'output': output, 'last_data': last_data})
     return render(request, 'outputs.html', data)
 
 
