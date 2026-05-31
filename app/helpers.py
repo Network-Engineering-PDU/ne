@@ -132,21 +132,40 @@ def export_last_data_to_csv(obj):
         header_cols.append('Socket Type')
 
     # body
-    body_cols = [
-        obj_name,
-        f'{obj.low_limit}',
-        f'{obj.high_limit}',
-        f'{last_data.voltage}',
-        f'{last_data.current}',
-        f'{last_data.apparent_power}',
-        f'{last_data.active_power}',
-        f'{last_data.reactive_power}',
-        f'{last_data.power_factor}',
-        f'{last_data.energy}',
-        f'{last_data.phase_total}',
-        f'{last_data.phase_vi}',
-        f'{last_data.frequency}'
-    ]
+    blank_value = ''
+    if last_data is None:
+        body_cols = [
+            obj_name,
+            f'{obj.low_limit}' if obj.low_limit is not None else blank_value,
+            f'{obj.high_limit}' if obj.high_limit is not None else blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+            blank_value,
+        ]
+    else:
+        body_cols = [
+            obj_name,
+            f'{obj.low_limit}',
+            f'{obj.high_limit}',
+            f'{last_data.voltage}',
+            f'{last_data.current}',
+            f'{last_data.apparent_power}',
+            f'{last_data.active_power}',
+            f'{last_data.reactive_power}',
+            f'{last_data.power_factor}',
+            f'{last_data.energy}',
+            f'{last_data.phase_total}',
+            f'{last_data.phase_vi}',
+            f'{last_data.frequency}'
+        ]
+
     if isinstance(obj, Output):
         body_cols.append(obj.socket_type)
 
