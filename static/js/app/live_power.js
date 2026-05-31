@@ -8,7 +8,14 @@ function updateLiveReadings() {
         dataType: 'json',
         success: function(resp) {
             if (!resp || resp.result !== 'ok') return;
-            const list = resp.data && resp.data.data ? resp.data.data : [];
+            // Response shape from ok_json is {"data": [...], "result": "ok"}
+            // Support both {data: [...] } and {data: {data: [...]}} just in case
+            let list = [];
+            if (Array.isArray(resp.data)) {
+                list = resp.data;
+            } else if (resp.data && Array.isArray(resp.data.data)) {
+                list = resp.data.data;
+            }
             list.forEach(function(item) {
                 const id = item.line_id;
                 // Update fields if elements exist

@@ -56,39 +56,39 @@
                                                     <tbody>
                                                         <tr>
                                                             <td class="bold">{% translate 'Voltaje (V)' %}</td>
-                                                            <td class="text-end w-20"><span id="live_voltage_{{ input.id }}">--</span></td>
+                                                            <td class="text-end w-20"><span id="live_voltage_{{ input.id }}">{% if last_data %}{{ last_data.voltage|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Corriente (A)' %}</td>
-                                                            <td class="text-end"><span id="live_current_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_current_{{ input.id }}">{% if last_data %}{{ last_data.current|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Potencia Aparente (VA)' %}</td>
-                                                            <td class="text-end"><span id="live_apparent_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_apparent_{{ input.id }}">{% if last_data %}{{ last_data.apparent_power|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Potencia Activa (W)' %}</td>
-                                                            <td class="text-end"><span id="live_active_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_active_{{ input.id }}">{% if last_data %}{{ last_data.active_power|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Potencia Reactiva (VAr)' %}</td>
-                                                            <td class="text-end"><span id="live_reactive_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_reactive_{{ input.id }}">{% if last_data %}{{ last_data.reactive_power|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Factor Potencia' %}</td>
-                                                            <td class="text-end"><span id="live_pf_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_pf_{{ input.id }}">{% if last_data %}{{ last_data.power_factor|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Energia' %}</td>
-                                                            <td class="text-end"><span id="live_energy_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_energy_{{ input.id }}">{% if last_data %}{{ last_data.energy|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Fase V-I (º)' %}</td>
-                                                            <td class="text-end"><span id="live_phasevi_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_phasevi_{{ input.id }}">{% if last_data %}{{ last_data.phase_vi|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                         <tr>
                                                             <td class="bold">{% translate 'Frecuencia (Hz)' %}</td>
-                                                            <td class="text-end"><span id="live_freq_{{ input.id }}">--</span></td>
+                                                            <td class="text-end"><span id="live_freq_{{ input.id }}">{% if last_data %}{{ last_data.frequency|floatformat:2|intcomma }}{% else %}--{% endif %}</span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
