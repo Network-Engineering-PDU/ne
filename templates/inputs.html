@@ -9,10 +9,10 @@
     <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
     <script>
-        const INPUTS_COUNT = {{ inputs.count }};
+        const INPUTS_COUNT = 6;
         const LIVE_DATA_URL = "{% url 'get_inputs_live_data' %}";
     </script>
-    <script src="{% static 'js/app/live_inputs.js' %}?v=2"></script>
+    <script src="{% static 'js/app/live_inputs.js' %}?v=3"></script>
 
 {% endblock %}
 
