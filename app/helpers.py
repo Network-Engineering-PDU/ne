@@ -96,23 +96,18 @@ def ok_json(data=None, simple=None):
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-def export_last_data_to_csv(obj):
+def export_last_data_to_csv(obj, live_data=None):
     from app.models import Output
 
-    # get last data
     last_data = obj.get_last_data()
-
-    # obj name
     obj_name = obj.__str__()
 
-    # Create the HttpResponse object with the appropriate CSV header.
     filename = f'{obj_name}_{datetime.datetime.now().strftime("%d%m%Y%H%M%S")}.csv'
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = f'attachment; filename={filename}'
 
     writer = csv.writer(response)
 
-    # header
     header_cols = [
         'Name',
         'Low Limit (A)',
@@ -131,43 +126,61 @@ def export_last_data_to_csv(obj):
     if isinstance(obj, Output):
         header_cols.append('Socket Type')
 
-    # body
     blank_value = ''
-    if last_data is None:
+
+    def _fmt(val):
+        return blank_value if val is None else f'{val}'
+
+    def _has_measurements(data):
+        if not data:
+            return False
+        keys = (
+            'voltage', 'current', 'apparent_power', 'active_power',
+            'reactive_power', 'power_factor', 'energy', 'phase_vi', 'frequency',
+        )
+        return any(data.get(k) is not None for k in keys)
+
+    if _has_measurements(live_data):
         body_cols = [
             obj_name,
-            f'{obj.low_limit}' if obj.low_limit is not None else blank_value,
-            f'{obj.high_limit}' if obj.high_limit is not None else blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
-            blank_value,
+            _fmt(obj.low_limit),
+            _fmt(obj.high_limit),
+            _fmt(live_data.get('voltage')),
+            _fmt(live_data.get('current')),
+            _fmt(live_data.get('apparent_power')),
+            _fmt(live_data.get('active_power')),
+            _fmt(live_data.get('reactive_power')),
+            _fmt(live_data.get('power_factor')),
+            _fmt(live_data.get('energy')),
+            _fmt(live_data.get('phase_total')),
+            _fmt(live_data.get('phase_vi')),
+            _fmt(live_data.get('frequency')),
+        ]
+    elif last_data is not None:
+        body_cols = [
+            obj_name,
+            _fmt(obj.low_limit),
+            _fmt(obj.high_limit),
+            _fmt(last_data.voltage),
+            _fmt(last_data.current),
+            _fmt(last_data.apparent_power),
+            _fmt(last_data.active_power),
+            _fmt(last_data.reactive_power),
+            _fmt(last_data.power_factor),
+            _fmt(last_data.energy),
+            _fmt(last_data.phase_total),
+            _fmt(last_data.phase_vi),
+            _fmt(last_data.frequency),
         ]
     else:
         body_cols = [
             obj_name,
-            f'{obj.low_limit}',
-            f'{obj.high_limit}',
-            f'{last_data.voltage}',
-            f'{last_data.current}',
-            f'{last_data.apparent_power}',
-            f'{last_data.active_power}',
-            f'{last_data.reactive_power}',
-            f'{last_data.power_factor}',
-            f'{last_data.energy}',
-            f'{last_data.phase_total}',
-            f'{last_data.phase_vi}',
-            f'{last_data.frequency}'
-        ]
+            _fmt(obj.low_limit),
+            _fmt(obj.high_limit),
+        ] + [blank_value] * 10
 
     if isinstance(obj, Output):
-        body_cols.append(obj.socket_type)
+        body_cols.append(obj.socket_type or blank_value)
 
     writer.writerow(header_cols)
     writer.writerow(body_cols)

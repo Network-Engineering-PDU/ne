@@ -278,9 +278,9 @@ def update_limits(request):
 def input_download_last_data(request, input_id):
     data = {'title': _('Entrada - Descargar Ultimos Datos')}
     add_global_data(request, data)
-    input = Input.objects.get(id=input_id)
-    response = export_last_data_to_csv(input)
-    return response
+    input_obj = Input.objects.get(id=input_id)
+    live_data = build_input_live_record(input_obj)
+    return export_last_data_to_csv(input_obj, live_data=live_data)
 
 
 @login_required()

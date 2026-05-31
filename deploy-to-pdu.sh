@@ -15,6 +15,7 @@ echo "Deploying to:   $PDU"
 echo ""
 
 echo ">> Copying files to /tmp on PDU..."
+scp "$NE/app/helpers.py"            "$PDU:/tmp/helpers.py"
 scp "$NE/app/views.py"              "$PDU:/tmp/views.py"
 scp "$NE/ne/urls.py"                "$PDU:/tmp/urls.py"
 scp "$NE/templates/inputs.html"     "$PDU:/tmp/inputs.html"
@@ -25,6 +26,7 @@ echo ">> Files copied to /tmp. Now run ON THE PDU as root:"
 echo ""
 cat <<'EOF'
 su root
+cp /tmp/helpers.py      /opt/ne/app/helpers.py
 cp /tmp/views.py        /opt/ne/app/views.py
 cp /tmp/urls.py         /opt/ne/ne/urls.py
 cp /tmp/inputs.html     /opt/ne/templates/inputs.html
