@@ -131,6 +131,7 @@ def _advert_cb(device: BLEDevice, adv: AdvertisementData) -> None:
             kind = 'BeaconX'
             parsed = _parse_beaconx(svc)
 
+    # Only process MST01 and BeaconX Pro sensors; ignore all other devices
     if not kind:
         return
 
@@ -315,6 +316,8 @@ def get_scan_status() -> dict:
 def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> dict:
     from app.models import Sensor
 
+    print(f"[DEBUG] confirm_sensors called: macs={macs}, add_all={add_all}")
+
     with _lock:
         if add_all:
             targets = list(_discovered.keys())
@@ -324,28 +327,38 @@ def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> 
             targets = []
         discovered = dict(_discovered)
 
+    print(f"[DEBUG] targets to confirm: {targets}")
     added = []
     for mac in targets:
         info = discovered.get(mac)
         if not info:
+            print(f"[DEBUG] MAC {mac} not in discovered, skipping")
             continue
         kind = info.get('kind', 'BLE')
         name = info.get('name') or kind
+        print(f"[DEBUG] Creating/getting sensor {mac} ({kind})")
         sensor, created = Sensor.objects.get_or_create(mac_address=mac)
         if created or not sensor.name:
             sensor.name = name
         sensor.is_new = False
         sensor.save()
+        print(f"[DEBUG] Sensor saved: {mac}")
         with _lock:
             _monitored[mac] = kind
             _live_cache[mac] = dict(info)
         added.append(format_mac_display(mac))
 
+    print(f"[DEBUG] Added sensors: {added}")
     if added:
+        print(f"[DEBUG] Ensuring monitor thread...")
         _ensure_monitor_thread()
+        print(f"[DEBUG] Pushing monitored readings...")
         _push_monitored_readings()
+        print(f"[DEBUG] Done pushing")
 
-    return {'ok': True, 'added': added, 'count': len(added)}
+    result = {'ok': True, 'added': added, 'count': len(added)}
+    print(f"[DEBUG] confirm_sensors returning: {result}")
+    return result
 
 
 def bleak_installed() -> bool:

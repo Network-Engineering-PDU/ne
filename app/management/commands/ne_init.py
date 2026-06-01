@@ -34,57 +34,34 @@ class Command(BaseCommand):
             print(f'>>> SuperUser {superuser} has been {"created" if created else "updated"}!')
 
             # Get Inputs and Outputs to populate tables
+            def fetch_pdu_api(path):
+                try:
+                    response = requests.get(f'{BASE_URL_PDU}/{path}', verify=False, timeout=5)
+                    if response.status_code == 200:
+                        return response.json()
+                    print(f'>>> PDU API {path} returned {response.status_code}')
+                except requests.exceptions.RequestException as ex:
+                    print(f'>>> PDU API {path} request failed: {ex}')
+                return None
+
             print('>>> Inputs PDU API - STARTED')
-            response = requests.get(f'{BASE_URL_PDU}/inputs/', verify=False)
-            if response.status_code == 200:
-                """
-                inputs response example:
-                    [
-                        {
-                            "line_id": 1,
-                            “low_limit”: 0.5,
-                            “high_limit”: 12.5
-                        },
-                        {
-                            "line_id": 2,
-                            “low_limit”: 0.5,
-                            “high_limit”: 12.5
-                        },
-                    ]
-                """
-                for elem in response.json():
+            inputs_data = fetch_pdu_api('inputs/')
+            if inputs_data is not None:
+                for elem in inputs_data:
                     input_obj, created = Input.objects.get_or_create(line_id=elem['line_id'])
                     if created:
                         input_obj.low_limit = float(elem['low_limit'])
                         input_obj.high_limit = float(elem['high_limit'])
                         input_obj.save()
                     print(f'>>> {input_obj.__str__()} {"created" if created else "updated"}!')
-
-                print(f'>>> Inputs PDU API - COMPLETED ({len(response.json())} inputs)')
+                print(f'>>> Inputs PDU API - COMPLETED ({len(inputs_data)} inputs)')
+            else:
+                print('>>> Inputs PDU API - SKIPPED (unavailable)')
 
             print('>>> Outputs PDU API - STARTED')
-            response = requests.get(f'{BASE_URL_PDU}/outputs/', verify=False)
-            if response.status_code == 200:
-                """
-                inputs response example:
-                    [
-                        {
-                            "line_id": 1,
-                            "name": "Output 1",
-                            "socket_type": "IEC 320 C13",
-                            "low_limit": 0.0,
-                            "high_limit": 3.0,
-                        },
-                        {
-                            "line_id": 2,
-                            "name": "Output 2",
-                            "socket_type": "IEC 320 C13",
-                            "low_limit": 0.0,
-                            "high_limit": 3.0,
-                        },
-                    ]
-                """
-                for elem in response.json():
+            outputs_data = fetch_pdu_api('outputs/')
+            if outputs_data is not None:
+                for elem in outputs_data:
                     output_obj, created = Output.objects.get_or_create(line_id=elem['line_id'])
                     if created:
                         output_obj.name = elem['name']
@@ -93,11 +70,12 @@ class Command(BaseCommand):
                         output_obj.high_limit = float(elem['high_limit'])
                         output_obj.save()
                     print(f'>>> {output_obj.__str__()} {"created" if created else "updated"}!')
-
-                print(f'>>> Outputs PDU API - COMPLETED ({len(response.json())} inputs)')
+                print(f'>>> Outputs PDU API - COMPLETED ({len(outputs_data)} outputs)')
+            else:
+                print('>>> Outputs PDU API - SKIPPED (unavailable)')
 
             # Run Server
-            call_command('runserver', BASE_URL_DJANGO.split('//')[1])
+            call_command('runserver', BASE_URL_DJANGO.split('//')[1], use_reloader=False)
 
         except Exception as ex:
             print(f'Error {ex.__str__()}')
