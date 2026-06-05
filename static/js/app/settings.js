@@ -12,7 +12,6 @@ let inputSettingsSnmpNmsSystemLocation = $("#inputSettingsSnmpNmsSystemLocation"
 // PDU Info
 let spanSettingsPduInfoOutletCount = $("#spanSettingsPduInfoOutletCount");
 let spanSettingsPduInfoRatedCurrent = $("#spanSettingsPduInfoRatedCurrent");
-let inputSettingsPduInfoRatedCurrent = $("#inputSettingsPduInfoRatedCurrent");
 let spanSettingsPduInfoController = $("#spanSettingsPduInfoController");
 let spanSettingsPduInfoType = $("#spanSettingsPduInfoType");
 // System Reboot
@@ -252,7 +251,6 @@ let SETTINGS = {
                     setTimeout(function() {
                         spanSettingsPduInfoOutletCount.html(response.outlet_count);
                         spanSettingsPduInfoRatedCurrent.html(response.rated_current + ' A');
-                        inputSettingsPduInfoRatedCurrent.val(response.rated_current);
                         spanSettingsPduInfoController.html(response.controller);
                         spanSettingsPduInfoType.html(response.type);
                     }, 2000);
@@ -266,47 +264,25 @@ let SETTINGS = {
         });
     },
 
-    update_pdu_info: function (elem) {
-        let originalText = elem.html();
-        let ratedCurrent = parseFloat(inputSettingsPduInfoRatedCurrent.val());
-        if (isNaN(ratedCurrent) || ratedCurrent <= 0) {
-            alert('Please enter a valid rated current value');
-            return;
-        }
-
-        let payload = {
-            'rated_current': ratedCurrent
-        };
-
-        $.ajax({
-            url: SETTINGS.url,
-            type: 'POST',
-            data: {
-                'endpoint': 'settings/pdu-info',
-                'method': 'PUT',
-                'payload': JSON.stringify(payload)
-            },
-            dataType: 'json',
-            beforeSend: function () {
-                elem.attr('disabled', true).html(SPINNER_SM_DARK);
-            },
-            success: function(response) {
-                if (response.result === 'ok'){
-                    setTimeout(function() {
-                        elem.attr('disabled', false).html(originalText);
-                        SETTINGS.get_pdu_info();
-                    }, 1000);
-                } else {
-                    elem.attr('disabled', false).html(originalText);
-                    alert('Warning: ' + response.message);
-                }
-            },
-            error: function (response) {
-                elem.attr('disabled', false).html(originalText);
-                alert('Error: ' + response.message);
-            }
-        });
+    // Polling to auto-refresh PDU info
+    pdu_poll_interval_ms: 5000,
+    pdu_poll_id: null,
+    start_pdu_polling: function () {
+        if (this.pdu_poll_id !== null) return;
+        // Initial immediate fetch
+        this.get_pdu_info();
+        this.pdu_poll_id = setInterval(() => {
+            this.get_pdu_info();
+        }, this.pdu_poll_interval_ms);
     },
+    stop_pdu_polling: function () {
+        if (this.pdu_poll_id !== null) {
+            clearInterval(this.pdu_poll_id);
+            this.pdu_poll_id = null;
+        }
+    },
+
+    
 
     // Tools System Reboot or Factory Reset
     system_reboot_or_factory_reset: function (elem) {
@@ -382,5 +358,14 @@ $(function() {
     SETTINGS.get_snmp_nms();
     // PDU Info
     SETTINGS.get_pdu_info();
+    // Start polling to auto-refresh PDU info and pause when page hidden
+    SETTINGS.start_pdu_polling();
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            SETTINGS.stop_pdu_polling();
+        } else {
+            SETTINGS.start_pdu_polling();
+        }
+    });
 
 });
