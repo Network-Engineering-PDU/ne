@@ -265,6 +265,16 @@
                                         <span id="spanSettingsPduInfoRatedCurrent"></span>
                                     </div>
                                 </div>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <input id="inputSettingsPduInfoRatedCurrent" class="form-control" type="number" min="1" placeholder="{% translate 'Nueva corriente nominal' %}">
+                                    </div>
+                                    <div class="col">
+                                        <a onclick="SETTINGS.update_pdu_info($(this));" class="btn btn-primary">
+                                            {% translate 'Guardar Cambios' %}
+                                        </a>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col">
                                         <p class="bold">
