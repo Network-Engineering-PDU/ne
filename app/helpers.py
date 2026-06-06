@@ -83,7 +83,7 @@ def bad_json(message=None, error=None, extradata=None):
             data.update({'message': f"{_('Error de Sistema')}"})
     if extradata:
         data.update(extradata)
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    return HttpResponse(json.dumps(data, default=str), content_type='application/json')
 
 
 def ok_json(data=None, simple=None):
@@ -93,7 +93,7 @@ def ok_json(data=None, simple=None):
                 data.update({'result': 'ok'})
     else:
         data = {'result': 'ok'}
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    return HttpResponse(json.dumps(data, default=str), content_type='application/json')
 
 
 def export_last_data_to_csv(obj, live_data=None):
