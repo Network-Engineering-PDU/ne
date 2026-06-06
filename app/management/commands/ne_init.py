@@ -2,6 +2,7 @@ import requests
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
+from urllib.parse import urlparse
 
 from app.models import Input, Output
 from ne.settings import (
@@ -74,8 +75,11 @@ class Command(BaseCommand):
             else:
                 print('>>> Outputs PDU API - SKIPPED (unavailable)')
 
-            # Run Server
-            call_command('runserver', BASE_URL_DJANGO.split('//')[1], use_reloader=False)
+            # Run Server bound to all interfaces so the web UI stays reachable
+            # when the device IP changes at runtime.
+            parsed = urlparse(BASE_URL_DJANGO)
+            port = parsed.port or 8000
+            call_command('runserver', f'0.0.0.0:{port}', use_reloader=False)
 
         except Exception as ex:
             print(f'Error {ex.__str__()}')
