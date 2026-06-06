@@ -326,14 +326,29 @@ let SETTINGS = {
             success: function(response) {
                 elem.attr('disabled', false).html(originalText);
                 if (response.result === 'ok') {
+                    if (response.message) {
+                        alert(response.message);
+                    }
                     SETTINGS.get_ota_status();
                 } else {
                     alert(response.message || 'OTA check failed');
                 }
             },
-            error: function (response) {
+            error: function (xhr, textStatus, errorThrown) {
                 elem.attr('disabled', false).html(originalText);
-                alert(response.message || 'OTA check failed');
+                let message = 'OTA check failed';
+                try {
+                    let json = JSON.parse(xhr.responseText || '{}');
+                    if (json.message) {
+                        message = json.message;
+                    }
+                } catch (e) {
+                    if (errorThrown) {
+                        message = errorThrown;
+                    }
+                }
+                alert(message);
+                SETTINGS.get_ota_status();
             }
         });
     },
