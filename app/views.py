@@ -426,7 +426,8 @@ def settings(request):
                                 'message': _("Comprobación OTA completada"),
                                 'installed_version': resp.get('installed_version', ''),
                                 'available_version': resp.get('available_version', ''),
-                                'ota_status': resp.get('status', 'idle'),
+                                'last_check_time': resp.get('last_check_time', ''),
+                                'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
                                 'last_error': resp.get('last_error', ''),
                             })
                         return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})

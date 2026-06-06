@@ -326,6 +326,20 @@ let SETTINGS = {
             success: function(response) {
                 elem.attr('disabled', false).html(originalText);
                 if (response.result === 'ok') {
+                    if (response.installed_version !== undefined) {
+                        spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
+                    }
+                    if (response.available_version !== undefined) {
+                        spanSettingsOtaAvailableVersion.html(response.available_version || '-');
+                    }
+                    if (response.last_check_time !== undefined) {
+                        spanSettingsOtaLastCheck.html(response.last_check_time || '-');
+                    }
+                    let status = response.ota_status || response.status || 'idle';
+                    if (response.last_error) {
+                        status += ' (' + response.last_error + ')';
+                    }
+                    spanSettingsOtaStatus.html(status);
                     if (response.message) {
                         alert(response.message);
                     }
