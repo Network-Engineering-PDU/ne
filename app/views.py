@@ -367,6 +367,7 @@ def settings(request):
             'settings/start-scan', 'settings/stop-scan',
             'settings/system-reboot', 'settings/factory-reset',
             'settings/swupdate', 'settings/ca-cert', 'settings/ca-key',
+            'settings/ota-check-now',
         ]:
             # POST (for all above endpoints)
             try:
@@ -398,6 +399,12 @@ def settings(request):
                                 else:
                                     message = _("Update uploaded. Device update will start shortly.")
                                 return ok_json(data={'message': f"{message}"})
+                            if response.status_code == 409:
+                                try:
+                                    err = response.json().get('error', response.text)
+                                except Exception:
+                                    err = response.text
+                                return bad_json(message=_("Update blocked: %(reason)s") % {'reason': err})
 
                             return bad_json(message=f'Error in POST {endpoint}: {response.text}')
 
@@ -413,13 +420,23 @@ def settings(request):
                 else:
                     response = requests.post(f'{BASE_URL_PDU}/{endpoint}', verify=False)
                     if response.status_code == 200:
+                        if endpoint == 'settings/ota-check-now':
+                            resp = response.json()
+                            return ok_json(data={
+                                'message': _("Comprobación OTA completada"),
+                                'installed_version': resp.get('installed_version', ''),
+                                'available_version': resp.get('available_version', ''),
+                                'ota_status': resp.get('status', 'idle'),
+                                'last_error': resp.get('last_error', ''),
+                            })
                         return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})
 
                 return bad_json(message=f'Error in POST {endpoint}: {response.text}')
             except Exception as ex:
                 return bad_json(message=f'Error in POST {endpoint}: {ex.__str__()}')
 
-        elif endpoint in ['settings/system-info', 'settings/pdu-info', 'settings/snmp-nms']:
+        elif endpoint in ['settings/system-info', 'settings/pdu-info', 'settings/snmp-nms',
+                          'settings/update-status']:
             # GET & PUT only for settings/snmp-nms
             method = request.POST['method']
             try:
@@ -452,6 +469,23 @@ def settings(request):
                                 'system_name': resp['system_name'],
                                 'system_contact': resp['system_contact'],
                                 'system_location': resp['system_location'],
+                            })
+                        elif endpoint == 'settings/update-status':
+                            return ok_json(data={
+                                'message': f"{_('Estado OTA obtenido')}",
+                                'installed_version': resp.get('installed_version', ''),
+                                'available_version': resp.get('available_version', ''),
+                                'last_check_time': resp.get('last_check_time', ''),
+                                'last_update_time': resp.get('last_update_time', ''),
+                                'ota_status': resp.get('ota_status', 'idle'),
+                                'last_error': resp.get('last_error', ''),
+                                'download_progress': resp.get('download_progress', 0),
+                                'ota_enabled': resp.get('ota_enabled', False),
+                                'check_interval_hours': resp.get('check_interval_hours', 24),
+                                'active_update_source': resp.get('active_update_source', ''),
+                                'update_phase': resp.get('update_phase', 'idle'),
+                                'update_busy': resp.get('update_busy', False),
+                                'pending_source': resp.get('pending_source', ''),
                             })
 
                     return bad_json(message=f'Error in GET {endpoint}: {response.text}')

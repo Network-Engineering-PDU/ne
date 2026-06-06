@@ -393,6 +393,58 @@
 {#                    </div>#}
 {#                    <!-- END PDU PROFILES -->#}
 
+                    <!-- OTA STATUS -->
+                    <div class="row">
+                        <div class="col pt-4">
+                            <div class="borderGreen p-4">
+                                <div class="iconAbsolute"><span class="iconSystemInfo"></span></div>
+                                <h3 class="textGreen ml-50 little2">
+                                    {% translate 'Actualización Remota (OTA)' %}
+                                </h3>
+                                <div class="row pt-3">
+                                    <div class="col">
+                                        <p class="bold">{% translate 'Versión instalada' %}</p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsOtaInstalledVersion"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">{% translate 'Versión disponible' %}</p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsOtaAvailableVersion"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">{% translate 'Última comprobación' %}</p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsOtaLastCheck"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="bold">{% translate 'Estado' %}</p>
+                                    </div>
+                                    <div class="col">
+                                        <span id="spanSettingsOtaStatus"></span>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col">
+                                        <a onclick="SETTINGS.check_ota_now($(this));" class="btn btn-primary">
+                                            {% translate 'Comprobar ahora' %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END OTA STATUS -->
+
                     <!-- SOFTWARE UPDATE -->
                     <div class="row">
                         <div class="col pt-4">
