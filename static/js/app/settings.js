@@ -281,7 +281,8 @@ let SETTINGS = {
             type: 'POST',
             data: {
                 'endpoint': 'settings/update-status',
-                'method': 'GET'
+                'method': 'GET',
+                'refresh': '1',
             },
             dataType: 'json',
             beforeSend: function () {
@@ -295,7 +296,7 @@ let SETTINGS = {
                     spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
                     spanSettingsOtaAvailableVersion.html(response.available_version || '-');
                     spanSettingsOtaLastCheck.html(response.last_check_time || '-');
-                    let status = response.ota_status || 'idle';
+                    let status = response.ota_status || response.status || 'idle';
                     if (response.last_error) {
                         status += ' (' + response.last_error + ')';
                     }

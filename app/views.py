@@ -423,14 +423,14 @@ def settings(request):
                         if endpoint == 'settings/ota-check-now':
                             resp = response.json()
                             return ok_json(data={
-                                'message': _("Comprobación OTA completada"),
+                                'message': "OTA check completed",
                                 'installed_version': resp.get('installed_version', ''),
                                 'available_version': resp.get('available_version', ''),
                                 'last_check_time': resp.get('last_check_time', ''),
                                 'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
                                 'last_error': resp.get('last_error', ''),
                             })
-                        return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})
+                        return ok_json(data={'message': "Changes saved successfully"})
 
                 return bad_json(message=f'Error in POST {endpoint}: {response.text}')
             except Exception as ex:
@@ -443,7 +443,11 @@ def settings(request):
             try:
                 if method == 'GET':
                     # dynamic GET request
-                    response = requests.get(f'{BASE_URL_PDU}/{endpoint}', verify=False)
+                    params = None
+                    if endpoint == 'settings/update-status' and request.POST.get('refresh') in ('1', 'true', 'True'):
+                        params = {'refresh': 'true'}
+                    response = requests.get(
+                        f'{BASE_URL_PDU}/{endpoint}', params=params, verify=False)
                     if response.status_code == 200:
                         resp = response.json()
                         # settings/system-info
@@ -478,7 +482,8 @@ def settings(request):
                                 'available_version': resp.get('available_version', ''),
                                 'last_check_time': resp.get('last_check_time', ''),
                                 'last_update_time': resp.get('last_update_time', ''),
-                                'ota_status': resp.get('ota_status', 'idle'),
+                                'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
+                                'status': resp.get('ota_status', resp.get('status', 'idle')),
                                 'last_error': resp.get('last_error', ''),
                                 'download_progress': resp.get('download_progress', 0),
                                 'ota_enabled': resp.get('ota_enabled', False),
