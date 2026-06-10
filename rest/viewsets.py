@@ -204,7 +204,7 @@ class SensorsNewViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
 
 class SensorsDataViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
-    queryset = Sensor.objects.all()
+    queryset = Sensor.objects.all().order_by('id')
     serializer_class = SensorSerializer
     """
     Example:

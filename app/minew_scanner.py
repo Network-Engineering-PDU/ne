@@ -348,6 +348,8 @@ def get_scan_status() -> dict:
 
 def get_live_readings(mac: Optional[str] = None) -> dict:
     _ensure_monitored_loaded()
+    if _monitored:
+        _ensure_ble_thread()
     target = normalize_mac(mac) if mac else None
     with _lock:
         devices = []
