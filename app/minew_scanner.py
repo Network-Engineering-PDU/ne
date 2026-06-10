@@ -310,11 +310,11 @@ def _ensure_monitored_loaded() -> None:
 
 
 def start_scan() -> dict:
+    global _scanning
     if not BLEAK_AVAILABLE:
         return {'ok': False, 'detail': 'bleak is not installed on this host'}
     _ensure_monitored_loaded()
     _ensure_ble_thread()
-    global _scanning
     with _lock:
         _discovered.clear()
         _scanning = True
@@ -381,10 +381,10 @@ def get_live_readings(mac: Optional[str] = None) -> dict:
 
 
 def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> dict:
+    global _scanning
     from app.models import Sensor
 
     _ensure_monitored_loaded()
-    global _scanning
     with _lock:
         if add_all:
             targets = list(_discovered.keys())
