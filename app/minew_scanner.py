@@ -229,6 +229,7 @@ def _push_monitored_readings() -> None:
 
 
 async def _run_ble_loop() -> None:
+    global _scanning
     scanner = BleakScanner(_advert_cb)
     await scanner.start()
     try:
@@ -313,6 +314,7 @@ def start_scan() -> dict:
         return {'ok': False, 'detail': 'bleak is not installed on this host'}
     _ensure_monitored_loaded()
     _ensure_ble_thread()
+    global _scanning
     with _lock:
         _discovered.clear()
         _scanning = True
@@ -320,6 +322,7 @@ def start_scan() -> dict:
 
 
 def stop_scan() -> dict:
+    global _scanning
     with _lock:
         _scanning = False
     return {'ok': True, 'detail': 'scan stopped'}
@@ -381,6 +384,7 @@ def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> 
     from app.models import Sensor
 
     _ensure_monitored_loaded()
+    global _scanning
     with _lock:
         if add_all:
             targets = list(_discovered.keys())
