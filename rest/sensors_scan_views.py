@@ -24,6 +24,12 @@ class SensorsScanViewSet(viewsets.ViewSet):
         data = minew_scanner.get_scan_status()
         return Response(data)
 
+    @action(detail=False, methods=['get'], url_path='live')
+    def live(self, request):
+        mac = request.query_params.get('mac')
+        data = minew_scanner.get_live_readings(mac=mac)
+        return Response(data)
+
     @action(detail=False, methods=['post'], url_path='confirm')
     def confirm(self, request):
         add_all = bool(request.data.get('all'))

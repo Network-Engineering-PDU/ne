@@ -1,12 +1,11 @@
 """
-Minew MST01 / BeaconX Pro BLE discovery and monitoring for the NE sensors screen.
+Minew MST01 / BeaconX Pro BLE discovery and live monitoring for the sensors screen.
 
-Used by REST /api/sensors-scan/* and pushes live data for confirmed sensors.
+Used by REST /api/sensors-scan/* and pushes readings for confirmed sensors.
 """
 from __future__ import annotations
 
 import asyncio
-import re
 import threading
 import time
 from datetime import datetime
@@ -30,19 +29,29 @@ FRAME_MARKER = 0xCA
 CA05_FRAME = 0x05
 CA00_FRAME = 0x00
 MST01_NAME_BYTES = b'MST01'
+N_INDOOR = 2.7
+N_OPEN = 2.0
 
 SCAN_DURATION_SEC = 60
-PUSH_INTERVAL_SEC = 10
+PUSH_INTERVAL_SEC = 3
+MIN_SCAN_POLLS_BEFORE_SELECT = 3
 
 _lock = threading.Lock()
 _scanning = False
 _discovered: Dict[str, dict] = {}
 _monitored: Dict[str, str] = {}  # normalized mac -> kind
 _live_cache: Dict[str, dict] = {}
-_monitor_stop = threading.Event()
-_scan_stop = threading.Event()
-_scan_thread: Optional[threading.Thread] = None
-_monitor_thread: Optional[threading.Thread] = None
+_ble_stop = threading.Event()
+_ble_thread: Optional[threading.Thread] = None
+_monitored_loaded = False
+
+
+def _distance(rssi: int, tx_1m: int = -65) -> dict:
+    diff = tx_1m - rssi
+    return {
+        'open_m': round(10 ** (diff / (10 * N_OPEN)), 2),
+        'indoor_m': round(10 ** (diff / (10 * N_INDOOR)), 2),
+    }
 
 
 def _parse_ca05(payload: bytes) -> Optional[dict]:
@@ -77,23 +86,37 @@ def _parse_mst01(mfr: bytes) -> Optional[dict]:
     return None
 
 
-def _parse_beaconx(svc: bytes) -> dict:
+def _parse_beaconx(svc: bytes, rssi: int) -> dict:
     result = {'device_name': 'BeaconX Pro'}
     if len(svc) < 2:
         return result
+
     frame_type = svc[0]
-    if frame_type == 0x60 and len(svc) >= 6:
+    tx_power = svc[1] - 256
+    result['tx_power_dbm'] = tx_power
+    result['distance'] = _distance(rssi, tx_power)
+
+    if frame_type == 0x40 and len(svc) >= 13:
+        result['beacon_frame'] = 'iBeacon'
+        result['major'] = int.from_bytes(svc[2:4], 'big')
+        result['minor'] = int.from_bytes(svc[4:6], 'big')
+    elif frame_type == 0x60 and len(svc) >= 6:
+        result['beacon_frame'] = 'TH'
         temp_raw = int.from_bytes(svc[2:4], 'little', signed=True)
         hum_raw = int.from_bytes(svc[4:6], 'little', signed=True)
         result['temperature_c'] = round(temp_raw / 100, 2)
         result['humidity_pct'] = round(hum_raw / 100, 1)
     elif frame_type == 0x70 and len(svc) >= 8:
+        result['beacon_frame'] = 'ENV'
         temp_raw = int.from_bytes(svc[2:4], 'little', signed=True)
         hum_raw = int.from_bytes(svc[4:6], 'little', signed=True)
         press_raw = int.from_bytes(svc[6:8], 'little', signed=False)
         result['temperature_c'] = round(temp_raw / 100, 2)
         result['humidity_pct'] = round(hum_raw / 100, 1)
         result['pressure_hpa'] = round(press_raw / 10, 1)
+    else:
+        result['beacon_frame'] = f'0x{frame_type:02x}'
+
     return result
 
 
@@ -129,9 +152,8 @@ def _advert_cb(device: BLEDevice, adv: AdvertisementData) -> None:
         svc = _is_beaconx(adv)
         if svc:
             kind = 'BeaconX'
-            parsed = _parse_beaconx(svc)
+            parsed = _parse_beaconx(svc, adv.rssi)
 
-    # Only process MST01 and BeaconX Pro sensors; ignore all other devices
     if not kind:
         return
 
@@ -142,18 +164,22 @@ def _advert_cb(device: BLEDevice, adv: AdvertisementData) -> None:
         'kind': kind,
         'rssi': adv.rssi,
         'name': name,
+        'last_seen': datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
     }
     if parsed:
         entry.update(parsed)
 
     with _lock:
-        prev = _discovered.get(mac, {})
-        prev.update(entry)
-        _discovered[mac] = prev
+        if _scanning:
+            prev = _discovered.get(mac, {})
+            prev.update(entry)
+            _discovered[mac] = prev
+
         if mac in _monitored:
             cache = _live_cache.setdefault(mac, {'kind': kind})
             cache.update(entry)
             cache['rssi'] = adv.rssi
+            cache['last_seen'] = entry['last_seen']
             if parsed:
                 cache.update(parsed)
 
@@ -202,100 +228,105 @@ def _push_monitored_readings() -> None:
         save_sensor_readings(readings)
 
 
-async def _run_scan_loop() -> None:
-    global _scanning
-    if not BLEAK_AVAILABLE:
-        return
-    scanner = BleakScanner(_advert_cb)
-    await scanner.start()
-    try:
-        for _ in range(SCAN_DURATION_SEC):
-            if _scan_stop.is_set():
-                break
-            await asyncio.sleep(1)
-    finally:
-        await scanner.stop()
-        with _lock:
-            _scanning = False
-
-
-def _scan_worker() -> None:
-    try:
-        asyncio.run(_run_scan_loop())
-    except Exception as ex:
-        print(f'minew scan error: {ex}')
-        with _lock:
-            global _scanning
-            _scanning = False
-
-
-async def _run_monitor_loop() -> None:
-    if not BLEAK_AVAILABLE:
-        return
+async def _run_ble_loop() -> None:
     scanner = BleakScanner(_advert_cb)
     await scanner.start()
     try:
         ticks = 0
-        while not _monitor_stop.is_set():
+        scan_ticks = 0
+        while not _ble_stop.is_set():
             with _lock:
-                if _scanning or not _monitored:
-                    await asyncio.sleep(0.5)
-                    continue
-            ticks += 1
-            if ticks >= PUSH_INTERVAL_SEC:
-                _push_monitored_readings()
-                ticks = 0
+                scanning = _scanning
+                has_monitored = bool(_monitored)
+
+            if scanning:
+                scan_ticks += 1
+                if scan_ticks >= SCAN_DURATION_SEC:
+                    with _lock:
+                        _scanning = False
+                    scan_ticks = 0
+
+            if has_monitored and not scanning:
+                ticks += 1
+                if ticks >= PUSH_INTERVAL_SEC:
+                    _push_monitored_readings()
+                    ticks = 0
+
             await asyncio.sleep(1)
     finally:
         await scanner.stop()
 
 
-def _monitor_worker() -> None:
-    while not _monitor_stop.is_set():
-        with _lock:
-            active = bool(_monitored) and not _scanning
-        if not active:
-            time.sleep(1)
-            continue
+def _ble_worker() -> None:
+    while not _ble_stop.is_set():
         try:
-            asyncio.run(_run_monitor_loop())
+            asyncio.run(_run_ble_loop())
         except Exception as ex:
-            print(f'minew monitor error: {ex}')
+            print(f'minew ble loop error: {ex}')
             time.sleep(5)
 
 
-def _ensure_monitor_thread() -> None:
-    global _monitor_thread
-    if _monitor_thread and _monitor_thread.is_alive():
+def _ensure_ble_thread() -> None:
+    global _ble_thread
+    if _ble_thread and _ble_thread.is_alive():
         return
-    _monitor_stop.clear()
-    _monitor_thread = threading.Thread(target=_monitor_worker, daemon=True, name='minew-monitor')
-    _monitor_thread.start()
+    _ble_stop.clear()
+    _ble_thread = threading.Thread(target=_ble_worker, daemon=True, name='minew-ble')
+    _ble_thread.start()
+
+
+def _ensure_monitored_loaded() -> None:
+    global _monitored_loaded
+    if _monitored_loaded:
+        return
+    _monitored_loaded = True
+    try:
+        from app.models import Sensor
+
+        with _lock:
+            for sensor in Sensor.objects.all():
+                mac = normalize_mac(sensor.mac_address)
+                if not mac:
+                    continue
+                name = sensor.name or 'BLE'
+                upper = name.upper()
+                if 'BEACON' in upper:
+                    kind = 'BeaconX'
+                elif 'MST' in upper:
+                    kind = 'MST01'
+                else:
+                    kind = 'BLE'
+                _monitored[mac] = kind
+                _live_cache.setdefault(mac, {
+                    'kind': kind,
+                    'name': name,
+                    'mac': format_mac_display(mac),
+                })
+        if _monitored:
+            _ensure_ble_thread()
+    except Exception as ex:
+        print(f'minew load monitored error: {ex}')
 
 
 def start_scan() -> dict:
     if not BLEAK_AVAILABLE:
         return {'ok': False, 'detail': 'bleak is not installed on this host'}
-    global _scan_thread, _scanning
-    stop_scan()
+    _ensure_monitored_loaded()
+    _ensure_ble_thread()
     with _lock:
         _discovered.clear()
         _scanning = True
-    _scan_stop.clear()
-    _scan_thread = threading.Thread(target=_scan_worker, daemon=True, name='minew-scan')
-    _scan_thread.start()
     return {'ok': True, 'detail': 'scan started', 'duration_sec': SCAN_DURATION_SEC}
 
 
 def stop_scan() -> dict:
-    global _scanning
-    _scan_stop.set()
     with _lock:
         _scanning = False
     return {'ok': True, 'detail': 'scan stopped'}
 
 
 def get_scan_status() -> dict:
+    _ensure_monitored_loaded()
     with _lock:
         devices = sorted(_discovered.values(), key=lambda d: d.get('rssi', -999), reverse=True)
         return {
@@ -307,17 +338,47 @@ def get_scan_status() -> dict:
                     'kind': d['kind'],
                     'rssi': d.get('rssi'),
                     'name': d.get('name', d['kind']),
+                    'temperature_c': d.get('temperature_c'),
+                    'humidity_pct': d.get('humidity_pct'),
                 }
                 for d in devices
             ],
         }
 
 
+def get_live_readings(mac: Optional[str] = None) -> dict:
+    _ensure_monitored_loaded()
+    target = normalize_mac(mac) if mac else None
+    with _lock:
+        devices = []
+        for norm_mac, kind in _monitored.items():
+            if target and norm_mac != target:
+                continue
+            cache = _live_cache.get(norm_mac, {})
+            devices.append({
+                'mac': cache.get('mac', format_mac_display(norm_mac)),
+                'mac_normalized': norm_mac,
+                'kind': cache.get('kind', kind),
+                'name': cache.get('name', kind),
+                'rssi': cache.get('rssi'),
+                'temperature_c': cache.get('temperature_c'),
+                'humidity_pct': cache.get('humidity_pct'),
+                'pressure_hpa': cache.get('pressure_hpa'),
+                'battery_mv': cache.get('battery_mv'),
+                'battery_pct': cache.get('battery_pct'),
+                'last_seen': cache.get('last_seen'),
+            })
+    return {
+        'bleak_available': BLEAK_AVAILABLE,
+        'monitoring': len(_monitored),
+        'devices': devices,
+    }
+
+
 def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> dict:
     from app.models import Sensor
 
-    print(f"[DEBUG] confirm_sensors called: macs={macs}, add_all={add_all}")
-
+    _ensure_monitored_loaded()
     with _lock:
         if add_all:
             targets = list(_discovered.keys())
@@ -326,39 +387,30 @@ def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> 
         else:
             targets = []
         discovered = dict(_discovered)
+        _scanning = False
 
-    print(f"[DEBUG] targets to confirm: {targets}")
     added = []
     for mac in targets:
         info = discovered.get(mac)
         if not info:
-            print(f"[DEBUG] MAC {mac} not in discovered, skipping")
             continue
         kind = info.get('kind', 'BLE')
         name = info.get('name') or kind
-        print(f"[DEBUG] Creating/getting sensor {mac} ({kind})")
         sensor, created = Sensor.objects.get_or_create(mac_address=mac)
         if created or not sensor.name:
             sensor.name = name
         sensor.is_new = False
         sensor.save()
-        print(f"[DEBUG] Sensor saved: {mac}")
         with _lock:
             _monitored[mac] = kind
             _live_cache[mac] = dict(info)
         added.append(format_mac_display(mac))
 
-    print(f"[DEBUG] Added sensors: {added}")
     if added:
-        print(f"[DEBUG] Ensuring monitor thread...")
-        _ensure_monitor_thread()
-        print(f"[DEBUG] Pushing monitored readings...")
+        _ensure_ble_thread()
         _push_monitored_readings()
-        print(f"[DEBUG] Done pushing")
 
-    result = {'ok': True, 'added': added, 'count': len(added)}
-    print(f"[DEBUG] confirm_sensors returning: {result}")
-    return result
+    return {'ok': True, 'added': added, 'count': len(added)}
 
 
 def bleak_installed() -> bool:
