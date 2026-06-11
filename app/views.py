@@ -28,6 +28,168 @@ def add_global_data(request, data):
     data['lang_code'] = request.LANGUAGE_CODE.lower()
 
 
+def get_pdu_base_urls():
+    candidates = [
+        BASE_URL_PDU.rstrip('/'),
+        'http://127.0.0.1:8001',
+    ]
+    seen = set()
+    for url in candidates:
+        if url and url not in seen:
+            seen.add(url)
+            yield url
+
+
+def get_pdu_local_data(endpoint):
+    for base_url in get_pdu_base_urls():
+        try:
+            response = requests.get(
+                f"{base_url}/{endpoint}",
+                verify=False,
+                timeout=5,
+            )
+            if response.status_code == 200:
+                return response.json()
+            print(f'PDU local data non-200 [{base_url}/{endpoint}]: {response.status_code}')
+        except Exception as ex:
+            print(f'PDU local data error [{base_url}/{endpoint}]: {ex}')
+    return None
+
+
+def normalize_phase_vi(ph):
+    if ph is None:
+        return 0
+    if ph > 180.0:
+        ph -= 360.0
+    elif ph < -180.0:
+        ph += 360.0
+    if abs(ph) > 90.0:
+        ph = ph - 180.0 if ph > 0 else ph + 180.0
+    return ph
+
+
+def positive_energy(value):
+    if value is None:
+        return None
+    return abs(value)
+
+
+def recalculate_power_from_phase(data):
+    """Recompute P/Q/S/PF from V,I and corrected phase (matches pmb.py logic)."""
+    if not isinstance(data, dict):
+        return data
+
+    import math
+
+    ph = data.get('phase_vi', data.get('phase', 0)) or 0
+    ph = normalize_phase_vi(ph)
+
+    voltage = data.get('voltage') or 0
+    current = data.get('current') or 0
+
+    if voltage and current:
+        data['phase_vi'] = ph
+        data['phase'] = ph
+        data['active_power'] = voltage * current * math.cos(math.radians(ph))
+        data['reactive_power'] = voltage * current * math.sin(math.radians(ph))
+        data['apparent_power'] = voltage * current
+        data['power_factor'] = math.cos(math.radians(ph))
+
+    # Energy is cumulative — always report magnitude
+    if data.get('energy') is not None:
+        data['energy'] = positive_energy(data['energy'])
+
+    return data
+
+
+def normalize_pdu_last_data(data):
+    if data is None:
+        return None
+    if isinstance(data, dict):
+        if 'phase' in data and 'phase_vi' not in data:
+            data['phase_vi'] = data['phase']
+        if 'phase_total' not in data:
+            data['phase_total'] = data.get('phase_total', 0)
+        return recalculate_power_from_phase(data)
+    return data
+
+
+def map_pdu_input_to_ui(pdu_data, input_obj):
+    """
+    Map PDU API JSON to the structure used by inputs.html and live_inputs.js.
+
+    PDU response example (inputs/0/data = Input 1):
+        voltage, current, active_power, reactive_power, apparent_power,
+        power_factor, phase, frequency, energy
+    """
+    pdu_data = normalize_pdu_last_data(pdu_data) or {}
+    return {
+        'id': input_obj.id,
+        'line_id': input_obj.line_id,
+        'name': str(input_obj),
+        'voltage': pdu_data.get('voltage'),
+        'current': pdu_data.get('current'),
+        'apparent_power': pdu_data.get('apparent_power'),
+        'active_power': pdu_data.get('active_power'),
+        'reactive_power': pdu_data.get('reactive_power'),
+        'power_factor': pdu_data.get('power_factor'),
+        'energy': positive_energy(pdu_data.get('energy')),
+        'phase_vi': pdu_data.get('phase_vi', pdu_data.get('phase')),
+        'frequency': pdu_data.get('frequency'),
+        'timestamp': int(time.time() * 1000),
+    }
+
+
+def get_pdu_input_data(line_id):
+    if not line_id or line_id < 1:
+        return None
+    return normalize_pdu_last_data(get_pdu_local_data(f'inputs/{line_id - 1}/data'))
+
+
+def last_data_to_dict(last_data):
+    if last_data is None:
+        return {}
+    if isinstance(last_data, dict):
+        return normalize_pdu_last_data(last_data) or {}
+    return {
+        'voltage': last_data.voltage,
+        'current': last_data.current,
+        'apparent_power': last_data.apparent_power,
+        'active_power': last_data.active_power,
+        'reactive_power': last_data.reactive_power,
+        'power_factor': last_data.power_factor,
+        'energy': positive_energy(last_data.energy),
+        'phase_vi': last_data.phase_vi,
+        'frequency': last_data.frequency,
+    }
+
+
+def build_input_live_record(input_obj):
+    pdu_data = get_pdu_input_data(input_obj.line_id)
+    if pdu_data:
+        return map_pdu_input_to_ui(pdu_data, input_obj)
+
+    last_data = input_obj.get_last_data()
+    if last_data:
+        return {
+            'id': input_obj.id,
+            'line_id': input_obj.line_id,
+            'name': str(input_obj),
+            'voltage': last_data.voltage,
+            'current': last_data.current,
+            'apparent_power': last_data.apparent_power,
+            'active_power': last_data.active_power,
+            'reactive_power': last_data.reactive_power,
+            'power_factor': last_data.power_factor,
+            'energy': positive_energy(last_data.energy),
+            'phase_vi': last_data.phase_vi,
+            'frequency': last_data.frequency,
+            'timestamp': int(last_data.data_summary.data_datetime.timestamp() * 1000),
+        }
+
+    return map_pdu_input_to_ui({}, input_obj)
+
+
 def login_user(request):
     data = {'title': _('Ingreso')}
     add_global_data(request, data)
@@ -79,13 +241,41 @@ def inputs(request):
     data = {'title': _('Entradas')}
     add_global_data(request, data)
     data['inputs'] = inputs = Input.objects.all()
-    data['data_for_charts'] = [
-        {
+    data['data_for_charts'] = []
+    for x in inputs:
+        items = x.get_data_for_charts()
+        if not items:
+            pdu_last = get_pdu_input_data(x.line_id)
+            if pdu_last:
+                items = [{
+                    'date': int(time.time() * 1000),
+                    'voltage': pdu_last.get('voltage', 0),
+                    'current': pdu_last.get('current', 0),
+                    'active_power': pdu_last.get('active_power', 0),
+                    'power_factor': pdu_last.get('power_factor', 0),
+                }]
+        data['data_for_charts'].append({
             'name': x.__str__(),
-            'items': x.get_data_for_charts()
-        } for x in inputs
+            'items': items,
+        })
+    data['inputs_live'] = [
+        {'input': input_obj, 'live': build_input_live_record(input_obj)}
+        for input_obj in inputs
     ]
     return render(request, 'inputs.html', data)
+
+
+@login_required()
+def get_inputs_live_data(request):
+    try:
+        inputs_data = [
+            build_input_live_record(input_obj)
+            for input_obj in Input.objects.all()
+        ]
+        return ok_json(data={'inputs': inputs_data})
+    except Exception as ex:
+        print(ex.__str__())
+        return bad_json(message=ex.__str__())
 
 
 @login_required()
@@ -130,9 +320,9 @@ def update_limits(request):
 def input_download_last_data(request, input_id):
     data = {'title': _('Entrada - Descargar Ultimos Datos')}
     add_global_data(request, data)
-    input = Input.objects.get(id=input_id)
-    response = export_last_data_to_csv(input)
-    return response
+    input_obj = Input.objects.get(id=input_id)
+    live_data = build_input_live_record(input_obj)
+    return export_last_data_to_csv(input_obj, live_data=live_data)
 
 
 @login_required()
@@ -177,6 +367,7 @@ def settings(request):
             'settings/start-scan', 'settings/stop-scan',
             'settings/system-reboot', 'settings/factory-reset',
             'settings/swupdate', 'settings/ca-cert', 'settings/ca-key',
+            'settings/ota-check-now',
         ]:
             # POST (for all above endpoints)
             try:
@@ -199,10 +390,23 @@ def settings(request):
                             fs = FileSystemStorage(location=os.path.join(MEDIA_ROOT))
                             # Guarda el archivo
                             filename = fs.save(file.name, file)
-                            file_url = fs.url(filename)
                             filename_path = os.path.join(MEDIA_ROOT, filename)
                             response = requests.post(f'{BASE_URL_PDU}/{endpoint}', json={"filename": filename_path}, verify=False)
-                            return ok_json(data={'message': f"{_('Fichero guardado correctamente')}"})
+                            if response.status_code == 200:
+                                resp = response.json()
+                                if resp.get('is_pending'):
+                                    message = _("Update uploaded. Confirm it on the PDU display.")
+                                else:
+                                    message = _("Update uploaded. Device update will start shortly.")
+                                return ok_json(data={'message': f"{message}"})
+                            if response.status_code == 409:
+                                try:
+                                    err = response.json().get('error', response.text)
+                                except Exception:
+                                    err = response.text
+                                return bad_json(message=_("Update blocked: %(reason)s") % {'reason': err})
+
+                            return bad_json(message=f'Error in POST {endpoint}: {response.text}')
 
                         except Exception as ex:
                             return bad_json(message=f'Error in POST {endpoint}: {ex.__str__()}')
@@ -216,19 +420,34 @@ def settings(request):
                 else:
                     response = requests.post(f'{BASE_URL_PDU}/{endpoint}', verify=False)
                     if response.status_code == 200:
-                        return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})
+                        if endpoint == 'settings/ota-check-now':
+                            resp = response.json()
+                            return ok_json(data={
+                                'message': "OTA check completed",
+                                'installed_version': resp.get('installed_version', ''),
+                                'available_version': resp.get('available_version', ''),
+                                'last_check_time': resp.get('last_check_time', ''),
+                                'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
+                                'last_error': resp.get('last_error', ''),
+                            })
+                        return ok_json(data={'message': "Changes saved successfully"})
 
                 return bad_json(message=f'Error in POST {endpoint}: {response.text}')
             except Exception as ex:
                 return bad_json(message=f'Error in POST {endpoint}: {ex.__str__()}')
 
-        elif endpoint in ['settings/system-info', 'settings/pdu-info', 'settings/snmp-nms']:
+        elif endpoint in ['settings/system-info', 'settings/pdu-info', 'settings/snmp-nms',
+                          'settings/update-status']:
             # GET & PUT only for settings/snmp-nms
             method = request.POST['method']
             try:
                 if method == 'GET':
                     # dynamic GET request
-                    response = requests.get(f'{BASE_URL_PDU}/{endpoint}', verify=False)
+                    params = None
+                    if endpoint == 'settings/update-status' and request.POST.get('refresh') in ('1', 'true', 'True'):
+                        params = {'refresh': 'true'}
+                    response = requests.get(
+                        f'{BASE_URL_PDU}/{endpoint}', params=params, verify=False)
                     if response.status_code == 200:
                         resp = response.json()
                         # settings/system-info
@@ -255,6 +474,24 @@ def settings(request):
                                 'system_name': resp['system_name'],
                                 'system_contact': resp['system_contact'],
                                 'system_location': resp['system_location'],
+                            })
+                        elif endpoint == 'settings/update-status':
+                            return ok_json(data={
+                                'message': f"{_('Estado OTA obtenido')}",
+                                'installed_version': resp.get('installed_version', ''),
+                                'available_version': resp.get('available_version', ''),
+                                'last_check_time': resp.get('last_check_time', ''),
+                                'last_update_time': resp.get('last_update_time', ''),
+                                'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
+                                'status': resp.get('ota_status', resp.get('status', 'idle')),
+                                'last_error': resp.get('last_error', ''),
+                                'download_progress': resp.get('download_progress', 0),
+                                'ota_enabled': resp.get('ota_enabled', False),
+                                'check_interval_hours': resp.get('check_interval_hours', 24),
+                                'active_update_source': resp.get('active_update_source', ''),
+                                'update_phase': resp.get('update_phase', 'idle'),
+                                'update_busy': resp.get('update_busy', False),
+                                'pending_source': resp.get('pending_source', ''),
                             })
 
                     return bad_json(message=f'Error in GET {endpoint}: {response.text}')

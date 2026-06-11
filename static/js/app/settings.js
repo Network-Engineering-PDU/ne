@@ -14,6 +14,11 @@ let spanSettingsPduInfoOutletCount = $("#spanSettingsPduInfoOutletCount");
 let spanSettingsPduInfoRatedCurrent = $("#spanSettingsPduInfoRatedCurrent");
 let spanSettingsPduInfoController = $("#spanSettingsPduInfoController");
 let spanSettingsPduInfoType = $("#spanSettingsPduInfoType");
+// OTA
+let spanSettingsOtaInstalledVersion = $("#spanSettingsOtaInstalledVersion");
+let spanSettingsOtaAvailableVersion = $("#spanSettingsOtaAvailableVersion");
+let spanSettingsOtaLastCheck = $("#spanSettingsOtaLastCheck");
+let spanSettingsOtaStatus = $("#spanSettingsOtaStatus");
 // System Reboot
 let modalSettingsRestartOrRestoreFactory = $("#modalSettingsRestartOrRestoreFactory");
 
@@ -249,17 +254,116 @@ let SETTINGS = {
             success: function(response) {
                 if (response.result === 'ok'){
                     setTimeout(function() {
-                    spanSettingsPduInfoOutletCount.html(response.outlet_count);
-                    spanSettingsPduInfoRatedCurrent.html(response.rated_current);
-                    spanSettingsPduInfoController.html(response.controller);
-                    spanSettingsPduInfoType.html(response.type);
-                }, 2000);
+                        let newRatedCurrent = String(response.rated_current);
+                        if (SETTINGS.current_pdu_rated_current !== newRatedCurrent) {
+                            SETTINGS.current_pdu_rated_current = newRatedCurrent;
+                            spanSettingsPduInfoOutletCount.html(response.outlet_count);
+                            spanSettingsPduInfoRatedCurrent.html(response.rated_current + ' A');
+                            spanSettingsPduInfoController.html(response.controller);
+                            spanSettingsPduInfoType.html(response.type);
+                        }
+                    }, 2000);
                 }else{
                     alert('Warning: ' + response.message);
                 }
             },
             error: function (response) {
                 alert('Error: ' + response.message);
+            }
+        });
+    },
+
+    current_pdu_rated_current: null,
+
+    get_ota_status: function () {
+        $.ajax({
+            url: SETTINGS.url,
+            type: 'POST',
+            data: {
+                'endpoint': 'settings/update-status',
+                'method': 'GET',
+                'refresh': '1',
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                spanSettingsOtaInstalledVersion.html(SPINNER);
+                spanSettingsOtaAvailableVersion.html(SPINNER);
+                spanSettingsOtaLastCheck.html(SPINNER);
+                spanSettingsOtaStatus.html(SPINNER);
+            },
+            success: function(response) {
+                if (response.result === 'ok') {
+                    spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
+                    spanSettingsOtaAvailableVersion.html(response.available_version || '-');
+                    spanSettingsOtaLastCheck.html(response.last_check_time || '-');
+                    let status = response.ota_status || response.status || 'idle';
+                    if (response.last_error) {
+                        status += ' (' + response.last_error + ')';
+                    }
+                    spanSettingsOtaStatus.html(status);
+                }
+            },
+            error: function () {
+                spanSettingsOtaInstalledVersion.html('-');
+                spanSettingsOtaAvailableVersion.html('-');
+                spanSettingsOtaLastCheck.html('-');
+                spanSettingsOtaStatus.html('error');
+            }
+        });
+    },
+
+    check_ota_now: function (elem) {
+        let originalText = elem.html();
+        $.ajax({
+            url: SETTINGS.url,
+            type: 'POST',
+            data: {
+                'endpoint': 'settings/ota-check-now',
+            },
+            dataType: 'json',
+            beforeSend: function () {
+                elem.attr('disabled', true).html(SPINNER_SM_DARK);
+            },
+            success: function(response) {
+                elem.attr('disabled', false).html(originalText);
+                if (response.result === 'ok') {
+                    if (response.installed_version !== undefined) {
+                        spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
+                    }
+                    if (response.available_version !== undefined) {
+                        spanSettingsOtaAvailableVersion.html(response.available_version || '-');
+                    }
+                    if (response.last_check_time !== undefined) {
+                        spanSettingsOtaLastCheck.html(response.last_check_time || '-');
+                    }
+                    let status = response.ota_status || response.status || 'idle';
+                    if (response.last_error) {
+                        status += ' (' + response.last_error + ')';
+                    }
+                    spanSettingsOtaStatus.html(status);
+                    if (response.message) {
+                        alert(response.message);
+                    }
+                    SETTINGS.get_ota_status();
+                } else {
+                    alert(response.message || 'OTA check failed');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                elem.attr('disabled', false).html(originalText);
+                let message = 'OTA check failed';
+                try {
+                    let json = JSON.parse(xhr.responseText || '{}');
+                    if (json.message) {
+                        message = json.message;
+                    }
+                } catch (e) {
+                    if (errorThrown) {
+                        message = errorThrown;
+                    }
+                }
+                alert(message);
+                SETTINGS.get_ota_status();
             }
         });
     },
@@ -338,6 +442,7 @@ $(function() {
     SETTINGS.get_snmp_nms();
     // PDU Info
     SETTINGS.get_pdu_info();
+    // OTA
+    SETTINGS.get_ota_status();
 
 });
-
