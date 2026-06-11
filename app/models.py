@@ -60,10 +60,11 @@ class Input(models.Model):
     def get_data_for_charts(self):
         return [
             {
-                'date': int(x.data_summary.data_datetime.timestamp() * 1000),
+                'date': int(x.data_summary.data_datetime.strftime("%s%f")) / 1000,
                 'voltage': x.voltage,
                 'current': x.current,
                 'active_power': x.active_power,
+                # 'reactive_power': x.reactive_power,
                 'power_factor': x.power_factor,
             } for x in self.datainput_set.order_by('data_summary__data_datetime')
         ]

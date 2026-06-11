@@ -113,7 +113,7 @@ class PDUDataViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                     line_id = int(elem['line_id'])
                     try:
                         output_obj = Output.objects.get(line_id=line_id)
-                    except Output.DoesNotExist:
+                    except Input.DoesNotExist:
                         raise Exception(f'Output does not exist with line_id: {line_id}')
 
                     data_outputs_objects.append(
@@ -133,13 +133,12 @@ class PDUDataViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
                         )
                     )
 
+                # bulk create
                 if data_inputs_objects:
-                    for data_input_obj in data_inputs_objects:
-                        data_input_obj.save()
+                    DataInput.objects.bulk_create(data_inputs_objects)
                     print(f'Inputs data succesfully STORED! ({len(data_inputs_objects)} records)')
                 if data_outputs_objects:
-                    for data_output_obj in data_outputs_objects:
-                        data_output_obj.save()
+                    DataOutput.objects.bulk_create(data_outputs_objects)
                     print(f'Outputs data succesfully STORED! ({len(data_outputs_objects)} records)')
 
                 # delete old data (only keep last 60 mins of data)
@@ -204,7 +203,7 @@ class SensorsNewViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
 
 class SensorsDataViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
-    queryset = Sensor.objects.all().order_by('id')
+    queryset = Sensor.objects.all()
     serializer_class = SensorSerializer
     """
     Example:

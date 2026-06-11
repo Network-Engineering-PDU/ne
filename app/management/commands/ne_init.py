@@ -2,7 +2,6 @@ import requests
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from urllib.parse import urlparse
 
 from app.models import Input, Output
 from ne.settings import (
@@ -35,34 +34,57 @@ class Command(BaseCommand):
             print(f'>>> SuperUser {superuser} has been {"created" if created else "updated"}!')
 
             # Get Inputs and Outputs to populate tables
-            def fetch_pdu_api(path):
-                try:
-                    response = requests.get(f'{BASE_URL_PDU}/{path}', verify=False, timeout=5)
-                    if response.status_code == 200:
-                        return response.json()
-                    print(f'>>> PDU API {path} returned {response.status_code}')
-                except requests.exceptions.RequestException as ex:
-                    print(f'>>> PDU API {path} request failed: {ex}')
-                return None
-
             print('>>> Inputs PDU API - STARTED')
-            inputs_data = fetch_pdu_api('inputs/')
-            if inputs_data is not None:
-                for elem in inputs_data:
+            response = requests.get(f'{BASE_URL_PDU}/inputs/', verify=False)
+            if response.status_code == 200:
+                """
+                inputs response example:
+                    [
+                        {
+                            "line_id": 1,
+                            “low_limit”: 0.5,
+                            “high_limit”: 12.5
+                        },
+                        {
+                            "line_id": 2,
+                            “low_limit”: 0.5,
+                            “high_limit”: 12.5
+                        },
+                    ]
+                """
+                for elem in response.json():
                     input_obj, created = Input.objects.get_or_create(line_id=elem['line_id'])
                     if created:
                         input_obj.low_limit = float(elem['low_limit'])
                         input_obj.high_limit = float(elem['high_limit'])
                         input_obj.save()
                     print(f'>>> {input_obj.__str__()} {"created" if created else "updated"}!')
-                print(f'>>> Inputs PDU API - COMPLETED ({len(inputs_data)} inputs)')
-            else:
-                print('>>> Inputs PDU API - SKIPPED (unavailable)')
+
+                print(f'>>> Inputs PDU API - COMPLETED ({len(response.json())} inputs)')
 
             print('>>> Outputs PDU API - STARTED')
-            outputs_data = fetch_pdu_api('outputs/')
-            if outputs_data is not None:
-                for elem in outputs_data:
+            response = requests.get(f'{BASE_URL_PDU}/outputs/', verify=False)
+            if response.status_code == 200:
+                """
+                inputs response example:
+                    [
+                        {
+                            "line_id": 1,
+                            "name": "Output 1",
+                            "socket_type": "IEC 320 C13",
+                            "low_limit": 0.0,
+                            "high_limit": 3.0,
+                        },
+                        {
+                            "line_id": 2,
+                            "name": "Output 2",
+                            "socket_type": "IEC 320 C13",
+                            "low_limit": 0.0,
+                            "high_limit": 3.0,
+                        },
+                    ]
+                """
+                for elem in response.json():
                     output_obj, created = Output.objects.get_or_create(line_id=elem['line_id'])
                     if created:
                         output_obj.name = elem['name']
@@ -71,15 +93,11 @@ class Command(BaseCommand):
                         output_obj.high_limit = float(elem['high_limit'])
                         output_obj.save()
                     print(f'>>> {output_obj.__str__()} {"created" if created else "updated"}!')
-                print(f'>>> Outputs PDU API - COMPLETED ({len(outputs_data)} outputs)')
-            else:
-                print('>>> Outputs PDU API - SKIPPED (unavailable)')
 
-            # Run Server bound to all interfaces so the web UI stays reachable
-            # when the device IP changes at runtime.
-            parsed = urlparse(BASE_URL_DJANGO)
-            port = parsed.port or 8000
-            call_command('runserver', f'0.0.0.0:{port}', use_reloader=False)
+                print(f'>>> Outputs PDU API - COMPLETED ({len(response.json())} inputs)')
+
+            # Run Server
+            call_command('runserver', BASE_URL_DJANGO.split('//')[1])
 
         except Exception as ex:
             print(f'Error {ex.__str__()}')
