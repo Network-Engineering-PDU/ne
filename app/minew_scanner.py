@@ -36,7 +36,7 @@ N_OPEN = 2.0
 
 SCAN_DURATION_SEC = 60
 PUSH_INTERVAL_SEC = 3
-MIN_SCAN_POLLS_BEFORE_SELECT = 3
+BLUEZ_POLL_INTERVAL_SEC = 0.5
 
 _lock = threading.Lock()
 _scanning = False
@@ -295,28 +295,29 @@ def _run_bluez_loop() -> None:
     _last_error = ''
 
     try:
-        ticks = 0
-        scan_ticks = 0
+        scan_started_at = time.monotonic()
+        last_push_at = time.monotonic()
         while not _ble_stop.is_set():
             _poll_bluez_devices(bus)
+            now = time.monotonic()
             with _lock:
                 scanning = _scanning
                 has_monitored = bool(_monitored)
 
             if scanning:
-                scan_ticks += 1
-                if scan_ticks >= SCAN_DURATION_SEC:
+                if now - scan_started_at >= SCAN_DURATION_SEC:
                     with _lock:
                         _scanning = False
-                    scan_ticks = 0
+                    scan_started_at = now
+            else:
+                scan_started_at = now
 
             if has_monitored and not scanning:
-                ticks += 1
-                if ticks >= PUSH_INTERVAL_SEC:
+                if now - last_push_at >= PUSH_INTERVAL_SEC:
                     _push_monitored_readings()
-                    ticks = 0
+                    last_push_at = now
 
-            time.sleep(1)
+            time.sleep(BLUEZ_POLL_INTERVAL_SEC)
     finally:
         _stop_discovery(adapter)
 
