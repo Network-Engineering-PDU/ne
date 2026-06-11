@@ -5,23 +5,25 @@ Used by REST /api/sensors-scan/* and pushes readings for confirmed sensors.
 """
 from __future__ import annotations
 
-import asyncio
 import threading
 import time
 from datetime import datetime
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from app.sensor_ble_service import format_mac_display, normalize_mac, save_sensor_readings
 
 try:
-    from bleak import BleakScanner
-    from bleak.backends.device import BLEDevice
-    from bleak.backends.scanner import AdvertisementData
-    BLEAK_AVAILABLE = True
+    import dbus
+    BLUEZ_AVAILABLE = True
 except ImportError:
-    BLEAK_AVAILABLE = False
-    BLEDevice = object  # type: ignore
-    AdvertisementData = object  # type: ignore
+    dbus = None  # type: ignore
+    BLUEZ_AVAILABLE = False
+
+BLUEZ_SERVICE = 'org.bluez'
+ADAPTER_IFACE = 'org.bluez.Adapter1'
+DEVICE_IFACE = 'org.bluez.Device1'
+PROPS_IFACE = 'org.freedesktop.DBus.Properties'
+OBJ_MGR_IFACE = 'org.freedesktop.DBus.ObjectManager'
 
 MINEW_COMPANY_ID = 0x0639
 BEACONX_UUID_KEY = 'feab'
@@ -44,6 +46,7 @@ _live_cache: Dict[str, dict] = {}
 _ble_stop = threading.Event()
 _ble_thread: Optional[threading.Thread] = None
 _monitored_loaded = False
+_last_error = ''
 
 
 def _distance(rssi: int, tx_1m: int = -65) -> dict:
@@ -92,7 +95,7 @@ def _parse_beaconx(svc: bytes, rssi: int) -> dict:
         return result
 
     frame_type = svc[0]
-    tx_power = svc[1] - 256
+    tx_power = svc[1] - 256 if svc[1] > 127 else svc[1]
     result['tx_power_dbm'] = tx_power
     result['distance'] = _distance(rssi, tx_power)
 
@@ -120,39 +123,124 @@ def _parse_beaconx(svc: bytes, rssi: int) -> dict:
     return result
 
 
-def _is_beaconx(adv: AdvertisementData) -> Optional[bytes]:
-    for uuid_str, data in adv.service_data.items():
+def _dbus_bytes(value) -> bytes:
+    if value is None:
+        return b''
+    if isinstance(value, bytes):
+        return value
+    if isinstance(value, bytearray):
+        return bytes(value)
+    return bytes(int(x) & 0xFF for x in value)
+
+
+def _manufacturer_data(props: dict) -> Dict[int, bytes]:
+    raw = props.get('ManufacturerData', {}) or {}
+    return {int(k): _dbus_bytes(v) for k, v in raw.items()}
+
+
+def _service_data(props: dict) -> Dict[str, bytes]:
+    raw = props.get('ServiceData', {}) or {}
+    return {str(k).lower(): _dbus_bytes(v) for k, v in raw.items()}
+
+
+def _mac_from_path(path: str) -> str:
+    tail = str(path).split('/')[-1]
+    if tail.startswith('dev_'):
+        return tail[4:].replace('_', ':').upper()
+    return tail.upper()
+
+
+def _is_beaconx_props(props: dict) -> Optional[bytes]:
+    for uuid_str, data in _service_data(props).items():
         if BEACONX_UUID_KEY in uuid_str.lower():
             return data
     return None
 
 
-def _is_mst01(adv: AdvertisementData) -> Optional[bytes]:
-    raw = adv.manufacturer_data.get(MINEW_COMPANY_ID)
-    if raw and len(raw) >= 14 and raw[0] == FRAME_MARKER:
-        if raw[1] == CA00_FRAME or (
-            raw[1] == CA05_FRAME and MST01_NAME_BYTES in raw[9:14]
-        ):
+def _is_mst01_props(props: dict) -> Optional[bytes]:
+    raw = _manufacturer_data(props).get(MINEW_COMPANY_ID)
+    if raw and len(raw) >= 9 and raw[0] == FRAME_MARKER:
+        if raw[1] == CA00_FRAME:
+            return raw
+        if raw[1] == CA05_FRAME and len(raw) >= 14:
+            if MST01_NAME_BYTES in raw[9:14]:
+                return raw
             return raw
     return None
 
 
-def _advert_cb(device: BLEDevice, adv: AdvertisementData) -> None:
-    mac = normalize_mac(device.address)
+def _bluez_exception_text(ex: Exception) -> str:
+    if dbus is not None and isinstance(ex, dbus.exceptions.DBusException):
+        return ex.get_dbus_message() or str(ex)
+    return str(ex)
+
+
+def _get_bluez_adapter(bus) -> Tuple[str, object]:
+    obj_mgr = dbus.Interface(bus.get_object(BLUEZ_SERVICE, '/'), OBJ_MGR_IFACE)
+    objects = obj_mgr.GetManagedObjects()
+    for path, ifaces in objects.items():
+        if ADAPTER_IFACE in ifaces and str(path).endswith('/hci0'):
+            return str(path), dbus.Interface(
+                bus.get_object(BLUEZ_SERVICE, path), ADAPTER_IFACE
+            )
+    for path, ifaces in objects.items():
+        if ADAPTER_IFACE in ifaces:
+            return str(path), dbus.Interface(
+                bus.get_object(BLUEZ_SERVICE, path), ADAPTER_IFACE
+            )
+    raise RuntimeError('No BlueZ Bluetooth adapter found')
+
+
+def _power_adapter_on(bus, adapter_path: str) -> None:
+    props = dbus.Interface(bus.get_object(BLUEZ_SERVICE, adapter_path), PROPS_IFACE)
+    if not bool(props.Get(ADAPTER_IFACE, 'Powered')):
+        props.Set(ADAPTER_IFACE, 'Powered', dbus.Boolean(True))
+
+
+def _start_discovery(adapter) -> None:
+    try:
+        adapter.SetDiscoveryFilter({
+            'Transport': dbus.String('le'),
+            'DuplicateData': dbus.Boolean(True),
+        })
+    except Exception as ex:
+        print(f'minew bluez discovery filter warning: {_bluez_exception_text(ex)}')
+    try:
+        adapter.StartDiscovery()
+    except Exception as ex:
+        msg = _bluez_exception_text(ex)
+        if 'InProgress' not in msg and 'Operation already in progress' not in msg:
+            raise
+
+
+def _stop_discovery(adapter) -> None:
+    try:
+        adapter.StopDiscovery()
+    except Exception:
+        pass
+
+
+def _process_bluez_device(path: str, props: dict) -> None:
+    mac = normalize_mac(str(props.get('Address') or _mac_from_path(path)))
     if not mac:
         return
 
+    try:
+        rssi = int(props.get('RSSI', -999))
+    except (TypeError, ValueError):
+        rssi = -999
+
     kind = None
     parsed = None
-    raw = _is_mst01(adv)
+    raw = _is_mst01_props(props)
     if raw:
         kind = 'MST01'
         parsed = _parse_mst01(raw)
     else:
-        svc = _is_beaconx(adv)
+        svc = _is_beaconx_props(props)
         if svc:
             kind = 'BeaconX'
-            parsed = _parse_beaconx(svc, adv.rssi)
+            parsed = _parse_beaconx(svc, rssi)
 
     if not kind:
         return
@@ -162,7 +250,7 @@ def _advert_cb(device: BLEDevice, adv: AdvertisementData) -> None:
         'mac': format_mac_display(mac),
         'mac_normalized': mac,
         'kind': kind,
-        'rssi': adv.rssi,
+        'rssi': rssi,
         'name': name,
         'last_seen': datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
     }
@@ -178,10 +266,59 @@ def _advert_cb(device: BLEDevice, adv: AdvertisementData) -> None:
         if mac in _monitored:
             cache = _live_cache.setdefault(mac, {'kind': kind})
             cache.update(entry)
-            cache['rssi'] = adv.rssi
+            cache['rssi'] = rssi
             cache['last_seen'] = entry['last_seen']
             if parsed:
                 cache.update(parsed)
+
+
+def _poll_bluez_devices(bus) -> None:
+    obj_mgr = dbus.Interface(bus.get_object(BLUEZ_SERVICE, '/'), OBJ_MGR_IFACE)
+    objects = obj_mgr.GetManagedObjects()
+    for path, ifaces in objects.items():
+        props = ifaces.get(DEVICE_IFACE)
+        if props:
+            _process_bluez_device(str(path), dict(props))
+
+
+def _run_bluez_loop() -> None:
+    global _scanning, _last_error
+
+    if not BLUEZ_AVAILABLE:
+        _last_error = 'python3-dbus is not installed on this host'
+        return
+
+    bus = dbus.SystemBus()
+    adapter_path, adapter = _get_bluez_adapter(bus)
+    _power_adapter_on(bus, adapter_path)
+    _start_discovery(adapter)
+    _last_error = ''
+
+    try:
+        ticks = 0
+        scan_ticks = 0
+        while not _ble_stop.is_set():
+            _poll_bluez_devices(bus)
+            with _lock:
+                scanning = _scanning
+                has_monitored = bool(_monitored)
+
+            if scanning:
+                scan_ticks += 1
+                if scan_ticks >= SCAN_DURATION_SEC:
+                    with _lock:
+                        _scanning = False
+                    scan_ticks = 0
+
+            if has_monitored and not scanning:
+                ticks += 1
+                if ticks >= PUSH_INTERVAL_SEC:
+                    _push_monitored_readings()
+                    ticks = 0
+
+            time.sleep(1)
+    finally:
+        _stop_discovery(adapter)
 
 
 def _reading_from_cache(mac: str) -> Optional[dict]:
@@ -228,43 +365,27 @@ def _push_monitored_readings() -> None:
         save_sensor_readings(readings)
 
 
-async def _run_ble_loop() -> None:
-    global _scanning
-    scanner = BleakScanner(_advert_cb)
-    await scanner.start()
-    try:
-        ticks = 0
-        scan_ticks = 0
-        while not _ble_stop.is_set():
-            with _lock:
-                scanning = _scanning
-                has_monitored = bool(_monitored)
-
-            if scanning:
-                scan_ticks += 1
-                if scan_ticks >= SCAN_DURATION_SEC:
-                    with _lock:
-                        _scanning = False
-                    scan_ticks = 0
-
-            if has_monitored and not scanning:
-                ticks += 1
-                if ticks >= PUSH_INTERVAL_SEC:
-                    _push_monitored_readings()
-                    ticks = 0
-
-            await asyncio.sleep(1)
-    finally:
-        await scanner.stop()
-
-
 def _ble_worker() -> None:
+    global _last_error
     while not _ble_stop.is_set():
         try:
-            asyncio.run(_run_ble_loop())
+            _run_bluez_loop()
         except Exception as ex:
-            print(f'minew ble loop error: {ex}')
+            _last_error = _bluez_exception_text(ex)
+            print(f'minew bluez loop error: {_last_error}')
             time.sleep(5)
+
+
+def _bluez_ready_detail() -> Tuple[bool, str]:
+    if not BLUEZ_AVAILABLE:
+        return False, 'python3-dbus is not installed on this host'
+    try:
+        bus = dbus.SystemBus()
+        adapter_path, adapter = _get_bluez_adapter(bus)
+        _power_adapter_on(bus, adapter_path)
+        return True, f'BlueZ adapter ready: {adapter_path}'
+    except Exception as ex:
+        return False, _bluez_exception_text(ex)
 
 
 def _ensure_ble_thread() -> None:
@@ -311,8 +432,9 @@ def _ensure_monitored_loaded() -> None:
 
 def start_scan() -> dict:
     global _scanning
-    if not BLEAK_AVAILABLE:
-        return {'ok': False, 'detail': 'bleak is not installed on this host'}
+    ok, detail = _bluez_ready_detail()
+    if not ok:
+        return {'ok': False, 'detail': detail}
     _ensure_monitored_loaded()
     _ensure_ble_thread()
     with _lock:
@@ -334,7 +456,8 @@ def get_scan_status() -> dict:
         devices = sorted(_discovered.values(), key=lambda d: d.get('rssi', -999), reverse=True)
         return {
             'scanning': _scanning,
-            'bleak_available': BLEAK_AVAILABLE,
+            'bluez_available': BLUEZ_AVAILABLE,
+            'last_error': _last_error,
             'devices': [
                 {
                     'mac': d['mac'],
@@ -374,7 +497,8 @@ def get_live_readings(mac: Optional[str] = None) -> dict:
                 'last_seen': cache.get('last_seen'),
             })
     return {
-        'bleak_available': BLEAK_AVAILABLE,
+        'bluez_available': BLUEZ_AVAILABLE,
+        'last_error': _last_error,
         'monitoring': len(_monitored),
         'devices': devices,
     }
@@ -417,7 +541,3 @@ def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> 
         _push_monitored_readings()
 
     return {'ok': True, 'added': added, 'count': len(added)}
-
-
-def bleak_installed() -> bool:
-    return BLEAK_AVAILABLE

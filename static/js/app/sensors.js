@@ -128,7 +128,7 @@ let SENSORS = {
                 }, 60000);
             })
             .fail(function (xhr) {
-                alert('Could not start BLE scan. Is bleak installed on the PDU? ' + xhr.responseText);
+                alert('Could not start BLE scan. Check BlueZ/Bluetooth service on the PDU. ' + xhr.responseText);
             });
     }
 };
