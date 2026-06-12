@@ -447,7 +447,7 @@ def settings(request):
                     if endpoint == 'settings/update-status' and request.POST.get('refresh') in ('1', 'true', 'True'):
                         params = {'refresh': 'true'}
                     response = requests.get(
-                        f'{BASE_URL_PDU}/{endpoint}', params=params, verify=False)
+                        f'{BASE_URL_PDU}/{endpoint}', params=params, verify=False, timeout=30)
                     if response.status_code == 200:
                         resp = response.json()
                         # settings/system-info

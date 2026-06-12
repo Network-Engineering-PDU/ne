@@ -275,32 +275,50 @@ let SETTINGS = {
 
     current_pdu_rated_current: null,
 
-    get_ota_status: function () {
+    render_ota_status: function (response) {
+        spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
+        spanSettingsOtaAvailableVersion.html(response.available_version || '-');
+        spanSettingsOtaLastCheck.html(response.last_check_time || '-');
+        let status = response.ota_status || response.status || 'idle';
+        if (response.last_error) {
+            status += ' (' + response.last_error + ')';
+        }
+        spanSettingsOtaStatus.html(status);
+    },
+
+    get_ota_status: function (refresh, showSpinner) {
+        if (showSpinner === undefined) {
+            showSpinner = true;
+        }
         $.ajax({
             url: SETTINGS.url,
             type: 'POST',
             data: {
                 'endpoint': 'settings/update-status',
                 'method': 'GET',
-                'refresh': '1',
+                'refresh': refresh ? '1' : '0',
             },
             dataType: 'json',
+            timeout: 30000,
             beforeSend: function () {
-                spanSettingsOtaInstalledVersion.html(SPINNER);
-                spanSettingsOtaAvailableVersion.html(SPINNER);
-                spanSettingsOtaLastCheck.html(SPINNER);
-                spanSettingsOtaStatus.html(SPINNER);
+                if (showSpinner) {
+                    spanSettingsOtaInstalledVersion.html(SPINNER);
+                    spanSettingsOtaAvailableVersion.html(SPINNER);
+                    spanSettingsOtaLastCheck.html(SPINNER);
+                    spanSettingsOtaStatus.html(SPINNER);
+                }
             },
             success: function(response) {
                 if (response.result === 'ok') {
-                    spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
-                    spanSettingsOtaAvailableVersion.html(response.available_version || '-');
-                    spanSettingsOtaLastCheck.html(response.last_check_time || '-');
-                    let status = response.ota_status || response.status || 'idle';
-                    if (response.last_error) {
-                        status += ' (' + response.last_error + ')';
+                    SETTINGS.render_ota_status(response);
+                    if (refresh === false && !response.last_check_time) {
+                        SETTINGS.get_ota_status(true, false);
                     }
-                    spanSettingsOtaStatus.html(status);
+                } else {
+                    SETTINGS.render_ota_status({});
+                    if (response.message) {
+                        console.warn('OTA status:', response.message);
+                    }
                 }
             },
             error: function () {
@@ -327,24 +345,11 @@ let SETTINGS = {
             success: function(response) {
                 elem.attr('disabled', false).html(originalText);
                 if (response.result === 'ok') {
-                    if (response.installed_version !== undefined) {
-                        spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
-                    }
-                    if (response.available_version !== undefined) {
-                        spanSettingsOtaAvailableVersion.html(response.available_version || '-');
-                    }
-                    if (response.last_check_time !== undefined) {
-                        spanSettingsOtaLastCheck.html(response.last_check_time || '-');
-                    }
-                    let status = response.ota_status || response.status || 'idle';
-                    if (response.last_error) {
-                        status += ' (' + response.last_error + ')';
-                    }
-                    spanSettingsOtaStatus.html(status);
+                    SETTINGS.render_ota_status(response);
                     if (response.message) {
                         alert(response.message);
                     }
-                    SETTINGS.get_ota_status();
+                    SETTINGS.get_ota_status(true);
                 } else {
                     alert(response.message || 'OTA check failed');
                 }
@@ -363,7 +368,7 @@ let SETTINGS = {
                     }
                 }
                 alert(message);
-                SETTINGS.get_ota_status();
+                SETTINGS.get_ota_status(false);
             }
         });
     },
@@ -442,7 +447,7 @@ $(function() {
     SETTINGS.get_snmp_nms();
     // PDU Info
     SETTINGS.get_pdu_info();
-    // OTA
-    SETTINGS.get_ota_status();
+    // OTA: local state first, then background metadata peek if never checked
+    SETTINGS.get_ota_status(false);
 
 });
