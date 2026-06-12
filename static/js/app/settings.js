@@ -274,12 +274,20 @@ let SETTINGS = {
     },
 
     current_pdu_rated_current: null,
+    ota_status_poll_timer: null,
+    ota_status_polling: false,
 
     render_ota_status: function (response) {
         spanSettingsOtaInstalledVersion.html(response.installed_version || '-');
         spanSettingsOtaAvailableVersion.html(response.available_version || '-');
         spanSettingsOtaLastCheck.html(response.last_check_time || '-');
         let status = response.ota_status || response.status || 'idle';
+        if (status === 'downloading' && response.download_progress !== undefined) {
+            status += ' (' + response.download_progress + '%)';
+        }
+        if (response.update_phase && response.update_phase !== 'idle' && response.update_phase !== status) {
+            status += ' / ' + response.update_phase;
+        }
         if (response.last_error) {
             status += ' (' + response.last_error + ')';
         }
@@ -290,6 +298,10 @@ let SETTINGS = {
         if (showSpinner === undefined) {
             showSpinner = true;
         }
+        if (SETTINGS.ota_status_polling && !showSpinner) {
+            return;
+        }
+        SETTINGS.ota_status_polling = true;
         $.ajax({
             url: SETTINGS.url,
             type: 'POST',
@@ -300,6 +312,9 @@ let SETTINGS = {
             },
             dataType: 'json',
             timeout: 30000,
+            complete: function () {
+                SETTINGS.ota_status_polling = false;
+            },
             beforeSend: function () {
                 if (showSpinner) {
                     spanSettingsOtaInstalledVersion.html(SPINNER);
@@ -330,26 +345,38 @@ let SETTINGS = {
         });
     },
 
+    start_ota_status_polling: function () {
+        if (SETTINGS.ota_status_poll_timer !== null) {
+            clearInterval(SETTINGS.ota_status_poll_timer);
+        }
+        SETTINGS.ota_status_poll_timer = setInterval(function () {
+            SETTINGS.get_ota_status(false, false);
+        }, 2000);
+    },
+
     check_ota_now: function (elem) {
         let originalText = elem.html();
         $.ajax({
             url: SETTINGS.url,
             type: 'POST',
             data: {
-                'endpoint': 'settings/ota-check-now',
+                'endpoint': 'settings/update-status',
+                'method': 'GET',
+                'refresh': '1',
             },
             dataType: 'json',
+            timeout: 30000,
             beforeSend: function () {
                 elem.attr('disabled', true).html(SPINNER_SM_DARK);
+                spanSettingsOtaInstalledVersion.html(SPINNER);
+                spanSettingsOtaAvailableVersion.html(SPINNER);
+                spanSettingsOtaLastCheck.html(SPINNER);
+                spanSettingsOtaStatus.html(SPINNER);
             },
             success: function(response) {
                 elem.attr('disabled', false).html(originalText);
                 if (response.result === 'ok') {
                     SETTINGS.render_ota_status(response);
-                    if (response.message) {
-                        alert(response.message);
-                    }
-                    SETTINGS.get_ota_status(true);
                 } else {
                     alert(response.message || 'OTA check failed');
                 }
@@ -448,6 +475,7 @@ $(function() {
     // PDU Info
     SETTINGS.get_pdu_info();
     // OTA
-    SETTINGS.get_fab02df3122d976584f251f94ae84c357290bccbota_status(true);
+    SETTINGS.get_ota_status(true);
+    SETTINGS.start_ota_status_polling();
 
 });
