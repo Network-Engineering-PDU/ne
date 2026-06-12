@@ -447,7 +447,7 @@ $(function() {
     SETTINGS.get_snmp_nms();
     // PDU Info
     SETTINGS.get_pdu_info();
-    // OTA: local state first, then background metadata peek if never checked
-    SETTINGS.get_ota_status(false);
+    // OTA
+    SETTINGS.get_fab02df3122d976584f251f94ae84c357290bccbota_status(true);
 
 });

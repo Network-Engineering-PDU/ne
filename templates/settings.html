@@ -406,7 +406,7 @@
                                         <p class="bold">{% translate 'Installed Version' %}</p>
                                     </div>
                                     <div class="col">
-                                        <span id="spanSettingsOtaInstalledVersion">-</span>
+                                        <span id="spanSettingsOtaInstalledVersion">{{ ota_installed_version|default:"-" }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -414,7 +414,7 @@
                                         <p class="bold">{% translate 'Available Version' %}</p>
                                     </div>
                                     <div class="col">
-                                        <span id="spanSettingsOtaAvailableVersion">-</span>
+                                        <span id="spanSettingsOtaAvailableVersion">{{ ota_available_version|default:"-" }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -422,7 +422,7 @@
                                         <p class="bold">{% translate 'Last Check' %}</p>
                                     </div>
                                     <div class="col">
-                                        <span id="spanSettingsOtaLastCheck">-</span>
+                                        <span id="spanSettingsOtaLastCheck">{{ ota_last_check_time|default:"-" }}</span>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -430,7 +430,7 @@
                                         <p class="bold">{% translate 'Status' %}</p>
                                     </div>
                                     <div class="col">
-                                        <span id="spanSettingsOtaStatus">-</span>
+                                        <span id="spanSettingsOtaStatus">{{ ota_status|default:"-" }}</span>
                                     </div>
                                 </div>
                                 <div class="row pt-2">

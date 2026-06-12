@@ -507,6 +507,15 @@ def settings(request):
             except Exception as ex:
                 return bad_json(message=f'Error in GET {endpoint}: {ex.__str__()}')
 
+    ota_status = get_pdu_local_data('settings/update-status') or {}
+    data['ota_installed_version'] = ota_status.get('installed_version') or '-'
+    data['ota_available_version'] = ota_status.get('available_version') or '-'
+    data['ota_last_check_time'] = ota_status.get('last_check_time') or '-'
+    data['ota_status'] = ota_status.get(
+        'ota_status', ota_status.get('status', 'idle')) or '-'
+    if ota_status.get('last_error'):
+        data['ota_status'] = f"{data['ota_status']} ({ota_status['last_error']})"
+
     return render(request, 'settings.html', data)
 
 
