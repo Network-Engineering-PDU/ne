@@ -360,9 +360,7 @@ let SETTINGS = {
             url: SETTINGS.url,
             type: 'POST',
             data: {
-                'endpoint': 'settings/update-status',
-                'method': 'GET',
-                'refresh': '1',
+                'endpoint': 'settings/ota-check-now',
             },
             dataType: 'json',
             timeout: 30000,
@@ -377,6 +375,7 @@ let SETTINGS = {
                 elem.attr('disabled', false).html(originalText);
                 if (response.result === 'ok') {
                     SETTINGS.render_ota_status(response);
+                    SETTINGS.get_ota_status(false, false);
                 } else {
                     alert(response.message || 'OTA check failed');
                 }

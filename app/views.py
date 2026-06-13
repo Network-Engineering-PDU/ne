@@ -429,6 +429,9 @@ def settings(request):
                                 'last_check_time': resp.get('last_check_time', ''),
                                 'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
                                 'last_error': resp.get('last_error', ''),
+                                'download_progress': resp.get('download_progress', 0),
+                                'update_phase': resp.get('update_phase', 'idle'),
+                                'pending_source': resp.get('pending_source', ''),
                             })
                         return ok_json(data={'message': "Changes saved successfully"})
 
