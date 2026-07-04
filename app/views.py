@@ -40,13 +40,21 @@ def get_pdu_base_urls():
             yield url
 
 
-def get_pdu_local_data(endpoint):
+def get_pdu_local_data(endpoint, params=None, timeout=5):
+    """Try configured PDU base URLs and return parsed JSON or None.
+
+    Accepts optional query `params` and a `timeout` in seconds. Uses the
+    existing candidates generator so it will try the configured remote PDU
+    URL first and fall back to localhost. Exceptions are logged and the
+    function returns None on failure.
+    """
     for base_url in get_pdu_base_urls():
         try:
             response = requests.get(
                 f"{base_url}/{endpoint}",
+                params=params,
                 verify=False,
-                timeout=5,
+                timeout=timeout,
             )
             if response.status_code == 200:
                 return response.json()
@@ -445,14 +453,16 @@ def settings(request):
             method = request.POST['method']
             try:
                 if method == 'GET':
-                    # dynamic GET request
+                    # dynamic GET request using local helper (tries configured PDU
+                    # URLs and falls back to localhost). Use a short timeout so the
+                    # Django process doesn't block the UI for long.
                     params = None
                     if endpoint == 'settings/update-status' and request.POST.get('refresh') in ('1', 'true', 'True'):
                         params = {'refresh': 'true'}
-                    response = requests.get(
-                        f'{BASE_URL_PDU}/{endpoint}', params=params, verify=False, timeout=30)
-                    if response.status_code == 200:
-                        resp = response.json()
+                    resp = get_pdu_local_data(endpoint, params=params, timeout=30)
+                    if resp is not None:
+                        # already parsed JSON
+                        pass
                         # settings/system-info
                         if endpoint == 'settings/system-info':
                             return ok_json(data={
@@ -497,7 +507,7 @@ def settings(request):
                                 'pending_source': resp.get('pending_source', ''),
                             })
 
-                    return bad_json(message=f'Error in GET {endpoint}: {response.text}')
+                    return bad_json(message=f'Error in GET {endpoint}: PDU did not respond')
                 # PUT
                 else:
                     # dynamic PUT request with payloads (for all endpoints)
