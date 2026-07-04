@@ -326,9 +326,6 @@ let SETTINGS = {
             success: function(response) {
                 if (response.result === 'ok') {
                     SETTINGS.render_ota_status(response);
-                    if (refresh === false && !response.last_check_time) {
-                        SETTINGS.get_ota_status(true, false);
-                    }
                 } else {
                     SETTINGS.render_ota_status({});
                     if (response.message) {
@@ -474,7 +471,7 @@ $(function() {
     // PDU Info
     SETTINGS.get_pdu_info();
     // OTA
-    SETTINGS.get_ota_status(true);
+    SETTINGS.get_ota_status(false);
     SETTINGS.start_ota_status_polling();
 
 });
