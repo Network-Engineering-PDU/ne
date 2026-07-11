@@ -13,13 +13,15 @@ from django.utils.translation import gettext_lazy as _
 def convert_str_to_datetime(s):
     """
     Convert str to datetime
-    :param s: str ex: "31/12/2020 12:40" or "31/12/20 12:40"
+    :param s: str ex: "31/12/2020 12:40" or "31/12/2020 12:40:15"
     :return: datetime
     """
-    try:
-        return make_aware(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M"))
-    except ValueError:
-        return make_aware(datetime.datetime.strptime(s, "%d/%m/%Y %H:%M"))
+    for fmt in ("%d/%m/%Y %H:%M:%S", "%d/%m/%Y %H:%M"):
+        try:
+            return make_aware(datetime.datetime.strptime(s, fmt))
+        except ValueError:
+            pass
+    raise ValueError(f"time data {s!r} does not match supported formats")
 
 
 def convert_str_to_date(s):

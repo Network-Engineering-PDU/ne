@@ -286,6 +286,7 @@ def _run_bluez_loop() -> None:
 
     if not BLUEZ_AVAILABLE:
         _last_error = 'python3-dbus is not installed on this host'
+        time.sleep(5)
         return
 
     bus = dbus.SystemBus()
@@ -329,7 +330,7 @@ def _reading_from_cache(mac: str) -> Optional[dict]:
             return None
         data = dict(cache)
 
-    dt_str = datetime.now().strftime('%d/%m/%Y %H:%M')
+    dt_str = datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     out = {
         'mac_address': mac,
         'datetime': dt_str,
