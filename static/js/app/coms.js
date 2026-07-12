@@ -64,32 +64,6 @@ let COMS = {
     url: `/${LANG_CODE}/coms/`,
     url_hosts: `/${LANG_CODE}/hosts/`,
 
-    wait_for_web_ui: function (elem, originalText, attempt) {
-        attempt = attempt || 0;
-        $.ajax({
-            url: `${COMS.url}?_=${Date.now()}`,
-            type: 'GET',
-            cache: false,
-            timeout: 3000,
-            success: function () {
-                window.location.reload();
-            },
-            error: function () {
-                if (attempt < 40) {
-                    setTimeout(function () {
-                        COMS.wait_for_web_ui(elem, originalText, attempt + 1);
-                    }, 1500);
-                    return;
-                }
-
-                if (elem !== undefined) {
-                    elem.attr('disabled', false).html(originalText);
-                }
-                alert('Network settings were applied, but the web UI is not reachable yet. Please check the cable/IP and try again.');
-            }
-        });
-    },
-
     // Mpdbus Add
     get_modbus_addr: function () {
         /*
@@ -344,25 +318,23 @@ let COMS = {
             },
             dataType: 'json',
             beforeSend: function (){
-                if (elem !== undefined){
-                    elem.attr('disabled', true).html(SPINNER_SM_DARK);
-                }
+                elem.attr('disabled', true).html(SPINNER_SM_DARK);
             },
             success: function(response) {
                 if (response.result === 'ok'){
                     console.log(response.message);
                     setTimeout(function() {
-                        COMS.wait_for_web_ui(elem, originalText);
+                        elem.attr('disabled', false).html(originalText);
                     }, 1500);
                 }else{
-                    if (elem !== undefined){
-                        elem.attr('disabled', false).html(originalText);
-                    }
                     alert('Warning: ' + response.message);
                 }
             },
             error: function (response) {
-                COMS.wait_for_web_ui(elem, originalText);
+                if (elem !== undefined){
+                    elem.attr('disabled', false).html(originalText);
+                }
+                alert('Error: ' + response.message);
             }
         });
     },
@@ -801,3 +773,4 @@ $(function() {
     // COMS.get_snmp_setup();
 
 });
+
