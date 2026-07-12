@@ -513,7 +513,7 @@ def settings(request):
                     # dynamic PUT request with payloads (for all endpoints)
                     payload = json.loads(request.POST['payload'])
                     response = requests.put(f'{BASE_URL_PDU}/{endpoint}', json=payload, verify=False)
-                    if response.status_code == 200:
+                    if response.status_code in (200, 202):
                         return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})
                     return bad_json(message=f'Error in {method} {endpoint}: {response.text}')
 
@@ -650,7 +650,7 @@ def coms(request):
                         else:
                             payload['type'] = 5  # WIFI_STATIC
                     response = requests.put(f'{BASE_URL_PDU}/{endpoint}', json=payload, verify=False)
-                    if response.status_code == 200:
+                    if response.status_code in (200, 202):
                         return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})
                     return bad_json(message=f'Error in {method} {endpoint}: {response.text}')
 

@@ -6,7 +6,8 @@ from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 
 from app.helpers import convert_str_to_datetime
-from app.models import DataSummary, DataInput, DataOutput, Input, Output, Sensor, DataSensor
+from app.models import DataSummary, DataInput, DataOutput, Input, Output, Sensor
+from app.sensor_ble_service import save_sensor_readings
 from rest.serializer import SensorSerializer
 
 
@@ -224,93 +225,19 @@ class SensorsDataViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewset
     """
     def create(self, request, *args, **kwargs):
         try:
-            with transaction.atomic():
-
-                data = request.data.get('data', [])
-                if not data:
-                    return Response({
-                        'result': 'ERROR',
-                        'detail': 'data is missing or empty'
-                    }, status=status.HTTP_400_BAD_REQUEST)
-
-                data_sensors_objects = []
-                for elem in data:
-                    try:
-                        sensor, _ = Sensor.objects.get_or_create(mac_address=re.sub(r'[^\w]', '', elem['mac_address']))
-
-                        data_datetime = convert_str_to_datetime(elem['datetime'])
-
-                        # Sensors not power (regular procedure we were doing so far)
-                        try:
-                            temperature = round(int(elem['temperature']) / 100, 2)
-                            if temperature > 100:
-                                temperature = None
-                        except:
-                            temperature = None
-
-                        try:
-                            humidity = int(elem['humidity'])
-                            if humidity > 100:
-                                humidity = None
-                        except:
-                            humidity = None
-
-                        try:
-                            pressure = round(int(elem['pressure']) / 100, 2)
-                            if pressure == 0:
-                                pressure = None
-                        except:
-                            pressure = None
-
-                        try:
-                            rssi = elem['rssi']
-                        except:
-                            rssi = None
-
-                        try:
-                            battery = round(elem['battery'] / 1000, 2)
-                        except:
-                            battery = None
-
-                        # add payload to DataSensor objs
-                        data_sensors_objects.append(
-                            DataSensor(
-                                sensor=sensor,
-                                data_datetime=data_datetime,
-                                temperature=temperature,
-                                humidity=humidity,
-                                pressure=pressure,
-                                rssi=rssi,
-                                battery=battery,
-                            )
-                        )
-
-                        # save last time when sensor received data
-                        sensor.last_data_received = data_datetime
-                        sensor.last_battery_value = battery
-                        sensor.save()
-
-                    except Exception as ex:
-                        print(ex.__str__())
-
-                if data_sensors_objects:
-                    DataSensor.objects.bulk_create(data_sensors_objects)
-
-                # delete old data (only keep last 60 mins of data)
-                most_recent_data_datetime = DataSensor.objects.latest('data_datetime').data_datetime
-                last_hour_data_datetime = most_recent_data_datetime - datetime.timedelta(minutes=60)
-                DataSensor.objects.filter(data_datetime__lte=last_hour_data_datetime).delete()
-
+            data = request.data.get('data', [])
+            if not data:
                 return Response({
-                    'result': 'OK',
-                    'detail': 'Data succesfully saved!',
-                }, status=status.HTTP_200_OK)
+                    'result': 'ERROR',
+                    'detail': 'data is missing or empty'
+                }, status=status.HTTP_400_BAD_REQUEST)
 
-        except IntegrityError:
+            saved = save_sensor_readings(data)
             return Response({
-                'result': 'Duplication Error',
-                'detail': f'Sensor {sensor} and datetime {data_datetime} already exist in the database'
-            }, status=status.HTTP_400_BAD_REQUEST)
+                'result': 'OK',
+                'detail': 'Data succesfully saved!',
+                'saved': saved,
+            }, status=status.HTTP_200_OK)
 
         except Exception as ex:
             return Response({
