@@ -72,21 +72,73 @@
     });
 
     // ---- Software update ----------------------------------------------------
+    const BADGE_KIND = {ok: 'ok', info: 'info', warning: 'warning', error: 'error'};
+    let updateActive = false;      // an update is running: poll faster, lock the controls
+    let wasActive = false;
+
+    function describe(summary) {
+        let text = NE.t('upd_' + summary.key);
+        if (summary.key === 'downloading') { text += ' ' + summary.params.percent + '%'; }
+        if (summary.params.source && ['staging', 'installing', 'pendingConfirm'].includes(summary.key)) {
+            text += ' (' + NE.t('src_' + summary.params.source, summary.params.source) + ')';
+        }
+        if (summary.key === 'failed' && summary.params.error) { text += ': ' + summary.params.error; }
+        return text;
+    }
+
+    function setUpdateBusy(active) {
+        updateActive = active;
+        $('btnOtaCheck').disabled = active;
+        const upload = $('formUpload').querySelector('button[type="submit"]');
+        upload.disabled = active;
+        upload.title = active ? NE.t('updateBusy') : '';
+    }
+
+    function renderSummary(st) {
+        const summary = UpdateStatus.summarize(st);
+        const badge = $('otaStatus');
+        badge.textContent = describe(summary);
+        badge.className = 'ne-badge ' + (BADGE_KIND[summary.kind] || '');
+        $('otaDetail').textContent = '';
+        $('otaProgressWrap').hidden = summary.progress === null;
+        if (summary.progress !== null) { $('otaProgress').style.width = summary.progress + '%'; }
+        $('otaPending').hidden = summary.key !== 'pendingConfirm';
+        setUpdateBusy(summary.active);
+        wasActive = summary.active;
+    }
+
     function fillUpdate(st) {
         setText('otaInstalled', st.installed_version); setText('otaAvailable', st.available_version);
         setText('otaLast', st.last_check_time);
-        setText('otaStatus', st.last_error ? st.ota_status + ' (' + st.last_error + ')' : st.ota_status);
-        $('otaPending').hidden = !st.is_pending;
+        renderSummary(st);
         if (document.activeElement && document.activeElement.closest('#formUpdate')) { return; }   // do not overwrite edits
         $('otaEnabled').checked = !!st.ota_enabled; $('otaAuto').checked = !!st.auto_update;
         $('otaInterval').value = st.check_interval_hours; $('otaServer').value = st.update_server || '';
     }
 
-    async function loadUpdate() { fillUpdate(await NE.api('GET', 'settings/update-status')); }
+    async function loadUpdate() {
+        try {
+            fillUpdate(await NE.api('GET', 'settings/update-status'));
+        } catch (err) {
+            // Mid update the PDU restarts its services (or reboots): say so instead of keeping an old status
+            if (wasActive) {
+                const badge = $('otaStatus');
+                badge.textContent = NE.t('upd_restarting'); badge.className = 'ne-badge warning';
+            }
+            throw err;
+        }
+    }
+
+    // Poll every 2 s while an update is running, otherwise every 15 s.
+    (function pollUpdate() {
+        const next = () => setTimeout(pollUpdate, updateActive || wasActive ? 2000 : 15000);
+        if (document.hidden) { next(); return; }
+        loadUpdate().then(next, next);
+    })();
 
     $('btnOtaCheck').addEventListener('click', async () => {
         const btn = $('btnOtaCheck');
-        btn.disabled = true; setText('otaStatus', NE.t('checking'));
+        btn.disabled = true; $('otaStatus').textContent = NE.t('checking'); $('otaStatus').className = 'ne-badge info';
         const st = await guarded(() => NE.api('POST', 'settings/ota-check-now'), NE.t('loadFailed'));
         btn.disabled = false;
         if (st) { fillUpdate(st); } else { loadUpdate().catch(() => {}); }
@@ -130,7 +182,7 @@
         button.disabled = true;
         const res = await postToSettings({endpoint: form.getAttribute('data-endpoint')}, file);
         button.disabled = false;
-        if (res.result === 'ok') { NE.toast(res.message || NE.t('saved'), 'ok'); input.value = ''; }
+        if (res.result === 'ok') { NE.toast(res.message || NE.t('saved'), 'ok'); input.value = ''; loadUpdate().catch(() => {}); }
         else { NE.toast(res.message || NE.t('uploadFailed'), 'error'); }
     }
 
@@ -149,8 +201,7 @@
     $('btnFactory').addEventListener('click', () => maintenance('settings/factory-reset', NE.t('factoryTitle'), NE.t('factoryQ'), true));
 
     // ---- Init ---------------------------------------------------------------
-    [loadPdu, loadDisplay, loadUpdate].forEach((loader) => {
+    [loadPdu, loadDisplay].forEach((loader) => {
         loader().catch((err) => NE.toast(NE.t('loadFailed') + (err.message ? ': ' + err.message : ''), 'error'));
     });
-    NE.poll(() => loadUpdate(), 15000);
 })();

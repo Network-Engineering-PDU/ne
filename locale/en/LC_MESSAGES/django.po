@@ -1603,3 +1603,55 @@ msgstr "Saving an address restarts the Modbus service and turns it on."
 #: templates/base.html
 msgid "Redes"
 msgstr "Networks"
+
+#: templates/settings.html
+msgid "Sin actividad"
+msgstr "Idle"
+
+#: templates/settings.html
+msgid "Preparando la actualización"
+msgstr "Preparing the update"
+
+#: templates/settings.html
+msgid "Instalando la actualización. No apague el PDU."
+msgstr "Installing the update. Do not power off the PDU."
+
+#: templates/settings.html
+msgid "Descargando"
+msgstr "Downloading"
+
+#: templates/settings.html
+msgid "Verificando la actualización"
+msgstr "Verifying the update"
+
+#: templates/settings.html
+msgid "Actualización instalada. Reinicie el PDU para terminar."
+msgstr "Update installed. Reboot the PDU to finish."
+
+#: templates/settings.html
+msgid "Esperando la confirmación en la pantalla del PDU"
+msgstr "Waiting for confirmation on the PDU screen"
+
+#: templates/settings.html
+msgid "Buscando actualizaciones"
+msgstr "Checking for updates"
+
+#: templates/settings.html
+msgid "La actualización ha fallado"
+msgstr "The update failed"
+
+#: templates/settings.html
+msgid "El PDU no responde. Puede estar reiniciándose."
+msgstr "The PDU is not responding. It may be restarting."
+
+#: templates/settings.html
+msgid "archivo subido"
+msgstr "uploaded file"
+
+#: templates/settings.html
+msgid "en línea"
+msgstr "online"
+
+#: templates/settings.html
+msgid "Hay una actualización en curso"
+msgstr "An update is in progress"

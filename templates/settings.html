@@ -87,7 +87,8 @@
                 <dt>{% translate 'Versión instalada' %}</dt><dd id="otaInstalled">-</dd>
                 <dt>{% translate 'Versión disponible' %}</dt><dd id="otaAvailable">-</dd>
                 <dt>{% translate 'Última comprobación' %}</dt><dd id="otaLast">-</dd>
-                <dt>{% translate 'Estado' %}</dt><dd id="otaStatus">-</dd>
+                <dt>{% translate 'Estado' %}</dt><dd><span class="ne-badge" id="otaStatus" role="status">-</span> <span class="ne-muted" id="otaDetail"></span>
+                    <div class="progress mt-2" id="otaProgressWrap" hidden><div class="progress-bar bg-success" id="otaProgress" style="width:0"></div></div></dd>
             </dl>
             <div class="ne-alert warning mt-3" id="otaPending" hidden><svg class="ne-icon"><use href="#i-warn"/></svg>
                 <span>{% translate 'Hay una actualización pendiente. Confírmela en la pantalla del PDU.' %}</span></div>
@@ -160,9 +161,24 @@
             factoryQ: "{% translate '¿Seguro que desea restablecer los valores de fábrica? Se perderán todos los ajustes.' as s %}{{ s|escapejs }}",
             requestSent: "{% translate 'Solicitud enviada' as s %}{{ s|escapejs }}",
             rotationRestart: "{% translate 'Al cambiar la orientación la aplicación de la pantalla se reinicia. ¿Continuar?' as s %}{{ s|escapejs }}",
-            checking: "{% translate 'Buscando actualizaciones...' as s %}{{ s|escapejs }}"
+            checking: "{% translate 'Buscando actualizaciones...' as s %}{{ s|escapejs }}",
+            upd_idle: "{% translate 'Sin actividad' as s %}{{ s|escapejs }}",
+            upd_staging: "{% translate 'Preparando la actualización' as s %}{{ s|escapejs }}",
+            upd_installing: "{% translate 'Instalando la actualización. No apague el PDU.' as s %}{{ s|escapejs }}",
+            upd_downloading: "{% translate 'Descargando' as s %}{{ s|escapejs }}",
+            upd_verifying: "{% translate 'Verificando la actualización' as s %}{{ s|escapejs }}",
+            upd_pendingReboot: "{% translate 'Actualización instalada. Reinicie el PDU para terminar.' as s %}{{ s|escapejs }}",
+            upd_pendingConfirm: "{% translate 'Esperando la confirmación en la pantalla del PDU' as s %}{{ s|escapejs }}",
+            upd_checking: "{% translate 'Buscando actualizaciones' as s %}{{ s|escapejs }}",
+            upd_failed: "{% translate 'La actualización ha fallado' as s %}{{ s|escapejs }}",
+            upd_restarting: "{% translate 'El PDU no responde. Puede estar reiniciándose.' as s %}{{ s|escapejs }}",
+            src_web: "{% translate 'archivo subido' as s %}{{ s|escapejs }}",
+            src_usb: "USB",
+            src_ota: "{% translate 'en línea' as s %}{{ s|escapejs }}",
+            updateBusy: "{% translate 'Hay una actualización en curso' as s %}{{ s|escapejs }}"
         });
         const SETTINGS_URL = "{% url 'settings' %}";
     </script>
+    <script src="{% static_v 'js/app/update_status.js' %}"></script>
     <script src="{% static_v 'js/app/settings_page.js' %}"></script>
 {% endblock %}
