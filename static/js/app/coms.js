@@ -949,8 +949,7 @@ let COMS = {
 $(function() {
 
     // COMS
-    // Modbus
-    COMS.get_modbus_addr();
+    // Modbus and SNMP are handled by coms_extra.js
     // Services
     COMS.get_services();
     // Network Setup

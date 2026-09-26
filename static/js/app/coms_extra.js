@@ -119,3 +119,137 @@
     loadNtp(false);
     NE.poll(() => { loadNtp(true); return loadBt(); }, 3000);
 })();
+
+/* SNMP and Modbus cards. SNMP uses the same endpoint as the touchscreen
+   (network/snmp/display-settings); passwords are write-only. */
+(function () {
+    const $ = (id) => document.getElementById(id);
+    const RE_COMMUNITY = /^[A-Za-z0-9_.-]{1,64}$/;
+    const RE_USER = /^[A-Za-z0-9_.-]{1,32}$/;
+    const RE_PASSWORD = /^[A-Za-z0-9_.@#%+=:-]{8,64}$/;
+    const RE_HOST_LABEL = /^[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?$/;
+    const managers = () => Array.from(document.querySelectorAll('#formSnmp [data-mgr]'));
+    let loaded = null;   // last configuration from the PDU
+
+    function validTarget(value) {
+        if (!value) { return true; }
+        const parts = value.replace(/\.$/, '').split('.');
+        if (parts.length === 4 && parts.every((p) => /^\d{1,3}$/.test(p))) { return parts.every((p) => Number(p) <= 255); }
+        return !parts.every((p) => /^\d+$/.test(p)) && parts.every((p) => RE_HOST_LABEL.test(p));
+    }
+
+    function syncVisibility() {
+        const v3 = $('snmpVersion').value === 'V3';
+        const level = $('snmpV3Level').value;
+        $('rowCommunity').hidden = v3;
+        $('blockV3').hidden = !v3;
+        $('rowAuth').hidden = level === 'noAuthNoPriv';
+        $('rowPriv').hidden = level !== 'authPriv';
+        $('snmpPwdHint').hidden = level === 'noAuthNoPriv';
+        const keep = !!(loaded && loaded.v3_configured && $('snmpV3User').value.trim() === loaded.v3_user);
+        ['snmpV3AuthPwd', 'snmpV3PrivPwd'].forEach((id) => { $(id).placeholder = keep ? NE.t('snmpPwdKeep') : ''; });
+    }
+
+    function fill(cfg) {
+        loaded = cfg;
+        $('snmpEnabled').checked = !!cfg.enabled;
+        $('snmpVersion').value = cfg.version;
+        $('snmpCommunity').value = cfg.community || '';
+        $('snmpSet').checked = !!cfg.set_enabled;
+        $('snmpTraps').checked = !!cfg.traps_enabled;
+        managers().forEach((el, i) => { el.value = cfg['manager_' + (i + 1)] || ''; });
+        $('snmpV3User').value = cfg.v3_user || '';
+        $('snmpV3Level').value = cfg.v3_security_level;
+        $('snmpV3AuthAlg').value = cfg.v3_auth_algorithm;
+        $('snmpV3PrivAlg').value = cfg.v3_privacy_algorithm;
+        $('snmpV3AuthPwd').value = ''; $('snmpV3PrivPwd').value = '';
+        syncVisibility();
+    }
+
+    async function loadSnmp() {
+        try { fill(await NE.api('GET', 'network/snmp/display-settings')); }
+        catch (err) { NE.toast(NE.t('loadFailed', 'Could not load SNMP') + (err.message ? ': ' + err.message : ''), 'error'); }
+    }
+
+    ['snmpVersion', 'snmpV3Level'].forEach((id) => $(id).addEventListener('change', syncVisibility));
+    $('snmpV3User').addEventListener('input', syncVisibility);
+
+    function invalid(id, messageKey) { NE.toast(NE.t(messageKey), 'error'); $(id).focus(); return false; }
+
+    function collect() {
+        const version = $('snmpVersion').value;
+        const community = $('snmpCommunity').value.trim() || (loaded && loaded.community) || '';
+        if (version !== 'V3' && !RE_COMMUNITY.test(community)) { return invalid('snmpCommunity', 'snmpCommunityInvalid'); }
+        for (const el of managers()) {
+            if (!validTarget(el.value.trim())) { return invalid(el.id, 'snmpMgrInvalid'); }
+        }
+        const body = {
+            enabled: $('snmpEnabled').checked, version: version, set_enabled: $('snmpSet').checked,
+            community: RE_COMMUNITY.test(community) ? community : (loaded && RE_COMMUNITY.test(loaded.community) ? loaded.community : 'public'), traps_enabled: $('snmpTraps').checked,
+            v3_security_level: $('snmpV3Level').value, v3_auth_algorithm: $('snmpV3AuthAlg').value,
+            v3_privacy_algorithm: $('snmpV3PrivAlg').value,
+        };
+        managers().forEach((el, i) => { body['manager_' + (i + 1)] = el.value.trim() || null; });
+        if (version === 'V3') {
+            const user = $('snmpV3User').value.trim();
+            if (!RE_USER.test(user)) { return invalid('snmpV3User', 'snmpUserInvalid'); }
+            body.v3_user = user;
+            const sameUser = !!(loaded && loaded.v3_configured && loaded.v3_user === user);
+            const level = body.v3_security_level;
+            const auth = $('snmpV3AuthPwd').value; const priv = $('snmpV3PrivPwd').value;
+            if (level !== 'noAuthNoPriv') {
+                if (auth || !sameUser) { if (!RE_PASSWORD.test(auth)) { return invalid('snmpV3AuthPwd', 'snmpPwdInvalid'); } body.v3_auth_password = auth; }
+            }
+            if (level === 'authPriv') {
+                if (priv || !sameUser) { if (!RE_PASSWORD.test(priv)) { return invalid('snmpV3PrivPwd', 'snmpPwdInvalid'); } body.v3_privacy_password = priv; }
+            }
+        }
+        return body;
+    }
+
+    $('formSnmp').addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const body = collect();
+        if (!body) { return; }
+        const button = $('snmpSave');
+        button.disabled = true;
+        try {
+            fill(await NE.api('PUT', 'network/snmp/display-settings', body));
+            NE.toast(NE.t('saved'), 'ok');
+        } catch (err) {
+            NE.toast(err.status === 500 ? NE.t('snmpApplyFailed') : NE.t('saveFailed') + (err.message ? ': ' + err.message : ''), 'error');
+            if (err.status === 500) { loadSnmp(); }
+        } finally {
+            button.disabled = false;
+        }
+    });
+
+    // ---- Modbus --------------------------------------------------------------
+    async function loadModbus() {
+        try {
+            const [addr, services] = await Promise.all([NE.api('GET', 'settings/modbus'), NE.api('GET', 'network/services')]);
+            if (document.activeElement !== $('modbusAddr')) { $('modbusAddr').value = addr.addr; }
+            $('modbusEnabled').checked = !!services.modbus;
+        } catch (err) { /* keep the current values */ }
+    }
+
+    $('modbusEnabled').addEventListener('change', async () => {
+        const enable = $('modbusEnabled').checked;
+        try { await NE.api('POST', 'settings/' + (enable ? 'start' : 'stop') + '-modbus'); }
+        catch (err) { NE.toast(NE.t('modbusFailed'), 'error'); }
+        await loadModbus();
+    });
+
+    $('formModbus').addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const text = $('modbusAddr').value.trim();
+        const addr = Number(text);
+        if (text === '' || !Number.isInteger(addr) || addr < 0 || addr > 255) { NE.toast(NE.t('modbusAddrInvalid'), 'error'); $('modbusAddr').focus(); return; }
+        try { await NE.api('PUT', 'settings/modbus', {addr: addr}); NE.toast(NE.t('saved'), 'ok'); }
+        catch (err) { NE.toast(NE.t('saveFailed') + (err.message ? ': ' + err.message : ''), 'error'); }
+        await loadModbus();
+    });
+
+    loadSnmp();
+    loadModbus();
+})();

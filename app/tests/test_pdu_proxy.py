@@ -23,6 +23,10 @@ class AllowlistTests(TestCase):
             ("POST", "alarms/ack"), ("PUT", "display-config"),
             ("POST", "settings/bluetooth/devices/AA:BB:CC:DD:EE:FF/pair"),
             ("PUT", "settings/pdu-info"),
+            ("GET", "network/snmp/display-settings"),
+            ("PUT", "network/snmp/display-settings"),
+            ("PUT", "settings/modbus"),
+            ("POST", "settings/start-modbus"),
         ]
         denied = [
             ("DELETE", "outputs/3/switch-status"),
@@ -33,6 +37,8 @@ class AllowlistTests(TestCase):
             ("POST", "settings/bluetooth/devices/not-a-mac/pair"),
             ("POST", "settings/bluetooth/devices/AA:BB:CC:DD:EE:FF/../x"),
             ("GET", "network/interfaces"),
+            ("GET", "network/snmp/detailed-settings"),   # raw passwords live there
+            ("POST", "settings/start-ssh"),
             ("PUT", "alarms"),
             ("GET", "openapi.json"),
         ]

@@ -52,7 +52,15 @@
             ntpNotSynced: "{% translate 'Sin sincronizar' as s %}{{ s|escapejs }}",
             ntpOff: "{% translate 'Desactivado' as s %}{{ s|escapejs }}",
             ntpServerRequired: "{% translate 'El servidor NTP es obligatorio' as s %}{{ s|escapejs }}",
-            saveFailed: "{% translate 'No se pudieron guardar los cambios' as s %}{{ s|escapejs }}"
+            saveFailed: "{% translate 'No se pudieron guardar los cambios' as s %}{{ s|escapejs }}",
+            snmpApplyFailed: "{% translate 'La configuración SNMP se guardó pero no se pudo aplicar.' as s %}{{ s|escapejs }}",
+            snmpCommunityInvalid: "{% translate 'La comunidad debe tener 1-64 caracteres (letras, números, . _ -).' as s %}{{ s|escapejs }}",
+            snmpUserInvalid: "{% translate 'El usuario SNMPv3 debe tener 1-32 caracteres (letras, números, . _ -).' as s %}{{ s|escapejs }}",
+            snmpPwdInvalid: "{% translate 'La contraseña SNMPv3 debe tener 8-64 caracteres (letras, números y . _ @ # % + = : -).' as s %}{{ s|escapejs }}",
+            snmpMgrInvalid: "{% translate 'Gestor de traps no válido. Use una dirección IPv4 o un nombre DNS.' as s %}{{ s|escapejs }}",
+            snmpPwdKeep: "{% translate 'Sin cambios' as s %}{{ s|escapejs }}",
+            modbusAddrInvalid: "{% translate 'La dirección Modbus debe ser un entero entre 0 y 255.' as s %}{{ s|escapejs }}",
+            modbusFailed: "{% translate 'No se pudo cambiar el servicio Modbus' as s %}{{ s|escapejs }}"
         });
     </script>
     <script src="{% static 'js/app/coms.js' %}"></script>
@@ -262,42 +270,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold pt-2">
-                                    {% translate 'SNMP' %}
-                                </p>
-                            </div>
-                            <div class="col">
-                                <div class="form-check form-switch">
-                                    <input id="checkboxComsSNMPEnable" class="large-chexbox form-check-input" onclick="COMS.update_service($(this), 'snmp');" type="checkbox">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold pt-2">
-                                    {% translate 'Modbus' %}
-                                </p>
-                            </div>
-                            <div class="col">
-                                <div class="form-check form-switch">
-                                    <input id="checkboxComsModbusEnable" class="large-chexbox form-check-input" onclick="COMS.update_service($(this), 'modbus');" type="checkbox">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold">
-                                    {% translate 'Dirección Modbus' %}
-                                </p>
-                            </div>
-                            <div class="col">
-                                <div class="input-group">
-                                    <input id="inputComsSnmpSetupModbusAddress" onblur="COMS.update_service($(this), 'addr_modbus');" type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
 {#                        <!-- Buttons Save and Discard-->#}
 {#                        <div class="row">#}
 {#                            <div class="col">#}
@@ -501,6 +473,65 @@
                     </div>
                     <div class="ne-list" id="btDevices" aria-live="polite"></div>
                     <div class="ne-empty" id="btEmpty" hidden>{% translate 'No hay dispositivos Bluetooth' %}</div>
+                </section>
+
+                <section class="ne-card" id="snmp" aria-labelledby="snmpTitle">
+                    <h2 class="ne-card-h" id="snmpTitle"><svg class="ne-icon"><use href="#i-network"/></svg>SNMP</h2>
+                    <form id="formSnmp" novalidate>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="snmpEnabled"><span></span></span>{% translate 'Servicio SNMP activado' %}</label></div>
+                        <div class="ne-form-grid">
+                            <div class="ne-field"><label for="snmpVersion">{% translate 'Versión' %}</label>
+                                <select id="snmpVersion" class="form-select"><option value="V1">V1</option><option value="V2c">V2c</option><option value="V3">V3</option></select></div>
+                            <div class="ne-field" id="rowCommunity"><label for="snmpCommunity">{% translate 'Comunidad' %}</label>
+                                <input id="snmpCommunity" class="form-control" maxlength="64" autocomplete="off"></div>
+                        </div>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="snmpSet"><span></span></span>{% translate 'Permitir escritura (SET)' %}</label></div>
+
+                        <div id="blockV3" hidden>
+                            <h3 class="mt-2 mb-2" style="font-size:.95rem">SNMPv3</h3>
+                            <div class="ne-form-grid">
+                                <div class="ne-field"><label for="snmpV3User">{% translate 'Usuario' %}</label>
+                                    <input id="snmpV3User" class="form-control" maxlength="32" autocomplete="off"></div>
+                                <div class="ne-field"><label for="snmpV3Level">{% translate 'Nivel de seguridad' %}</label>
+                                    <select id="snmpV3Level" class="form-select"><option value="noAuthNoPriv">noAuthNoPriv</option><option value="authNoPriv">authNoPriv</option><option value="authPriv">authPriv</option></select></div>
+                            </div>
+                            <div class="ne-form-grid" id="rowAuth">
+                                <div class="ne-field"><label for="snmpV3AuthAlg">{% translate 'Algoritmo de autenticación' %}</label>
+                                    <select id="snmpV3AuthAlg" class="form-select"><option>MD5</option><option>SHA</option></select></div>
+                                <div class="ne-field"><label for="snmpV3AuthPwd">{% translate 'Contraseña de autenticación' %}</label>
+                                    <input id="snmpV3AuthPwd" type="password" class="form-control" maxlength="64" autocomplete="new-password"></div>
+                            </div>
+                            <div class="ne-form-grid" id="rowPriv">
+                                <div class="ne-field"><label for="snmpV3PrivAlg">{% translate 'Algoritmo de privacidad' %}</label>
+                                    <select id="snmpV3PrivAlg" class="form-select"><option>DES</option><option>AES</option></select></div>
+                                <div class="ne-field"><label for="snmpV3PrivPwd">{% translate 'Contraseña de privacidad' %}</label>
+                                    <input id="snmpV3PrivPwd" type="password" class="form-control" maxlength="64" autocomplete="new-password"></div>
+                            </div>
+                            <p class="ne-hint" id="snmpPwdHint">{% translate 'Mínimo 8 caracteres. Déjela vacía para conservar la actual.' %}</p>
+                        </div>
+
+                        <h3 class="mt-2 mb-2" style="font-size:.95rem">{% translate 'Alarmas SNMP Trap' %}</h3>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="snmpTraps"><span></span></span>{% translate 'Enviar traps' %}</label></div>
+                        <div class="ne-form-grid">
+                            <div class="ne-field"><label for="snmpMgr1">{% translate 'Gestor' %} 1</label><input id="snmpMgr1" data-mgr class="form-control" maxlength="253" autocomplete="off" placeholder="192.168.1.10"></div>
+                            <div class="ne-field"><label for="snmpMgr2">{% translate 'Gestor' %} 2</label><input id="snmpMgr2" data-mgr class="form-control" maxlength="253" autocomplete="off"></div>
+                            <div class="ne-field"><label for="snmpMgr3">{% translate 'Gestor' %} 3</label><input id="snmpMgr3" data-mgr class="form-control" maxlength="253" autocomplete="off"></div>
+                            <div class="ne-field"><label for="snmpMgr4">{% translate 'Gestor' %} 4</label><input id="snmpMgr4" data-mgr class="form-control" maxlength="253" autocomplete="off"></div>
+                        </div>
+                        <span class="ne-hint">{% translate 'Dirección IPv4 o nombre DNS.' %}</span>
+                        <div class="ne-actions mt-3"><button type="submit" class="ne-btn primary" id="snmpSave">{% translate 'Guardar' %}</button></div>
+                    </form>
+                </section>
+
+                <section class="ne-card" id="modbus" aria-labelledby="modbusTitle">
+                    <h2 class="ne-card-h" id="modbusTitle"><svg class="ne-icon"><use href="#i-network"/></svg>Modbus</h2>
+                    <form id="formModbus" novalidate>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="modbusEnabled"><span></span></span>{% translate 'Servicio Modbus activado' %}</label></div>
+                        <div class="ne-field" style="max-width:220px"><label for="modbusAddr">{% translate 'Dirección Modbus' %}</label>
+                            <input id="modbusAddr" type="number" min="0" max="255" class="form-control"><span class="ne-hint">0 – 255</span></div>
+                        <div class="ne-actions"><button type="submit" class="ne-btn primary">{% translate 'Guardar' %}</button></div>
+                        <p class="ne-hint mt-2">{% translate 'Al guardar una dirección el servicio Modbus se reinicia y queda activado.' %}</p>
+                    </form>
                 </section>
 
                 <section class="ne-card" id="ntp" aria-labelledby="ntpTitle">

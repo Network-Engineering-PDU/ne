@@ -42,7 +42,12 @@ const NE = (function () {
         try { data = text ? JSON.parse(text) : null; } catch (err) { data = null; }
         if (!response.ok) {
             const detail = data && (data.detail || data.message);
-            const e = new Error(typeof detail === 'string' ? detail : 'HTTP ' + response.status);
+            let message = 'HTTP ' + response.status;
+            if (typeof detail === 'string') { message = detail; }
+            else if (Array.isArray(detail) && detail.length && detail[0].msg) {
+                message = detail.map((d) => (d.loc ? d.loc.slice(1).join('.') + ': ' : '') + d.msg).join('; ');
+            }
+            const e = new Error(message);
             e.status = response.status;
             throw e;
         }

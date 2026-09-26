@@ -1502,3 +1502,100 @@ msgstr "Changing the orientation restarts the screen application. Continue?"
 #: templates/settings.html
 msgid "Buscando actualizaciones..."
 msgstr "Checking for updates..."
+
+#: templates/coms.html
+msgid "La configuración SNMP se guardó pero no se pudo aplicar."
+msgstr "The SNMP configuration was saved but could not be applied."
+
+#: templates/coms.html
+msgid "La comunidad debe tener 1-64 caracteres (letras, números, . _ -)."
+msgstr "The community must be 1-64 characters (letters, numbers, . _ -)."
+
+#: templates/coms.html
+msgid "El usuario SNMPv3 debe tener 1-32 caracteres (letras, números, . _ -)."
+msgstr "The SNMPv3 user must be 1-32 characters (letters, numbers, . _ -)."
+
+#: templates/coms.html
+msgid ""
+"La contraseña SNMPv3 debe tener 8-64 caracteres (letras, números y . _ @ # %"
+" + = : -)."
+msgstr ""
+"The SNMPv3 password must be 8-64 characters (letters, numbers and . _ @ # % "
+"+ = : -)."
+
+#: templates/coms.html
+msgid "Gestor de traps no válido. Use una dirección IPv4 o un nombre DNS."
+msgstr "Invalid trap manager. Use an IPv4 address or a DNS name."
+
+#: templates/coms.html
+msgid "Sin cambios"
+msgstr "Unchanged"
+
+#: templates/coms.html
+msgid "La dirección Modbus debe ser un entero entre 0 y 255."
+msgstr "The Modbus address must be an integer between 0 and 255."
+
+#: templates/coms.html
+msgid "No se pudo cambiar el servicio Modbus"
+msgstr "Could not change the Modbus service"
+
+#: templates/coms.html
+msgid "Servicio SNMP activado"
+msgstr "SNMP service on"
+
+#: templates/coms.html
+msgid "Comunidad"
+msgstr "Community"
+
+#: templates/coms.html
+msgid "Permitir escritura (SET)"
+msgstr "Allow write access (SET)"
+
+#: templates/coms.html
+msgid "Nivel de seguridad"
+msgstr "Security level"
+
+#: templates/coms.html
+msgid "Algoritmo de autenticación"
+msgstr "Authentication algorithm"
+
+#: templates/coms.html
+msgid "Contraseña de autenticación"
+msgstr "Authentication password"
+
+#: templates/coms.html
+msgid "Algoritmo de privacidad"
+msgstr "Privacy algorithm"
+
+#: templates/coms.html
+msgid "Contraseña de privacidad"
+msgstr "Privacy password"
+
+#: templates/coms.html
+msgid "Mínimo 8 caracteres. Déjela vacía para conservar la actual."
+msgstr "At least 8 characters. Leave empty to keep the current one."
+
+#: templates/coms.html
+msgid "Alarmas SNMP Trap"
+msgstr "SNMP trap alarms"
+
+#: templates/coms.html
+msgid "Enviar traps"
+msgstr "Send traps"
+
+#: templates/coms.html
+msgid "Gestor"
+msgstr "Manager"
+
+#: templates/coms.html
+msgid "Dirección IPv4 o nombre DNS."
+msgstr "IPv4 address or DNS name."
+
+#: templates/coms.html
+msgid "Servicio Modbus activado"
+msgstr "Modbus service on"
+
+#: templates/coms.html
+msgid ""
+"Al guardar una dirección el servicio Modbus se reinicia y queda activado."
+msgstr "Saving an address restarts the Modbus service and turns it on."
