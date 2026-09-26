@@ -438,7 +438,7 @@ def settings(request):
 
 @login_required()
 def coms(request):
-    data = {'title': _('Coms')}
+    data = {'title': _('Redes')}
     add_global_data(request, data)
 
     if request.method == 'POST':

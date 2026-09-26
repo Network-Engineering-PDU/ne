@@ -1599,3 +1599,7 @@ msgstr "Modbus service on"
 msgid ""
 "Al guardar una dirección el servicio Modbus se reinicia y queda activado."
 msgstr "Saving an address restarts the Modbus service and turns it on."
+
+#: templates/base.html
+msgid "Redes"
+msgstr "Networks"

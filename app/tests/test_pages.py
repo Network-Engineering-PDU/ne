@@ -64,3 +64,15 @@ class PageTests(TestCase):
         r = self.client.get(reverse("login"))
         self.assertEqual(200, r.status_code)
         self.assertNotIn("ne-shell", r.content.decode())
+
+
+class NetworksNamingTests(TestCase):
+    def setUp(self):
+        self.client.force_login(User.objects.create_user("nw", password="x"))
+
+    def test_coms_page_is_called_networks(self):
+        for prefix, label in (("/en", "Networks"), ("/es", "Redes")):
+            html = self.client.get(f"{prefix}/coms/").content.decode()
+            self.assertIn(f"</svg>{label}</a>", html, prefix)      # sidebar
+            self.assertRegex(html, rf"<h1[^>]*>\s*{label}\s*</h1>")
+            self.assertNotIn(">Coms<", html, prefix)
