@@ -1,63 +1,74 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load i18n %}
 
 {% block content %}
+<div class="ne-page">
+    <div class="ne-page-head">
+        <h1>{% translate 'Panel' %}</h1>
+        <span class="ne-muted" id="dashUpdated"></span>
+    </div>
 
-    <section>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-4 col-md-6 col-sm-12 ">
-                    <a href="{% url 'inputs' %}">
-                        <button class="cardBig align-items-center">
-                            <div class="entradas text-center"></div>
-                            <p class="text-center">
-                                {% translate 'Entradas' %}
-                            </p>
-                        </button>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <a href="{% url 'outputs' %}">
-                        <button class="cardBig align-items-center">
-                            <div class="salidas text-center"></div>
-                            <p class="text-center">
-                                {% translate 'Salidas' %}
-                            </p>
-                        </button>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <a href="{% url 'settings' %}">
-                        <button class="cardBig align-items-center">
-                            <div class="settings text-center"></div>
-                            <p class="text-center">
-                                {% translate 'Ajustes' %}
-                            </p>
-                        </button>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <a href="{% url 'coms' %}">
-                        <button class="cardBig align-items-center">
-                            <div class="coms text-center"></div>
-                            <p class="text-center">
-                                {% translate 'Coms' %}
-                            </p>
-                        </button>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <a href="{% url 'sensors' %}">
-                        <button class="cardBig align-items-center">
-                            <div class="ambiente text-center"></div>
-                            <p class="text-center">
-                                {% translate 'Sensores' %}
-                            </p>
-                        </button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="ne-grid">
+        <section class="ne-card" aria-labelledby="dashAlarmsTitle">
+            <div class="ne-card-h" id="dashAlarmsTitle"><svg class="ne-icon"><use href="#i-alarm"/></svg>{% translate 'Alarmas' %}
+                <span class="ne-spacer"></span><a class="ne-btn sm" href="{% url 'alarms' %}">{% translate 'Ver todas' %}</a></div>
+            <div class="ne-stat" id="dashAlarmCount">-</div>
+            <div class="ne-muted" id="dashAlarmText">&nbsp;</div>
+            <div class="ne-list mt-3" id="dashAlarmList"></div>
+        </section>
 
+        <section class="ne-card" aria-labelledby="dashPowerTitle">
+            <div class="ne-card-h" id="dashPowerTitle"><svg class="ne-icon"><use href="#i-power"/></svg>{% translate 'Entradas' %}
+                <span class="ne-spacer"></span><a class="ne-btn sm" href="{% url 'inputs' %}">{% translate 'Detalle' %}</a></div>
+            <div class="ne-stat"><span id="dashPower">-</span><small>W</small></div>
+            <div class="ne-muted">{% translate 'Potencia activa total' %}</div>
+            <dl class="ne-kv mt-3">
+                <dt>{% translate 'Energia' %}</dt><dd><span id="dashEnergy">-</span> Wh</dd>
+                <dt>{% translate 'Corriente máxima' %}</dt><dd><span id="dashCurrent">-</span> A <span class="ne-muted">/ <span id="dashRated">-</span> A</span></dd>
+            </dl>
+            <div class="progress mt-3" style="height:8px" role="progressbar" aria-label="{% translate 'Carga' %}"><div class="progress-bar" id="dashLoadBar" style="width:0"></div></div>
+        </section>
+
+        <section class="ne-card" aria-labelledby="dashOutletsTitle">
+            <div class="ne-card-h" id="dashOutletsTitle"><svg class="ne-icon"><use href="#i-outlets"/></svg>{% translate 'Salidas' %}
+                <span class="ne-spacer"></span><a class="ne-btn sm" href="{% url 'outputs' %}">{% translate 'Controlar' %}</a></div>
+            <div class="ne-stat"><span id="dashOutOn">-</span><small>/ <span id="dashOutTotal">-</span> {% translate 'activas' %}</small></div>
+            <div class="ne-muted" id="dashOutLicense">&nbsp;</div>
+        </section>
+
+        <section class="ne-card" aria-labelledby="dashPduTitle">
+            <div class="ne-card-h" id="dashPduTitle"><svg class="ne-icon"><use href="#i-info"/></svg>PDU
+                <span class="ne-spacer"></span><a class="ne-btn sm" href="{% url 'settings' %}">{% translate 'Ajustes' %}</a></div>
+            <dl class="ne-kv">
+                <dt>{% translate 'Modelo' %}</dt><dd id="dashPn">-</dd>
+                <dt>{% translate 'Número de serie' %}</dt><dd id="dashSn">-</dd>
+                <dt>{% translate 'Versión' %}</dt><dd id="dashVer">-</dd>
+                <dt>{% translate 'Tiempo activo' %}</dt><dd id="dashUptime">-</dd>
+            </dl>
+        </section>
+
+        <section class="ne-card" aria-labelledby="dashNetTitle">
+            <div class="ne-card-h" id="dashNetTitle"><svg class="ne-icon"><use href="#i-network"/></svg>{% translate 'Red' %}
+                <span class="ne-spacer"></span><a class="ne-btn sm" href="{% url 'coms' %}">{% translate 'Configurar' %}</a></div>
+            <div><span class="ne-badge" id="dashNetBadge">-</span></div>
+            <dl class="ne-kv mt-3">
+                <dt>IP</dt><dd id="dashIp">-</dd>
+                <dt>MAC</dt><dd id="dashMac">-</dd>
+            </dl>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        NE_I18N.noAlarms = "{% translate 'No se ha activado ninguna alarma' as s %}{{ s|escapejs }}";
+        NE_I18N.alarmsActive = "{% translate 'alarmas activas' as s %}{{ s|escapejs }}";
+        NE_I18N.connected = "{% translate 'Conectado' as s %}{{ s|escapejs }}";
+        NE_I18N.disconnected = "{% translate 'Desconectado' as s %}{{ s|escapejs }}";
+        NE_I18N.licenseNoControl = "{% translate 'Su licencia no permite controlar las salidas' as s %}{{ s|escapejs }}";
+        NE_I18N.updated = "{% translate 'Actualizado' as s %}{{ s|escapejs }}";
+    </script>
+    <script src="{% static 'js/app/dashboard.js' %}"></script>
 {% endblock %}

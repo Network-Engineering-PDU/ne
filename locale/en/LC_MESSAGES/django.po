@@ -70,7 +70,7 @@ msgstr "Inputs"
 #: app/models.py:84 app/views.py:140 templates/base.html:53
 #: templates/dashboard.html:24 templates/outputs.html:26
 msgid "Salidas"
-msgstr "Outpus"
+msgstr "Outlets"
 
 #: app/models.py:115
 msgid "Datos - Resumen"
@@ -467,7 +467,8 @@ msgstr "Privacy Password"
 msgid ""
 "¿Olvidaste tu contraseña? Introduce tu correo electrónico y te enviaremos "
 "uno nuevo."
-msgstr "Forgot your password? Enter your email and we will send you a new one."
+msgstr ""
+"Forgot your password? Enter your email and we will send you a new one."
 
 #: templates/forgot_password.html:19
 msgid "Email"
@@ -866,8 +867,12 @@ msgid "DNS Wi-Fi"
 msgstr "Wi-Fi DNS"
 
 #: templates/coms.html
-msgid "La configuración de red se aplicó, pero la interfaz web aún no está disponible. Compruebe el cable o la dirección IP e inténtelo de nuevo."
-msgstr "The network settings were applied, but the web UI is not reachable yet. Check the cable or IP address and try again."
+msgid ""
+"La configuración de red se aplicó, pero la interfaz web aún no está "
+"disponible. Compruebe el cable o la dirección IP e inténtelo de nuevo."
+msgstr ""
+"The network settings were applied, but the web UI is not reachable yet. "
+"Check the cable or IP address and try again."
 
 #: templates/coms.html
 msgid "{field} debe ser una dirección IPv4 válida."
@@ -940,3 +945,560 @@ msgstr "Wi-Fi IP"
 #: templates/coms.html
 msgid "Máscara subnet Wi-Fi"
 msgstr "Wi-Fi Subnet Mask"
+
+#: templates/alarms.html templates/base.html templates/dashboard.html
+msgid "Alarmas"
+msgstr "Alarms"
+
+#: templates/alarms.html
+msgid "Reconocer todas"
+msgstr "Acknowledge all"
+
+#: templates/alarms.html
+msgid ""
+"Las alarmas se calculan en el PDU y son las mismas que se muestran en su "
+"pantalla. Una alarma reconocida se oculta hasta que la condición desaparece "
+"y vuelve a producirse."
+msgstr ""
+"Alarms are calculated on the PDU and are the same ones shown on its screen. "
+"An acknowledged alarm stays hidden until its condition clears and occurs "
+"again."
+
+#: templates/alarms.html templates/dashboard.html
+msgid "No se ha activado ninguna alarma"
+msgstr "No alarm has been triggered"
+
+#: templates/alarms.html
+msgid "Reconocidas"
+msgstr "Acknowledged"
+
+#: templates/alarms.html
+msgid "Reconocer"
+msgstr "Acknowledge"
+
+#: templates/alarms.html
+msgid "Desde"
+msgstr "Since"
+
+#: templates/alarms.html
+msgid "Error"
+msgstr "Error"
+
+#: templates/alarms.html
+msgid "Advertencia"
+msgstr "Warning"
+
+#: templates/alarms.html
+msgid "No se pudieron cargar las alarmas"
+msgstr "Could not load the alarms"
+
+#: templates/alarms.html
+msgid "No se pudo reconocer la alarma"
+msgstr "Could not acknowledge the alarm"
+
+#: templates/base.html
+msgid "Navegación principal"
+msgstr "Main navigation"
+
+#: templates/base.html templates/dashboard.html
+msgid "Panel"
+msgstr "Dashboard"
+
+#: templates/base.html
+msgid "Menú"
+msgstr "Menu"
+
+#: templates/base.html
+msgid ""
+"No se puede contactar con el PDU. Los datos pueden estar desactualizados."
+msgstr "Cannot reach the PDU. The data may be out of date."
+
+#: templates/base.html
+msgid "No se puede contactar con el PDU"
+msgstr "Cannot reach the PDU"
+
+#: templates/base.html
+msgid "Cancelar"
+msgstr "Cancel"
+
+#: templates/base.html
+msgid "Confirmar"
+msgstr "Confirm"
+
+#: templates/base.html
+msgid "Cambios guardados correctamente"
+msgstr "Changes saved successfully"
+
+#: templates/base.html
+msgid "Datos de potencia no disponibles"
+msgstr "Power data unavailable"
+
+#: templates/base.html
+msgid "Sin tensión en la entrada"
+msgstr "No voltage on input"
+
+#: templates/base.html
+msgid "Corriente superior a la nominal"
+msgstr "Current above rated current"
+
+#: templates/base.html
+msgid "Corriente cercana a la nominal"
+msgstr "Current close to rated current"
+
+#: templates/base.html
+msgid "Red desconectada"
+msgstr "Network disconnected"
+
+#: templates/coms.html templates/dashboard.html
+msgid "Conectado"
+msgstr "Connected"
+
+#: templates/coms.html
+msgid "Emparejado"
+msgstr "Paired"
+
+#: templates/coms.html
+msgid "Disponible"
+msgstr "Available"
+
+#: templates/coms.html
+msgid "Conectar"
+msgstr "Connect"
+
+#: templates/coms.html
+msgid "Desconectar"
+msgstr "Disconnect"
+
+#: templates/coms.html
+msgid "Emparejar"
+msgstr "Pair"
+
+#: templates/coms.html
+msgid "Eliminar"
+msgstr "Remove"
+
+#: templates/coms.html
+msgid "Buscar dispositivos"
+msgstr "Scan for devices"
+
+#: templates/coms.html
+msgid "Detener búsqueda"
+msgstr "Stop scanning"
+
+#: templates/coms.html
+msgid "La acción Bluetooth ha fallado."
+msgstr "The Bluetooth action failed."
+
+#: templates/coms.html
+msgid "No se pudo cargar el estado de Bluetooth."
+msgstr "Could not load the Bluetooth status."
+
+#: templates/coms.html
+msgid "Sincronizado"
+msgstr "Synchronized"
+
+#: templates/coms.html
+msgid "Sin sincronizar"
+msgstr "Not synchronized"
+
+#: templates/coms.html
+msgid "Desactivado"
+msgstr "Disabled"
+
+#: templates/coms.html
+msgid "El servidor NTP es obligatorio"
+msgstr "The NTP server is required"
+
+#: templates/coms.html templates/settings.html
+msgid "No se pudieron guardar los cambios"
+msgstr "Could not save the changes"
+
+#: templates/coms.html
+msgid "Bluetooth activado"
+msgstr "Bluetooth on"
+
+#: templates/coms.html
+msgid "Visible"
+msgstr "Discoverable"
+
+#: templates/coms.html
+msgid "Emparejable"
+msgstr "Pairable"
+
+#: templates/coms.html
+msgid "Solicitud de emparejamiento"
+msgstr "Pairing request"
+
+#: templates/coms.html
+msgid "Código"
+msgstr "Passkey"
+
+#: templates/coms.html
+msgid "Aceptar"
+msgstr "Accept"
+
+#: templates/coms.html
+msgid "Rechazar"
+msgstr "Refuse"
+
+#: templates/coms.html
+msgid "No hay dispositivos Bluetooth"
+msgstr "No Bluetooth devices"
+
+#: templates/coms.html
+msgid "Sincronizar la hora con un servidor NTP"
+msgstr "Synchronize the time with an NTP server"
+
+#: templates/coms.html
+msgid "Servidor"
+msgstr "Server"
+
+#: templates/coms.html
+msgid "Desfase horario (UTC)"
+msgstr "Time offset (UTC)"
+
+#: templates/coms.html templates/settings.html
+msgid "Guardar"
+msgstr "Save"
+
+#: templates/dashboard.html
+msgid "Ver todas"
+msgstr "View all"
+
+#: templates/dashboard.html
+msgid "Detalle"
+msgstr "Details"
+
+#: templates/dashboard.html
+msgid "Potencia activa total"
+msgstr "Total active power"
+
+#: templates/dashboard.html
+msgid "Corriente máxima"
+msgstr "Highest current"
+
+#: templates/dashboard.html
+msgid "Carga"
+msgstr "Load"
+
+#: templates/dashboard.html
+msgid "Controlar"
+msgstr "Control"
+
+#: templates/dashboard.html
+msgid "activas"
+msgstr "on"
+
+#: templates/dashboard.html templates/settings.html
+msgid "Modelo"
+msgstr "Model"
+
+#: templates/dashboard.html templates/settings.html
+msgid "Número de serie"
+msgstr "Serial number"
+
+#: templates/dashboard.html templates/settings.html
+msgid "Versión"
+msgstr "Version"
+
+#: templates/dashboard.html templates/settings.html
+msgid "Tiempo activo"
+msgstr "Uptime"
+
+#: templates/dashboard.html
+msgid "Red"
+msgstr "Network"
+
+#: templates/dashboard.html
+msgid "Configurar"
+msgstr "Configure"
+
+#: templates/dashboard.html
+msgid "alarmas activas"
+msgstr "active alarms"
+
+#: templates/dashboard.html
+msgid "Desconectado"
+msgstr "Disconnected"
+
+#: templates/dashboard.html
+msgid "Su licencia no permite controlar las salidas"
+msgstr "Your license does not allow controlling the outlets"
+
+#: templates/dashboard.html
+msgid "Actualizado"
+msgstr "Updated"
+
+#: templates/outputs.html
+msgid "Activar todas"
+msgstr "Enable all"
+
+#: templates/outputs.html
+msgid "Desactivar todas"
+msgstr "Disable all"
+
+#: templates/outputs.html
+msgid "No se encontraron salidas"
+msgstr "No outlets found"
+
+#: templates/outputs.html
+msgid "Activada"
+msgstr "On"
+
+#: templates/outputs.html
+msgid "Desactivada"
+msgstr "Off"
+
+#: templates/outputs.html
+msgid "Fusible"
+msgstr "Fuse"
+
+#: templates/outputs.html
+msgid "Detalles"
+msgstr "Details"
+
+#: templates/outputs.html
+msgid "Desconocido"
+msgstr "Unknown"
+
+#: templates/outputs.html
+msgid "Presente"
+msgstr "Present"
+
+#: templates/outputs.html
+msgid "Sin tensión"
+msgstr "No voltage"
+
+#: templates/outputs.html
+msgid "No disponible"
+msgstr "Not available"
+
+#: templates/outputs.html
+msgid "¿Seguro que desea cambiar el estado de la salida?"
+msgstr "Are you sure you want to change the outlet state?"
+
+#: templates/outputs.html
+msgid "Activar"
+msgstr "Enable"
+
+#: templates/outputs.html
+msgid "Desactivar"
+msgstr "Disable"
+
+#: templates/outputs.html
+msgid "¿Seguro que desea activar todas las salidas?"
+msgstr "Are you sure you want to enable all outlets?"
+
+#: templates/outputs.html
+msgid "¿Seguro que desea desactivar todas las salidas?"
+msgstr "Are you sure you want to disable all outlets?"
+
+#: templates/outputs.html
+msgid "No se pudo actualizar la salida"
+msgstr "Could not update the outlet"
+
+#: templates/outputs.html
+msgid "No se pudieron actualizar algunas salidas"
+msgstr "Some outlets could not be updated"
+
+#: templates/outputs.html
+msgid "No se pudieron cargar las salidas"
+msgstr "Could not load the outlets"
+
+#: templates/outputs.html
+msgid "Su licencia no permite ver datos ni controlar las salidas."
+msgstr "Your license does not allow viewing data or controlling the outlets."
+
+#: templates/outputs.html
+msgid "Su licencia no permite controlar las salidas."
+msgstr "Your license does not allow controlling the outlets."
+
+#: templates/outputs.html
+msgid "Su licencia no permite ver los datos de las salidas."
+msgstr "Your license does not allow viewing the outlet data."
+
+#: templates/settings.html
+msgid "Secciones"
+msgstr "Sections"
+
+#: templates/settings.html
+msgid "Pantalla"
+msgstr "Screen"
+
+#: templates/settings.html
+msgid "Actualización"
+msgstr "Update"
+
+#: templates/settings.html
+msgid "Certificados"
+msgstr "Certificates"
+
+#: templates/settings.html
+msgid "Mantenimiento"
+msgstr "Maintenance"
+
+#: templates/settings.html
+msgid "Información del PDU"
+msgstr "PDU information"
+
+#: templates/settings.html
+msgid "Corriente nominal"
+msgstr "Rated current"
+
+#: templates/settings.html
+msgid "Las alarmas de corriente se calculan con este valor."
+msgstr "Current alarms are calculated with this value."
+
+#: templates/settings.html
+msgid "Pantalla táctil"
+msgstr "Touchscreen"
+
+#: templates/settings.html
+msgid "Orientación"
+msgstr "Orientation"
+
+#: templates/settings.html
+msgid "Vertical"
+msgstr "Vertical"
+
+#: templates/settings.html
+msgid "Horizontal"
+msgstr "Horizontal"
+
+#: templates/settings.html
+msgid "Al cambiar la orientación la aplicación de la pantalla se reinicia."
+msgstr "Changing the orientation restarts the screen application."
+
+#: templates/settings.html
+msgid "Tiempo de inactividad (minutos)"
+msgstr "Inactivity time (minutes)"
+
+#: templates/settings.html
+msgid "No solicitar la contraseña en la pantalla"
+msgstr "Do not ask for the password on the screen"
+
+#: templates/settings.html
+msgid "Información de ubicación del PDU"
+msgstr "PDU location information"
+
+#: templates/settings.html
+msgid "Empresa"
+msgstr "Company"
+
+#: templates/settings.html
+msgid "Sistema"
+msgstr "System"
+
+#: templates/settings.html
+msgid "Cuadro eléctrico"
+msgstr "Electrical board"
+
+#: templates/settings.html
+msgid "Interruptor"
+msgstr "Breaker"
+
+#: templates/settings.html
+msgid "Servicio"
+msgstr "Service"
+
+#: templates/settings.html
+msgid "Actualización de software"
+msgstr "Software update"
+
+#: templates/settings.html
+msgid "Buscar ahora"
+msgstr "Check now"
+
+#: templates/settings.html
+msgid "Versión instalada"
+msgstr "Installed version"
+
+#: templates/settings.html
+msgid "Versión disponible"
+msgstr "Available version"
+
+#: templates/settings.html
+msgid "Última comprobación"
+msgstr "Last check"
+
+#: templates/settings.html
+msgid "Estado"
+msgstr "Status"
+
+#: templates/settings.html
+msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
+msgstr "An update is pending. Confirm it on the PDU screen."
+
+#: templates/settings.html
+msgid "Comprobar actualizaciones en línea"
+msgstr "Check for updates online"
+
+#: templates/settings.html
+msgid "Actualizar automáticamente"
+msgstr "Update automatically"
+
+#: templates/settings.html
+msgid "Intervalo de comprobación (horas)"
+msgstr "Check interval (hours)"
+
+#: templates/settings.html
+msgid "Servidor de actualización"
+msgstr "Update server"
+
+#: templates/settings.html
+msgid "Subir"
+msgstr "Upload"
+
+#: templates/settings.html
+msgid "Certificado CA"
+msgstr "CA certificate"
+
+#: templates/settings.html
+msgid "Clave CA"
+msgstr "CA key"
+
+#: templates/settings.html
+msgid "Estas acciones afectan a todo el PDU."
+msgstr "These actions affect the whole PDU."
+
+#: templates/settings.html
+msgid "No se pudo cargar la información"
+msgstr "Could not load the information"
+
+#: templates/settings.html
+msgid "Valor fuera de rango"
+msgstr "Value out of range"
+
+#: templates/settings.html
+msgid "Extensión Incorrecta"
+msgstr "Wrong extension"
+
+#: templates/settings.html
+msgid "Error subiendo el archivo"
+msgstr "Error uploading the file"
+
+#: templates/settings.html
+msgid "¿Seguro que desea reiniciar el sistema?"
+msgstr "Are you sure you want to reboot the system?"
+
+#: templates/settings.html
+msgid ""
+"¿Seguro que desea restablecer los valores de fábrica? Se perderán todos los "
+"ajustes."
+msgstr ""
+"Are you sure you want to reset to factory defaults? All settings will be "
+"lost."
+
+#: templates/settings.html
+msgid "Solicitud enviada"
+msgstr "Request sent"
+
+#: templates/settings.html
+msgid ""
+"Al cambiar la orientación la aplicación de la pantalla se reinicia. "
+"¿Continuar?"
+msgstr "Changing the orientation restarts the screen application. Continue?"
+
+#: templates/settings.html
+msgid "Buscando actualizaciones..."
+msgstr "Checking for updates..."

@@ -245,6 +245,13 @@ def dashboard(request):
 
 
 @login_required()
+def alarms(request):
+    data = {'title': _('Alarmas')}
+    add_global_data(request, data)
+    return render(request, 'alarms.html', data)
+
+
+@login_required()
 def inputs(request):
     data = {'title': _('Entradas')}
     add_global_data(request, data)
@@ -337,19 +344,11 @@ def input_download_last_data(request, input_id):
 def outputs(request):
     data = {'title': _('Salidas')}
     add_global_data(request, data)
-
-    if request.method == 'POST':
-        # GET request (settings/license)
-        response = requests.get(f'{BASE_URL_PDU}/settings/license', verify=False)
-        if response.status_code == 200:
-            resp = response.json()
-            return ok_json(data={
-                'type_id': resp['type_id'],
-            })
-
-        return bad_json(message=f'Error in GET settings/license: {response.text}')
-
-    data['outputs'] = Output.objects.all()
+    # CSV export uses the stored history; map outlet line id -> download url
+    data['csv_urls'] = {
+        output.line_id: reverse('output_download_last_data', args=[output.id])
+        for output in Output.objects.all()
+    }
     return render(request, 'outputs.html', data)
 
 
@@ -372,10 +371,8 @@ def settings(request):
         endpoint = request.POST['endpoint']
 
         if endpoint in [
-            'settings/start-scan', 'settings/stop-scan',
             'settings/system-reboot', 'settings/factory-reset',
             'settings/swupdate', 'settings/ca-cert', 'settings/ca-key',
-            'settings/ota-check-now',
         ]:
             # POST (for all above endpoints)
             try:
@@ -428,106 +425,13 @@ def settings(request):
                 else:
                     response = requests.post(f'{BASE_URL_PDU}/{endpoint}', verify=False)
                     if response.status_code == 200:
-                        if endpoint == 'settings/ota-check-now':
-                            resp = response.json()
-                            return ok_json(data={
-                                'message': "OTA check completed",
-                                'installed_version': resp.get('installed_version', ''),
-                                'available_version': resp.get('available_version', ''),
-                                'last_check_time': resp.get('last_check_time', ''),
-                                'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
-                                'last_error': resp.get('last_error', ''),
-                                'download_progress': resp.get('download_progress', 0),
-                                'update_phase': resp.get('update_phase', 'idle'),
-                                'pending_source': resp.get('pending_source', ''),
-                            })
                         return ok_json(data={'message': "Changes saved successfully"})
 
                 return bad_json(message=f'Error in POST {endpoint}: {response.text}')
             except Exception as ex:
                 return bad_json(message=f'Error in POST {endpoint}: {ex.__str__()}')
 
-        elif endpoint in ['settings/system-info', 'settings/pdu-info', 'settings/snmp-nms',
-                          'settings/update-status']:
-            # GET & PUT only for settings/snmp-nms
-            method = request.POST['method']
-            try:
-                if method == 'GET':
-                    # dynamic GET request using local helper (tries configured PDU
-                    # URLs and falls back to localhost). Use a short timeout so the
-                    # Django process doesn't block the UI for long.
-                    params = None
-                    if endpoint == 'settings/update-status' and request.POST.get('refresh') in ('1', 'true', 'True'):
-                        params = {'refresh': 'true'}
-                    resp = get_pdu_local_data(endpoint, params=params, timeout=30)
-                    if resp is not None:
-                        # already parsed JSON
-                        pass
-                        # settings/system-info
-                        if endpoint == 'settings/system-info':
-                            return ok_json(data={
-                                'message': f"{_('Cambios guardados correctamente')}",
-                                'product_name': resp['product_name'],
-                                'product_pn': resp['product_pn'],
-                                'product_sn': resp['product_sn'],
-                                'lan_mac': resp['lan_mac'],
-                                'sw_version': resp['sw_version']
-                            })
-                        elif endpoint == 'settings/pdu-info':
-                            return ok_json(data={
-                                'message': f"{_('Cambios guardados correctamente')}",
-                                'outlet_count': resp['outlet_count'],
-                                'rated_current': resp['rated_current'],
-                                'controller': resp['controller'],
-                                'type': resp['type']
-                            })
-                        elif endpoint == 'settings/snmp-nms':
-                            return ok_json(data={
-                                'message': f"{_('Cambios guardados correctamente')}",
-                                'system_name': resp['system_name'],
-                                'system_contact': resp['system_contact'],
-                                'system_location': resp['system_location'],
-                            })
-                        elif endpoint == 'settings/update-status':
-                            return ok_json(data={
-                                'message': f"{_('Estado OTA obtenido')}",
-                                'installed_version': resp.get('installed_version', ''),
-                                'available_version': resp.get('available_version', ''),
-                                'last_check_time': resp.get('last_check_time', ''),
-                                'last_update_time': resp.get('last_update_time', ''),
-                                'ota_status': resp.get('ota_status', resp.get('status', 'idle')),
-                                'status': resp.get('ota_status', resp.get('status', 'idle')),
-                                'last_error': resp.get('last_error', ''),
-                                'download_progress': resp.get('download_progress', 0),
-                                'ota_enabled': resp.get('ota_enabled', False),
-                                'check_interval_hours': resp.get('check_interval_hours', 24),
-                                'active_update_source': resp.get('active_update_source', ''),
-                                'update_phase': resp.get('update_phase', 'idle'),
-                                'update_busy': resp.get('update_busy', False),
-                                'pending_source': resp.get('pending_source', ''),
-                            })
-
-                    return bad_json(message=f'Error in GET {endpoint}: PDU did not respond')
-                # PUT
-                else:
-                    # dynamic PUT request with payloads (for all endpoints)
-                    payload = json.loads(request.POST['payload'])
-                    response = requests.put(f'{BASE_URL_PDU}/{endpoint}', json=payload, verify=False)
-                    if response.status_code in (200, 202):
-                        return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})
-                    return bad_json(message=f'Error in {method} {endpoint}: {response.text}')
-
-            except Exception as ex:
-                return bad_json(message=f'Error in GET {endpoint}: {ex.__str__()}')
-
-    ota_status = get_pdu_local_data('settings/update-status') or {}
-    data['ota_installed_version'] = ota_status.get('installed_version') or '-'
-    data['ota_available_version'] = ota_status.get('available_version') or '-'
-    data['ota_last_check_time'] = ota_status.get('last_check_time') or '-'
-    data['ota_status'] = ota_status.get(
-        'ota_status', ota_status.get('status', 'idle')) or '-'
-    if ota_status.get('last_error'):
-        data['ota_status'] = f"{data['ota_status']} ({ota_status['last_error']})"
+        return bad_json(message=f'Unknown endpoint {endpoint}')
 
     return render(request, 'settings.html', data)
 

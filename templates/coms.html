@@ -35,7 +35,28 @@
             wifiDns: "{% translate 'DNS Wi-Fi' %}"
         };
     </script>
+    <script>
+        Object.assign(NE_I18N, {
+            btDeviceConnected: "{% translate 'Conectado' as s %}{{ s|escapejs }}",
+            btDevicePaired: "{% translate 'Emparejado' as s %}{{ s|escapejs }}",
+            btDeviceAvailable: "{% translate 'Disponible' as s %}{{ s|escapejs }}",
+            btConnect: "{% translate 'Conectar' as s %}{{ s|escapejs }}",
+            btDisconnect: "{% translate 'Desconectar' as s %}{{ s|escapejs }}",
+            btPair: "{% translate 'Emparejar' as s %}{{ s|escapejs }}",
+            btRemove: "{% translate 'Eliminar' as s %}{{ s|escapejs }}",
+            btScanStart: "{% translate 'Buscar dispositivos' as s %}{{ s|escapejs }}",
+            btScanStop: "{% translate 'Detener búsqueda' as s %}{{ s|escapejs }}",
+            btActionFailed: "{% translate 'La acción Bluetooth ha fallado.' as s %}{{ s|escapejs }}",
+            btLoadFailed: "{% translate 'No se pudo cargar el estado de Bluetooth.' as s %}{{ s|escapejs }}",
+            ntpSynced: "{% translate 'Sincronizado' as s %}{{ s|escapejs }}",
+            ntpNotSynced: "{% translate 'Sin sincronizar' as s %}{{ s|escapejs }}",
+            ntpOff: "{% translate 'Desactivado' as s %}{{ s|escapejs }}",
+            ntpServerRequired: "{% translate 'El servidor NTP es obligatorio' as s %}{{ s|escapejs }}",
+            saveFailed: "{% translate 'No se pudieron guardar los cambios' as s %}{{ s|escapejs }}"
+        });
+    </script>
     <script src="{% static 'js/app/coms.js' %}"></script>
+    <script src="{% static 'js/app/coms_extra.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -45,7 +66,7 @@
             <div class="row pt-4">
                 <div class="col">
                     <h1 class="text-center">
-                        {% translate 'COMS' %}
+                        {% translate 'Coms' %}
                     </h1>
                 </div>
             </div>
@@ -459,6 +480,43 @@
 {#                    </div>#}
 {#                </div>#}
 {#                <!-- END SNMP Setup -->#}
+            </div>
+
+            <!-- Bluetooth and NTP (same settings as the touchscreen's Networks menu) -->
+            <div class="ne-grid wide mt-4">
+                <section class="ne-card" id="bluetooth" aria-labelledby="btTitle">
+                    <h2 class="ne-card-h" id="btTitle"><svg class="ne-icon"><use href="#i-bluetooth"/></svg>Bluetooth
+                        <span class="ne-spacer"></span>
+                        <button type="button" class="ne-btn sm" id="btScan">{% translate 'Buscar dispositivos' %}</button></h2>
+                    <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="btPowered"><span></span></span>{% translate 'Bluetooth activado' %}</label></div>
+                    <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="btDiscoverable"><span></span></span>{% translate 'Visible' %}</label></div>
+                    <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="btPairable"><span></span></span>{% translate 'Emparejable' %}</label></div>
+                    <div class="ne-alert warning mb-3" id="btPairing" hidden>
+                        <svg class="ne-icon"><use href="#i-bluetooth"/></svg>
+                        <div><strong>{% translate 'Solicitud de emparejamiento' %}</strong>
+                            <div><span id="btPairingName"></span> <span class="ne-muted">(<span id="btPairingMac"></span>)</span></div>
+                            <div>{% translate 'Código' %}: <b id="btPairingKey"></b></div>
+                            <div class="ne-actions mt-2"><button type="button" class="ne-btn sm primary" data-pair="accept">{% translate 'Aceptar' %}</button>
+                                <button type="button" class="ne-btn sm" data-pair="refuse">{% translate 'Rechazar' %}</button></div></div>
+                    </div>
+                    <div class="ne-list" id="btDevices" aria-live="polite"></div>
+                    <div class="ne-empty" id="btEmpty" hidden>{% translate 'No hay dispositivos Bluetooth' %}</div>
+                </section>
+
+                <section class="ne-card" id="ntp" aria-labelledby="ntpTitle">
+                    <h2 class="ne-card-h" id="ntpTitle"><svg class="ne-icon"><use href="#i-clock"/></svg>NTP / SNTP
+                        <span class="ne-spacer"></span><span class="ne-badge" id="ntpSync">-</span></h2>
+                    <form id="formNtp" novalidate>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="ntpEnabled"><span></span></span>{% translate 'Sincronizar la hora con un servidor NTP' %}</label></div>
+                        <div class="ne-form-grid">
+                            <div class="ne-field"><label for="ntpServer">{% translate 'Servidor' %}</label>
+                                <input id="ntpServer" type="text" maxlength="127" class="form-control" autocomplete="off"></div>
+                            <div class="ne-field"><label for="ntpOffset">{% translate 'Desfase horario (UTC)' %}</label>
+                                <select id="ntpOffset" class="form-select"></select></div>
+                        </div>
+                        <div class="ne-actions"><button type="submit" class="ne-btn primary">{% translate 'Guardar' %}</button></div>
+                    </form>
+                </section>
             </div>
 
         </div>

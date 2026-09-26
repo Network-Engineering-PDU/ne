@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="ne-page">
+    <div class="ne-page-head">
+        <h1>{% translate 'Alarmas' %}</h1>
+        <button type="button" class="ne-btn" id="btnAckAll" disabled>
+            <svg class="ne-icon"><use href="#i-check"/></svg>{% translate 'Reconocer todas' %}
+        </button>
+    </div>
+
+    <p class="ne-muted">{% translate 'Las alarmas se calculan en el PDU y son las mismas que se muestran en su pantalla. Una alarma reconocida se oculta hasta que la condición desaparece y vuelve a producirse.' %}</p>
+
+    <section aria-live="polite">
+        <div class="ne-list" id="alarmList"></div>
+        <div class="ne-card ne-empty" id="alarmEmpty" hidden>
+            <svg class="ne-icon" style="width:32px;height:32px;color:var(--ne-ok)"><use href="#i-check"/></svg>
+            <div class="mt-2" id="alarmEmptyText">{% translate 'No se ha activado ninguna alarma' %}</div>
+        </div>
+        <h2 class="mt-4 mb-2 ne-muted" id="ackedTitle" style="font-size:1rem" hidden>{% translate 'Reconocidas' %}</h2>
+        <div class="ne-list" id="ackedList"></div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        NE_I18N.ack = "{% translate 'Reconocer' as s %}{{ s|escapejs }}";
+        NE_I18N.since = "{% translate 'Desde' as s %}{{ s|escapejs }}";
+        NE_I18N.levelError = "{% translate 'Error' as s %}{{ s|escapejs }}";
+        NE_I18N.levelWarning = "{% translate 'Advertencia' as s %}{{ s|escapejs }}";
+        NE_I18N.loadFailed = "{% translate 'No se pudieron cargar las alarmas' as s %}{{ s|escapejs }}";
+        NE_I18N.ackFailed = "{% translate 'No se pudo reconocer la alarma' as s %}{{ s|escapejs }}";
+    </script>
+    <script src="{% static 'js/app/alarms.js' %}"></script>
+{% endblock %}

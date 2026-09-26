@@ -2,187 +2,85 @@
 {% load i18n %}
 {% load extras %}
 {% get_available_languages as languages %}
-
+{% get_current_language as current_language %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ current_language }}">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
 
-    <title>{{ title }}</title>
+    <title>{{ title }} · PDU</title>
 
-    <!-- Favicon -->
-    <link href="{% static 'assets/favicon.ico' %}" rel="icon" >
-
-    <!-- Bootstrap CSS -->
+    <link href="{% static 'assets/favicon.ico' %}" rel="icon">
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- styles  -->
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" >
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'css/app.css' %}" rel="stylesheet">
 </head>
 
 <body>
 
+{% with page=request.resolver_match.url_name %}
 {% if not user.is_anonymous %}
-    <nav class="navbar navbar-expand-lg nav " role="navigation" id="navegacion">
-        <div class="container-fluid">
-            <div class="justify-content-start">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a class="logoCompany2" href="{% url 'dashboard' %}"></a>
+{% include 'partials/icons.html' %}
+<div class="ne-shell" id="neShell">
+
+    <aside class="ne-sidebar" id="neSidebar" aria-label="{% translate 'Navegación principal' %}">
+        <a class="ne-brand" href="{% url 'dashboard' %}" aria-label="PDU"></a>
+        <nav>
+            <ul class="ne-nav">
+                <li><a href="{% url 'dashboard' %}" {% if page == 'dashboard' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-dashboard"/></svg>{% translate 'Panel' %}</a></li>
+                <li><a href="{% url 'inputs' %}" {% if page == 'inputs' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-power"/></svg>{% translate 'Entradas' %}</a></li>
+                <li><a href="{% url 'outputs' %}" {% if page == 'outputs' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-outlets"/></svg>{% translate 'Salidas' %}</a></li>
+                <li><a href="{% url 'sensors' %}" {% if page == 'sensors' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-sensors"/></svg>{% translate 'Sensores' %}</a></li>
+                <li><a href="{% url 'alarms' %}" {% if page == 'alarms' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-alarm"/></svg>{% translate 'Alarmas' %}<span class="ne-count" data-alarm-count hidden>0</span></a></li>
+                <li><a href="{% url 'coms' %}" {% if page == 'coms' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-network"/></svg>{% translate 'Coms' %}</a></li>
+                <li><a href="{% url 'settings' %}" {% if page == 'settings' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-settings"/></svg>{% translate 'Ajustes' %}</a></li>
+            </ul>
+        </nav>
+        <div class="ne-side-foot">
+            <div class="ne-lang" role="group" aria-label="{% translate 'Idiomas' %}">
+                {% for l in languages %}
+                    <a href="{% change_lang l.0 %}" hreflang="{{ l.0 }}" {% if l.0 == current_language %}aria-current="true"{% endif %}>{{ l.0|upper }}</a>
+                {% endfor %}
             </div>
-            <div class="collapse navbar-collapse justify-content-center align-items-center" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'inputs' %}">
-                            <span class="iconEntradas {% if title == 'Inputs' %}iconEntradasSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Inputs' %}textDarkGreen{% endif %}">
-                                    {% translate 'Entradas' %}
-                                </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'outputs' %}">
-                            <span class="iconSalidas {% if title == 'Outputs' %}iconSalidasSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Outputs' %}textDarkGreen{% endif %}">
-                                    {% translate 'Salidas' %}
-                                </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'settings' %}">
-                            <span class="iconSettings {% if title == 'Settings' %}iconSettingsSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Settings' %}textDarkGreen{% endif %}">
-                                    {% translate 'Ajustes' %}
-                                </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'coms' %}">
-                            <span class="iconComs {% if title == 'Coms' %}iconComsSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Coms' %}textDarkGreen{% endif %}">
-                                    {% translate 'Coms' %}
-                                </span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'sensors' %}">
-                            <span class="iconMedioambiente {% if title == 'Sensors' %}iconMedioambienteSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Sensores' %}textDarkGreen{% endif %}">
-                                    {% translate 'Sensores' %}
-                                </span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item solomovil">
-                        <a class="nav-link" aria-current="page" href="{% url 'users' %}">
-                            <span class="iconUsers {% if title == 'Users' %}iconUsersSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Users' %}textDarkGreen{% endif %}">
-                                    {% translate 'Usuarios' %}
-                                </span>
-                        </a>
-                    </li>
-
-                    <!-- Dropdown para seleccionar el idioma -->
-                    <li class="nav-item solomovil dropdown" style="padding-top: 20px; padding-bottom: 20px">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {% translate 'Idiomas' %}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="top: 20px">
-                            {% for l in languages %}
-                                {% with lcode=l.0 ltext=l.1 %}
-                                    <li>
-                                        <a class="dropdown-item" href="{% change_lang lcode %}">
-                                            {{ ltext }}
-                                        </a>
-                                    </li>
-                                {% endwith %}
-                            {% endfor %}
-                        </ul>
-                    </li>
-
-                    <li class="nav-item solomovil">
-                        <a class="nav-link" aria-current="page" href="{% url 'users' %}">
-                            <span class="iconUsers {% if title == 'Users' %}iconUsersSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Users' %}textDarkGreen{% endif %}">
-                                {% translate 'Usuarios' %}
-                            </span>
-                        </a>
-                    </li>
-                    <li class="nav-item solomovil">
-                        <a class="nav-link" aria-current="page" href="{% url 'logout' %}">
-                            <span class="iconSalidas"></span>
-                            <br/>
-                            <span class="superLittle">
-                                {% translate 'Salir' %}
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="justify-content-end soloescritorio">
-                <ul class="navbar-nav ">
-
-                    <!-- Dropdown para seleccionar el idioma -->
-                    <li class="nav-item dropdown" style="padding-top: 20px">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {% translate 'Idiomas' %}
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="top: 40px">
-                            {% for l in languages %}
-                                {% with lcode=l.0 ltext=l.1 %}
-                                    <li>
-                                        <a class="dropdown-item" href="{% change_lang lcode %}">
-                                            {{ ltext }}
-                                        </a>
-                                    </li>
-                                {% endwith %}
-                            {% endfor %}
-                        </ul>
-                    </li>
-
-                    <!-- Botón de Usuarios -->
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'users' %}">
-                            <span class="iconUsers {% if title == 'Users' %}iconUsersSelected{% endif %}"></span>
-                            <br/>
-                            <span class="superLittle {% if title == 'Users' %}textDarkGreen{% endif %}">
-                    {% translate 'Usuarios' %}
-                </span>
-                        </a>
-                    </li>
-
-                    <!-- Botón de Salir -->
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{% url 'logout' %}">
-                            <span class="iconLogout"></span>
-                            <br/>
-                            <span class="superLittle">
-                    {% translate 'Salir' %}
-                </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-
+            <ul class="ne-nav">
+                <li><a href="{% url 'users' %}" {% if page == 'users' %}aria-current="page"{% endif %}><svg class="ne-icon"><use href="#i-users"/></svg>{% translate 'Usuarios' %}</a></li>
+                <li><a href="{% url 'logout' %}"><svg class="ne-icon"><use href="#i-logout"/></svg>{% translate 'Salir' %}</a></li>
+            </ul>
+            <div class="ne-user">{{ user.get_username }}</div>
         </div>
-    </nav>
-    <div class="clearfix"></div>
+    </aside>
+    <div class="ne-scrim" id="neScrim"></div>
+
+    <div class="ne-main">
+        <div class="ne-topbar" role="banner">
+            <button class="ne-iconbtn" id="neMenuToggle" type="button" aria-controls="neSidebar" aria-expanded="false" aria-label="{% translate 'Menú' %}">
+                <svg class="ne-icon"><use href="#i-menu"/></svg>
+            </button>
+            <a class="ne-brand" href="{% url 'dashboard' %}" aria-label="PDU"></a>
+            <a class="ne-iconbtn" href="{% url 'alarms' %}" aria-label="{% translate 'Alarmas' %}" style="position:relative">
+                <svg class="ne-icon"><use href="#i-alarm"/></svg>
+            </a>
+            <span class="ne-count" data-alarm-count hidden>0</span>
+        </div>
+        <div class="ne-apibar" id="neApiBar" role="alert">
+            <svg class="ne-icon"><use href="#i-warn"/></svg>
+            {% translate 'No se puede contactar con el PDU. Los datos pueden estar desactualizados.' %}
+        </div>
+        <main>
 {% endif %}
 
 {% block content %}{% endblock %}
+
+{% if not user.is_anonymous %}
+        </main>
+    </div>
+</div>
+{% endif %}
+{% endwith %}
 
 {% block modals %}{% endblock %}
 
@@ -195,12 +93,30 @@
     function isValidExtension(filename, extensions) {
         return extensions.some(extension => filename.endsWith(`.${extension}`));
     }
+
+    // Strings shared by the redesigned pages
+    window.NE_I18N = {
+        apiUnreachable: "{% translate 'No se puede contactar con el PDU' as s %}{{ s|escapejs }}",
+        cancel: "{% translate 'Cancelar' as s %}{{ s|escapejs }}",
+        confirm: "{% translate 'Confirmar' as s %}{{ s|escapejs }}",
+        saved: "{% translate 'Cambios guardados correctamente' as s %}{{ s|escapejs }}",
+        error: "{% translate 'Error de Sistema' as s %}{{ s|escapejs }}",
+        // Alarm descriptions come from the PDU in English
+        desc: {
+            "Power data unavailable": "{% translate 'Datos de potencia no disponibles' as s %}{{ s|escapejs }}",
+            "No voltage on input": "{% translate 'Sin tensión en la entrada' as s %}{{ s|escapejs }}",
+            "Current above rated current": "{% translate 'Corriente superior a la nominal' as s %}{{ s|escapejs }}",
+            "Current close to rated current": "{% translate 'Corriente cercana a la nominal' as s %}{{ s|escapejs }}",
+            "Network disconnected": "{% translate 'Red desconectada' as s %}{{ s|escapejs }}"
+        }
+    };
 </script>
 
 <!-- Bootstrap Bundle with Popper -->
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/app/app.js' %}"></script>
+<script src="{% static 'js/app/ne.js' %}"></script>
 
 <script>
     const SPINNER = '<div style="float: left" class="spinner-border text-secondary" role="status"><span class="visually-hidden">{% translate 'Cargando...' %}</span></div>'

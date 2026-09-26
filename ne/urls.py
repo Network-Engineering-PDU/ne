@@ -5,6 +5,7 @@ from django.urls import path, include
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from app import views
+from app.pdu_proxy import pdu_proxy
 from rest.routers import api_router
 from ne.settings import MEDIA_URL, MEDIA_ROOT, STATIC_URL, STATIC_ROOT
 
@@ -24,6 +25,9 @@ urlpatterns = [
     path('logout/', views.logout_user, name='logout'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
 
+    # Authenticated proxy to the PDU API (see app/pdu_proxy.py)
+    path('pdu/<path:path>', pdu_proxy, name='pdu_proxy'),
+
     # API router
     path('api/', include(api_router.urls)),
 
@@ -34,6 +38,7 @@ urlpatterns += i18n_patterns(
     # App (views)
     path('', views.login_user, name='home'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('alarms/', views.alarms, name='alarms'),
     path('inputs/', views.inputs, name='inputs'),
     path('inputs/live_data/', views.get_inputs_live_data, name='get_inputs_live_data'),
     path('inputs/<int:input_id>/download_last_data', views.input_download_last_data, name='input_download_last_data'),
