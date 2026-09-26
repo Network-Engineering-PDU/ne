@@ -202,6 +202,13 @@ h4 { font-size: 1rem; }
 .ne-alert.warning { background: var(--ne-warn-soft); color: var(--ne-warn); }
 .ne-alert.error { background: var(--ne-err-soft); color: var(--ne-err); }
 
+/* Dashboard: larger cards */
+.ne-grid.dash { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.ne-grid.dash > .ne-card { padding: 26px; min-height: 240px; font-size: 1.02rem; }
+.ne-grid.dash > .ne-card > .ne-card-h { font-size: 1.15rem; margin-bottom: 16px; }
+.ne-grid.dash .ne-stat { font-size: 2.6rem; }
+.ne-grid.dash .ne-kv { gap: 9px 20px; }
+
 /* Alarm rows */
 .ne-alarm { display: grid; grid-template-columns: auto 1fr auto; gap: 4px 14px; align-items: center;
   padding: 14px 16px; border-left: 4px solid var(--ne-muted); }
