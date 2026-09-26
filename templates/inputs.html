@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block scripts %}
@@ -12,7 +13,7 @@
         const INPUTS_COUNT = 6;
         const LIVE_DATA_URL = "{% url 'get_inputs_live_data' %}";
     </script>
-    <script src="{% static 'js/app/live_inputs.js' %}?v=5"></script>
+    <script src="{% static_v 'js/app/live_inputs.js' %}"></script>
 
 {% endblock %}
 

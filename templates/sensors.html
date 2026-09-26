@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block scripts %}
     <script>
         const SENSORS_URL = {% url 'sensors' %};
     </script>
-    <script src="{% static 'js/app/sensors.js' %}"></script>
+    <script src="{% static_v 'js/app/sensors.js' %}"></script>
 {% endblock %}
 
 

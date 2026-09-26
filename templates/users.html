@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block scripts %}
-    <script src="{% static 'js/app/users.js' %}"></script>
+    <script src="{% static_v 'js/app/users.js' %}"></script>
 {% endblock %}
 
 {% block content %}

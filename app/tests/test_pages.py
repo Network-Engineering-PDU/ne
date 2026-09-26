@@ -76,3 +76,28 @@ class NetworksNamingTests(TestCase):
             self.assertIn(f"</svg>{label}</a>", html, prefix)      # sidebar
             self.assertRegex(html, rf"<h1[^>]*>\s*{label}\s*</h1>")
             self.assertNotIn(">Coms<", html, prefix)
+
+
+class StaticVersionTests(TestCase):
+    """Scripts and styles are versioned so browsers never run stale copies."""
+
+    def test_static_v_appends_the_file_modification_time(self):
+        import os
+        from django.contrib.staticfiles import finders
+        from app.templatetags.extras import static_v
+
+        url = static_v("js/app/outputs.js")
+        expected = int(os.path.getmtime(finders.find("js/app/outputs.js")))
+        self.assertEqual(f"/static/js/app/outputs.js?v={expected}", url)
+
+    def test_static_v_leaves_missing_files_unversioned(self):
+        from app.templatetags.extras import static_v
+        self.assertEqual("/static/js/app/nope.js", static_v("js/app/nope.js"))
+
+    def test_pages_use_versioned_urls(self):
+        self.client.force_login(User.objects.create_user("v", password="x"))
+        for name in ("dashboard", "outputs", "alarms", "settings"):
+            html = self.client.get(reverse(name)).content.decode()
+            self.assertRegex(html, r'src="/static/js/app/ne\.js\?v=\d+"', name)
+            self.assertRegex(html, r'href="/static/css/app\.css\?v=\d+"', name)
+            self.assertNotRegex(html, r'\?v=\d+\?v=', name)

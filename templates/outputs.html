@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block content %}
@@ -53,5 +54,5 @@
         NE_I18N.licenseDataOnly = "{% translate 'Su licencia no permite controlar las salidas.' as s %}{{ s|escapejs }}";
         NE_I18N.licenseControlOnly = "{% translate 'Su licencia no permite ver los datos de las salidas.' as s %}{{ s|escapejs }}";
     </script>
-    <script src="{% static 'js/app/outputs.js' %}"></script>
+    <script src="{% static_v 'js/app/outputs.js' %}"></script>
 {% endblock %}

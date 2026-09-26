@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block scripts %}
@@ -63,8 +64,8 @@
             modbusFailed: "{% translate 'No se pudo cambiar el servicio Modbus' as s %}{{ s|escapejs }}"
         });
     </script>
-    <script src="{% static 'js/app/coms.js' %}"></script>
-    <script src="{% static 'js/app/coms_extra.js' %}"></script>
+    <script src="{% static_v 'js/app/coms.js' %}"></script>
+    <script src="{% static_v 'js/app/coms_extra.js' %}"></script>
 {% endblock %}
 
 {% block content %}

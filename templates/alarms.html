@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block content %}
@@ -34,5 +35,5 @@
         NE_I18N.loadFailed = "{% translate 'No se pudieron cargar las alarmas' as s %}{{ s|escapejs }}";
         NE_I18N.ackFailed = "{% translate 'No se pudo reconocer la alarma' as s %}{{ s|escapejs }}";
     </script>
-    <script src="{% static 'js/app/alarms.js' %}"></script>
+    <script src="{% static_v 'js/app/alarms.js' %}"></script>
 {% endblock %}

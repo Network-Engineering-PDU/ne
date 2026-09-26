@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block content %}
@@ -163,5 +164,5 @@
         });
         const SETTINGS_URL = "{% url 'settings' %}";
     </script>
-    <script src="{% static 'js/app/settings_page.js' %}"></script>
+    <script src="{% static_v 'js/app/settings_page.js' %}"></script>
 {% endblock %}

@@ -1,4 +1,8 @@
+import os
+
 from django import template
+from django.contrib.staticfiles import finders
+from django.templatetags.static import static
 from django.urls import resolve, reverse, Resolver404
 from django.utils.translation import get_language, activate
 
@@ -47,3 +51,21 @@ def args(obj, arg):
 
 register.filter("call", callmethod)
 register.filter("args", args)
+
+
+@register.simple_tag
+def static_v(path):
+    """Like {% static %} but versioned by the file's modification time.
+
+    Browsers keep scripts and stylesheets cached when only their content
+    changes, so an updated page could run an old script. The version changes
+    whenever the file does, which forces a fresh download.
+    """
+    url = static(path)
+    found = finders.find(path)
+    if isinstance(found, (list, tuple)):
+        found = found[0] if found else None
+    try:
+        return f"{url}?v={int(os.path.getmtime(found))}" if found else url
+    except OSError:
+        return url

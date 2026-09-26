@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load extras %}
 {% load i18n %}
 
 {% block content %}
@@ -70,5 +71,5 @@
         NE_I18N.licenseNoControl = "{% translate 'Su licencia no permite controlar las salidas' as s %}{{ s|escapejs }}";
         NE_I18N.updated = "{% translate 'Actualizado' as s %}{{ s|escapejs }}";
     </script>
-    <script src="{% static 'js/app/dashboard.js' %}"></script>
+    <script src="{% static_v 'js/app/dashboard.js' %}"></script>
 {% endblock %}
