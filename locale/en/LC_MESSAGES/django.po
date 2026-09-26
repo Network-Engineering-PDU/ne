@@ -1655,3 +1655,20 @@ msgstr "online"
 #: templates/settings.html
 msgid "Hay una actualización en curso"
 msgstr "An update is in progress"
+
+#: templates/sensors.html
+msgid "Paginación"
+msgstr "Pagination"
+
+#: templates/sensors.html
+msgid "Anterior"
+msgstr "Previous"
+
+#: templates/sensors.html
+msgid "Siguiente"
+msgstr "Next"
+
+#: templates/sensors.html
+#, python-format
+msgid "%(first)s-%(last)s de %(total)s"
+msgstr "%(first)s-%(last)s of %(total)s"

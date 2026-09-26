@@ -10,6 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -18,6 +19,9 @@ from django.urls import reverse
 from app.helpers import bad_json, ok_json, export_last_data_to_csv
 from app.models import Input, Output, Host, Sensor, DataSensor
 from ne.settings import BASE_URL_PDU, MEDIA_ROOT
+
+
+SENSOR_READINGS_PER_PAGE = 100
 
 
 def add_global_data(request, data):
@@ -624,7 +628,13 @@ def sensors(request):
     data = {'title': _('Sensores')}
     add_global_data(request, data)
     data['sensors'] = Sensor.objects.all()
-    data['data_sensors'] = DataSensor.objects.order_by('-data_datetime')
+    # Readings pile up for as long as the PDU runs (tens of thousands within
+    # days). Rendering them all made this page take many seconds, so show the
+    # latest ones a page at a time and fetch each row's sensor in one query.
+    readings = (DataSensor.objects.select_related('sensor')
+                .order_by('-data_datetime', '-id'))
+    data['data_page'] = Paginator(readings, SENSOR_READINGS_PER_PAGE).get_page(
+        request.GET.get('page'))
     return render(request, 'sensors.html', data)
 
 

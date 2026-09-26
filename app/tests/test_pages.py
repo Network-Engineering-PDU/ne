@@ -101,3 +101,52 @@ class StaticVersionTests(TestCase):
             self.assertRegex(html, r'src="/static/js/app/ne\.js\?v=\d+"', name)
             self.assertRegex(html, r'href="/static/css/app\.css\?v=\d+"', name)
             self.assertNotRegex(html, r'\?v=\d+\?v=', name)
+
+
+class SensorsPageTests(TestCase):
+    """The sensors page must not render every stored reading."""
+
+    def setUp(self):
+        import datetime
+        from django.utils import timezone
+        from app.models import DataSensor, Sensor
+
+        self.client.force_login(User.objects.create_user("s", password="x"))
+        sensors = [Sensor.objects.create(mac_address=f"AA:BB:CC:DD:EE:0{i}") for i in range(3)]
+        base = timezone.now()
+        DataSensor.objects.bulk_create([
+            DataSensor(data_datetime=base - datetime.timedelta(seconds=n),
+                       sensor=sensors[n % 3], temperature=20 + n / 1000)
+            for n in range(250)
+        ])
+
+    def test_only_the_latest_readings_are_rendered(self):
+        r = self.client.get(reverse("sensors"))
+        html = r.content.decode()
+        page = r.context["data_page"]
+        self.assertEqual(100, len(page))
+        self.assertEqual(250, page.paginator.count)
+        # 100 reading rows (each has a temperature cell) instead of all 250
+        self.assertEqual(100, html.count("<td class=\"text-center\">2"))
+        self.assertIn("1-100", html)
+        self.assertIn("250", html)
+        self.assertIn("?page=2", html)
+        self.assertNotIn("?page=0", html)
+
+    def test_paging_and_order(self):
+        r = self.client.get(reverse("sensors") + "?page=3")
+        page = r.context["data_page"]
+        self.assertEqual(50, len(page))
+        self.assertFalse(page.has_next())
+        times = [d.data_datetime for d in page]
+        self.assertEqual(times, sorted(times, reverse=True))
+        # a bad page number falls back to a valid page instead of an error
+        self.assertEqual(200, self.client.get(reverse("sensors") + "?page=abc").status_code)
+        self.assertEqual(200, self.client.get(reverse("sensors") + "?page=999").status_code)
+
+    def test_query_count_does_not_grow_with_the_readings(self):
+        from django.db import connection
+        from django.test.utils import CaptureQueriesContext
+        with CaptureQueriesContext(connection) as q:
+            self.client.get(reverse("sensors"))
+        self.assertLess(len(q), 12, [x["sql"][:80] for x in q])

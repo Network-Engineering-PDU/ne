@@ -135,6 +135,11 @@ let SENSORS = {
 
 
 $(function () {
+    // Paging through the readings reloads the page: reopen the Data tab
+    if (new URLSearchParams(window.location.search).has('page')) {
+        const tab = document.querySelector('[data-bs-target="#dataTab"]');
+        if (tab) { new bootstrap.Tab(tab).show(); }
+    }
     modalSensorsNew.on("hidden.bs.modal", function () {
         SENSORS.stop_ble_scan();
     });

@@ -86,7 +86,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {% for data in data_sensors %}
+                                        {% for data in data_page %}
                                             <tr>
                                                 <th scope="row" class="text-center">{{ data.data_datetime|date:'d-m-Y H:i' }}</th>
                                                 <td class="text-center">{{ data.sensor }}</td>
@@ -100,6 +100,15 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                {% if data_page.paginator.count %}
+                                <nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3" aria-label="{% translate 'Paginación' %}">
+                                    <span class="ne-muted">{% blocktranslate with first=data_page.start_index last=data_page.end_index total=data_page.paginator.count %}{{ first }}-{{ last }} de {{ total }}{% endblocktranslate %}</span>
+                                    <span class="ne-actions">
+                                        {% if data_page.has_previous %}<a class="ne-btn sm" href="?page={{ data_page.previous_page_number }}">{% translate 'Anterior' %}</a>{% endif %}
+                                        {% if data_page.has_next %}<a class="ne-btn sm" href="?page={{ data_page.next_page_number }}">{% translate 'Siguiente' %}</a>{% endif %}
+                                    </span>
+                                </nav>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
