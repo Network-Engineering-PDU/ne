@@ -1,12 +1,25 @@
 from rest_framework import status, viewsets
+from rest_framework.authentication import BasicAuthentication
 from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from app import minew_scanner
+from rest.auth import AjaxSessionAuthentication
 
 
 class SensorsScanViewSet(viewsets.ViewSet):
     """Discovery and registration for Minew MST01 / BeaconX BLE sensors."""
+
+    authentication_classes = [BasicAuthentication, AjaxSessionAuthentication]
+    # Reads stay open: the SNMP service polls sensors-scan/live/ without a
+    # login. Starting or stopping a scan and adding sensors needs a session.
+    write_actions = ('start', 'stop', 'confirm')
+
+    def get_permissions(self):
+        if self.action in self.write_actions:
+            return [IsAuthenticated()]
+        return [AllowAny()]
 
     @action(detail=False, methods=['post'], url_path='start')
     def start(self, request):
