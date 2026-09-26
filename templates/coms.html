@@ -3,6 +3,38 @@
 {% load i18n %}
 
 {% block scripts %}
+    {% translate 'La configuración de red se aplicó, pero la interfaz web aún no está disponible. Compruebe el cable o la dirección IP e inténtelo de nuevo.' as network_unreachable %}
+    {% translate '{field} debe ser una dirección IPv4 válida.' as invalid_ipv4 %}
+    {% translate '{field} debe contener direcciones IPv4 válidas separadas por comas.' as invalid_dns %}
+    {% translate 'El SSID Wi-Fi es obligatorio.' as wifi_ssid_required %}
+    {% translate 'Se requiere una contraseña al seleccionar una nueva red Wi-Fi.' as wifi_password_required %}
+    {% translate 'LAN 1 y LAN 2 deben usar direcciones IP diferentes.' as lan_addresses_different %}
+    {% translate 'Ethernet y Wi-Fi deben usar direcciones IP diferentes.' as ethernet_wifi_addresses_different %}
+    <script>
+        const COMS_I18N = {
+            networkUnreachable: "{{ network_unreachable|escapejs }}",
+            invalidIpv4: "{{ invalid_ipv4|escapejs }}",
+            invalidDns: "{{ invalid_dns|escapejs }}",
+            wifiSsidRequired: "{{ wifi_ssid_required|escapejs }}",
+            wifiPasswordRequired: "{{ wifi_password_required|escapejs }}",
+            lanAddressesDifferent: "{{ lan_addresses_different|escapejs }}",
+            ethernetWifiAddressesDifferent: "{{ ethernet_wifi_addresses_different|escapejs }}",
+            ethernetIp: "{% translate 'IP Ethernet' %}",
+            ethernetSubnetMask: "{% translate 'Máscara subnet Ethernet' %}",
+            ethernetGateway: "{% translate 'Gateway Ethernet' %}",
+            ethernetDns: "{% translate 'DNS Ethernet' %}",
+            lan1Ip: "{% translate 'IP LAN 1' %}",
+            lan1Gateway: "{% translate 'Gateway LAN 1' %}",
+            lan2Ip: "{% translate 'IP LAN 2' %}",
+            lan2Gateway: "{% translate 'Gateway LAN 2' %}",
+            lanSubnetMask: "{% translate 'Máscara subnet LAN' %}",
+            lanDns: "{% translate 'DNS LAN' %}",
+            wifiIp: "{% translate 'IP Wi-Fi' %}",
+            wifiSubnetMask: "{% translate 'Máscara subnet Wi-Fi' %}",
+            wifiGateway: "{% translate 'Gateway Wi-Fi' %}",
+            wifiDns: "{% translate 'DNS Wi-Fi' %}"
+        };
+    </script>
     <script src="{% static 'js/app/coms.js' %}"></script>
 {% endblock %}
 
@@ -19,121 +51,134 @@
             </div>
             <div class="row pt-4">
                 <!-- Network Settings -->
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="borderGreen p-4 h-100">
                         <div class="iconAbsolute"><span class="iconNetworkSetup"></span></div>
                         <h3 class="textGreen ml-50 little2">
                             {% translate 'Configuración de Red' %}
                         </h3>
-                        <div class="row pt-4">
-                            <div class="col">
-                                <p class="bold pb-0 pt-2">
-                                    {% translate 'Tipo de Conexión' %}
-                                </p>
+                        <div class="row pt-4 align-items-center">
+                            <div class="col-md-7 mb-3">
+                                <label class="bold mb-2" for="selectComsNetworkMode">
+                                    {% translate 'Modo de Red' %}
+                                </label>
+                                <select id="selectComsNetworkMode" class="form-select" onchange="COMS.update_network_setup_form();">
+                                    <option value="0">{% translate 'LAN Única' %}</option>
+                                    <option value="1">{% translate 'Solo Wi-Fi' %}</option>
+                                    <option value="2">{% translate 'LAN Dual' %}</option>
+                                    <option value="3">{% translate 'LAN + Wi-Fi' %}</option>
+                                </select>
                             </div>
-                            <div class="col">
-                                <div class="form-check">
-                                    <input onclick="COMS.update_network_setup_form();" class="form-check-input" type="radio" name="radioOptionConnectionType" id="radioComsConnectionTypeEthernet" value="ethernet" checked>
-                                    <label class="form-check-label" for="inlineRadio1">
-                                        {% translate 'Ethernet' %} <span class="small" id="spanComsConnectionTypeEthernet"></span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input onclick="COMS.update_network_setup_form();" class="form-check-input" type="radio" name="radioOptionConnectionType" id="radioComsConnectionTypeWifi" value="wifi">
-                                    <label class="form-check-label" for="inlineRadio2">
-                                        {% translate 'Wi-Fi' %} <span class="small" id="spanComsConnectionTypeWifi"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row pt-2">
-                            <div class="col">
-                                <p class="bold pb-0">
-                                    {% translate 'DHCP' %}
-                                </p>
-                            </div>
-                            <div class="col">
+                            <div class="col-md-5 mb-3">
+                                <p class="bold pb-0 mb-2">{% translate 'DHCP' %}</p>
                                 <div class="form-check form-switch">
                                     <input onclick="COMS.update_network_setup_form();" class="large-chexbox form-check-input" type="checkbox" id="checkboxComsDHCPEnable">
+                                    <label class="form-check-label ms-2" for="checkboxComsDHCPEnable">
+                                        {% translate 'Obtener direcciones automáticamente' %}
+                                    </label>
                                 </div>
                             </div>
                         </div>
-                        <div class="row pt-2">
-                            <div class="col">
-                                <p class="bold pb-0">
-                                    {% translate 'Dirección IP' %}
-                                </p>
+
+                        <div class="row small text-muted mb-3">
+                            <div class="col-md-6">
+                                {% translate 'MAC Ethernet' %}: <span id="spanComsConnectionTypeEthernet">-</span>
                             </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <input id="inputComsConnectionTypeIPAddress" type="text" class="form-control">
+                            <div class="col-md-6">
+                                {% translate 'MAC Wi-Fi' %}: <span id="spanComsConnectionTypeWifi">-</span>
+                            </div>
+                        </div>
+
+                        <div id="containerComsEthernetConfig" class="borderGreen p-3 mb-3">
+                            <h4 class="textGreen little2 mb-3">{% translate 'Configuración Ethernet' %}</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsEthernetIP" class="form-label">{% translate 'Dirección IP' %}</label>
+                                    <input id="inputComsEthernetIP" type="text" class="form-control" value="192.168.1.100">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsEthernetSubnetMask" class="form-label">{% translate 'Máscara Subnet' %}</label>
+                                    <input id="inputComsEthernetSubnetMask" type="text" class="form-control" value="255.255.255.0">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsEthernetGateway" class="form-label">{% translate 'Gateway IP' %}</label>
+                                    <input id="inputComsEthernetGateway" type="text" class="form-control" value="192.168.1.1">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsEthernetDNS" class="form-label">{% translate 'DNS Preferido' %}</label>
+                                    <input id="inputComsEthernetDNS" type="text" class="form-control" value="8.8.8.8">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold pb-0">
-                                    {% translate 'Máscara Subnet' %}
-                                </p>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <input id="inputComsConnectionTypeSubnetMask" type="text" class="form-control">
+
+                        <div id="containerComsDualLanConfig" class="borderGreen p-3 mb-3 d-none">
+                            <h4 class="textGreen little2 mb-3">{% translate 'Configuración LAN Dual' %}</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3 mb-3">
+                                        <p class="bold">LAN 1 (ETH1)</p>
+                                        <label for="inputComsLan1IP" class="form-label">{% translate 'Dirección IP' %}</label>
+                                        <input id="inputComsLan1IP" type="text" class="form-control mb-3" value="192.168.1.100">
+                                        <label for="inputComsLan1Gateway" class="form-label">{% translate 'Gateway IP' %}</label>
+                                        <input id="inputComsLan1Gateway" type="text" class="form-control" value="192.168.1.1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border rounded p-3 mb-3">
+                                        <p class="bold">LAN 2 (ETH2)</p>
+                                        <label for="inputComsLan2IP" class="form-label">{% translate 'Dirección IP' %}</label>
+                                        <input id="inputComsLan2IP" type="text" class="form-control mb-3" value="192.168.1.200">
+                                        <label for="inputComsLan2Gateway" class="form-label">{% translate 'Gateway IP' %}</label>
+                                        <input id="inputComsLan2Gateway" type="text" class="form-control" value="192.168.1.1">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsDualLanSubnetMask" class="form-label">{% translate 'Máscara Subnet (ambas LAN)' %}</label>
+                                    <input id="inputComsDualLanSubnetMask" type="text" class="form-control" value="255.255.255.0">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsDualLanDNS" class="form-label">{% translate 'DNS Preferido' %}</label>
+                                    <input id="inputComsDualLanDNS" type="text" class="form-control" value="8.8.8.8">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold pb-0">
-                                    {% translate 'Gateway IP' %}
-                                </p>
+
+                        <div id="containerComsWifiConfig" class="borderGreen p-3 mb-3 d-none">
+                            <h4 class="textGreen little2 mb-3">{% translate 'Configuración Wi-Fi' %}</h4>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsWifiSSID" class="form-label">{% translate 'WiFi SSID' %}</label>
+                                    <input id="inputComsWifiSSID" type="text" class="form-control">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsWifiPassword" class="form-label">{% translate 'Contraseña WiFi' %}</label>
+                                    <input id="inputComsWifiPassword" type="password" class="form-control" placeholder="{% translate 'Dejar vacío para conservarla' %}">
+                                </div>
                             </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <input id="inputComsConnectionTypeGatewayIp" type="text" class="form-control">
+                            <div id="containerComsWifiStaticConfig" class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsWifiIP" class="form-label">{% translate 'Dirección IP Wi-Fi' %}</label>
+                                    <input id="inputComsWifiIP" type="text" class="form-control" value="192.168.1.150">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsWifiSubnetMask" class="form-label">{% translate 'Máscara Subnet Wi-Fi' %}</label>
+                                    <input id="inputComsWifiSubnetMask" type="text" class="form-control" value="255.255.255.0">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsWifiGateway" class="form-label">{% translate 'Gateway Wi-Fi' %}</label>
+                                    <input id="inputComsWifiGateway" type="text" class="form-control" value="192.168.1.1">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="inputComsWifiDNS" class="form-label">{% translate 'DNS Wi-Fi' %}</label>
+                                    <input id="inputComsWifiDNS" type="text" class="form-control" value="8.8.8.8">
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold pb-0">
-                                    {% translate 'DNS Preferido' %}
-                                </p>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <input id="inputComsConnectionTypeDNS" type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold pb-0">
-                                    {% translate 'WiFi SSID' %}
-                                </p>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <input id="inputComsConnectionTypeWifiSSID" type="text" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="bold pb-0">
-                                    {% translate 'Contraseña WiFi' %}
-                                </p>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-3">
-                                    <input id="inputComsConnectionTypeWifiPassword" type="password" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+
                         <!-- Buttons Save and Discard-->
                         <div class="row pt-2">
                             <div class="col">
-                                <a href="{% url 'coms' %}" class="btn btn-primary2">
+                                <a onclick="COMS.get_network_setup($(this));" class="btn btn-primary2">
                                     {% translate 'Deshacer' %}
                                 </a>
                             </div>
@@ -147,7 +192,7 @@
                 </div>
                 <!-- END Network Setup -->
 
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <!-- Services -->
                     <div class="borderGreen p-4 mb-4">
                         <div class="iconAbsolute"><span class="iconNetworkSetup"></span></div>

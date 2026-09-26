@@ -796,3 +796,147 @@ msgstr "Actions"
 #: templates/users.html:69
 msgid "Adicionar Usuario"
 msgstr "Add User"
+
+#: templates/coms.html
+msgid "Modo de Red"
+msgstr "Network Mode"
+
+#: templates/coms.html
+msgid "LAN Única"
+msgstr "Single LAN"
+
+#: templates/coms.html
+msgid "Solo Wi-Fi"
+msgstr "Wi-Fi Only"
+
+#: templates/coms.html
+msgid "LAN Dual"
+msgstr "Dual LAN"
+
+#: templates/coms.html
+msgid "LAN + Wi-Fi"
+msgstr "LAN + Wi-Fi"
+
+#: templates/coms.html
+msgid "Obtener direcciones automáticamente"
+msgstr "Obtain addresses automatically"
+
+#: templates/coms.html
+msgid "MAC Ethernet"
+msgstr "Ethernet MAC"
+
+#: templates/coms.html
+msgid "MAC Wi-Fi"
+msgstr "Wi-Fi MAC"
+
+#: templates/coms.html
+msgid "Configuración Ethernet"
+msgstr "Ethernet Configuration"
+
+#: templates/coms.html
+msgid "Configuración LAN Dual"
+msgstr "Dual LAN Configuration"
+
+#: templates/coms.html
+msgid "Máscara Subnet (ambas LAN)"
+msgstr "Subnet Mask (both LANs)"
+
+#: templates/coms.html
+msgid "Configuración Wi-Fi"
+msgstr "Wi-Fi Configuration"
+
+#: templates/coms.html
+msgid "Dejar vacío para conservarla"
+msgstr "Leave blank to keep the current password"
+
+#: templates/coms.html
+msgid "Dirección IP Wi-Fi"
+msgstr "Wi-Fi IP Address"
+
+#: templates/coms.html
+msgid "Máscara Subnet Wi-Fi"
+msgstr "Wi-Fi Subnet Mask"
+
+#: templates/coms.html
+msgid "Gateway Wi-Fi"
+msgstr "Wi-Fi Gateway"
+
+#: templates/coms.html
+msgid "DNS Wi-Fi"
+msgstr "Wi-Fi DNS"
+
+#: templates/coms.html
+msgid "La configuración de red se aplicó, pero la interfaz web aún no está disponible. Compruebe el cable o la dirección IP e inténtelo de nuevo."
+msgstr "The network settings were applied, but the web UI is not reachable yet. Check the cable or IP address and try again."
+
+#: templates/coms.html
+msgid "{field} debe ser una dirección IPv4 válida."
+msgstr "{field} must be a valid IPv4 address."
+
+#: templates/coms.html
+msgid "{field} debe contener direcciones IPv4 válidas separadas por comas."
+msgstr "{field} must contain valid IPv4 addresses separated by commas."
+
+#: templates/coms.html
+msgid "El SSID Wi-Fi es obligatorio."
+msgstr "The Wi-Fi SSID is required."
+
+#: templates/coms.html
+msgid "Se requiere una contraseña al seleccionar una nueva red Wi-Fi."
+msgstr "A password is required when selecting a new Wi-Fi network."
+
+#: templates/coms.html
+msgid "LAN 1 y LAN 2 deben usar direcciones IP diferentes."
+msgstr "LAN 1 and LAN 2 must use different IP addresses."
+
+#: templates/coms.html
+msgid "Ethernet y Wi-Fi deben usar direcciones IP diferentes."
+msgstr "Ethernet and Wi-Fi must use different IP addresses."
+
+#: templates/coms.html
+msgid "IP Ethernet"
+msgstr "Ethernet IP"
+
+#: templates/coms.html
+msgid "Máscara subnet Ethernet"
+msgstr "Ethernet Subnet Mask"
+
+#: templates/coms.html
+msgid "Gateway Ethernet"
+msgstr "Ethernet Gateway"
+
+#: templates/coms.html
+msgid "DNS Ethernet"
+msgstr "Ethernet DNS"
+
+#: templates/coms.html
+msgid "IP LAN 1"
+msgstr "LAN 1 IP"
+
+#: templates/coms.html
+msgid "Gateway LAN 1"
+msgstr "LAN 1 Gateway"
+
+#: templates/coms.html
+msgid "IP LAN 2"
+msgstr "LAN 2 IP"
+
+#: templates/coms.html
+msgid "Gateway LAN 2"
+msgstr "LAN 2 Gateway"
+
+#: templates/coms.html
+msgid "Máscara subnet LAN"
+msgstr "LAN Subnet Mask"
+
+#: templates/coms.html
+msgid "DNS LAN"
+msgstr "LAN DNS"
+
+#: templates/coms.html
+msgid "IP Wi-Fi"
+msgstr "Wi-Fi IP"
+
+#: templates/coms.html
+msgid "Máscara subnet Wi-Fi"
+msgstr "Wi-Fi Subnet Mask"

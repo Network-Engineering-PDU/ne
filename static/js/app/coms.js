@@ -7,15 +7,33 @@ let checkboxComsSNMPEnable = $("#checkboxComsSNMPEnable");
 let checkboxComsModbusEnable = $("#checkboxComsModbusEnable");
 // Network Setup
 let checkboxComsDHCPEnable = $("#checkboxComsDHCPEnable");
-let radioComsConnectionTypeEthernet = $("#radioComsConnectionTypeEthernet");
+let selectComsNetworkMode = $("#selectComsNetworkMode");
 let spanComsConnectionTypeEthernet = $("#spanComsConnectionTypeEthernet");
 let spanComsConnectionTypeWifi = $("#spanComsConnectionTypeWifi");
-let inputComsConnectionTypeIPAddress = $("#inputComsConnectionTypeIPAddress");
-let inputComsConnectionTypeSubnetMask = $("#inputComsConnectionTypeSubnetMask");
-let inputComsConnectionTypeGatewayIp = $("#inputComsConnectionTypeGatewayIp");
-let inputComsConnectionTypeDNS = $("#inputComsConnectionTypeDNS");
-let inputComsConnectionTypeWifiSSID = $("#inputComsConnectionTypeWifiSSID");
-let inputComsConnectionTypeWifiPassword = $("#inputComsConnectionTypeWifiPassword");
+let containerComsEthernetConfig = $("#containerComsEthernetConfig");
+let containerComsDualLanConfig = $("#containerComsDualLanConfig");
+let containerComsWifiConfig = $("#containerComsWifiConfig");
+let containerComsWifiStaticConfig = $("#containerComsWifiStaticConfig");
+let inputComsEthernetIP = $("#inputComsEthernetIP");
+let inputComsEthernetSubnetMask = $("#inputComsEthernetSubnetMask");
+let inputComsEthernetGateway = $("#inputComsEthernetGateway");
+let inputComsEthernetDNS = $("#inputComsEthernetDNS");
+let inputComsLan1IP = $("#inputComsLan1IP");
+let inputComsLan1Gateway = $("#inputComsLan1Gateway");
+let inputComsLan2IP = $("#inputComsLan2IP");
+let inputComsLan2Gateway = $("#inputComsLan2Gateway");
+let inputComsDualLanSubnetMask = $("#inputComsDualLanSubnetMask");
+let inputComsDualLanDNS = $("#inputComsDualLanDNS");
+let inputComsWifiSSID = $("#inputComsWifiSSID");
+let inputComsWifiPassword = $("#inputComsWifiPassword");
+let inputComsWifiIP = $("#inputComsWifiIP");
+let inputComsWifiSubnetMask = $("#inputComsWifiSubnetMask");
+let inputComsWifiGateway = $("#inputComsWifiGateway");
+let inputComsWifiDNS = $("#inputComsWifiDNS");
+let networkSetupState = {
+    eth_interface: '',
+    loaded_ssid: ''
+};
 // SNMP Setup
 let checkboxComsSnmpSetupBeepEnable = $("#checkboxComsSnmpSetupBeepEnable");
 let checkboxComsSnmpSetupRelayEnable = $("#checkboxComsSnmpSetupRelayEnable");
@@ -64,8 +82,21 @@ let COMS = {
     url: `/${LANG_CODE}/coms/`,
     url_hosts: `/${LANG_CODE}/hosts/`,
 
-    wait_for_web_ui: function (elem, originalText, attempt) {
+    translated_network_message: function (key, field) {
+        let message = COMS_I18N[key] || "";
+        return field ? message.replace("{field}", field) : message;
+    },
+
+    wait_for_web_ui: function (elem, originalText, attempt, targetIP) {
         attempt = attempt || 0;
+        if (targetIP && targetIP !== window.location.hostname) {
+            let port = window.location.port ? `:${window.location.port}` : '';
+            let targetUrl = `${window.location.protocol}//${targetIP}${port}/${LANG_CODE}/coms/`;
+            setTimeout(function () {
+                window.location.assign(targetUrl);
+            }, 4000);
+            return;
+        }
         $.ajax({
             url: `${COMS.url}?_=${Date.now()}`,
             type: 'GET',
@@ -77,7 +108,7 @@ let COMS = {
             error: function () {
                 if (attempt < 40) {
                     setTimeout(function () {
-                        COMS.wait_for_web_ui(elem, originalText, attempt + 1);
+                        COMS.wait_for_web_ui(elem, originalText, attempt + 1, targetIP);
                     }, 1500);
                     return;
                 }
@@ -85,7 +116,7 @@ let COMS = {
                 if (elem !== undefined) {
                     elem.attr('disabled', false).html(originalText);
                 }
-                alert('Network settings were applied, but the web UI is not reachable yet. Please check the cable/IP and try again.');
+                alert(COMS.translated_network_message('networkUnreachable'));
             }
         });
     },
@@ -219,24 +250,123 @@ let COMS = {
 
     // Network Setup
     update_network_setup_form: function () {
-        if (radioComsConnectionTypeEthernet.is(':checked')){
-            inputComsConnectionTypeWifiSSID.attr('disabled', true);
-            inputComsConnectionTypeWifiPassword.attr('disabled', true);
-        }else{
-            inputComsConnectionTypeWifiSSID.attr('disabled', false);
-            inputComsConnectionTypeWifiPassword.attr('disabled', false);
+        let mode = parseInt(selectComsNetworkMode.val(), 10);
+        let dhcp = checkboxComsDHCPEnable.is(':checked');
+        let hasEthernet = mode === 0 || mode === 2 || mode === 3;
+        let hasWifi = mode === 1 || mode === 3;
+
+        containerComsEthernetConfig.toggleClass(
+            'd-none', !hasEthernet || mode === 2 || dhcp);
+        containerComsDualLanConfig.toggleClass('d-none', mode !== 2 || dhcp);
+        containerComsWifiConfig.toggleClass('d-none', !hasWifi);
+        containerComsWifiStaticConfig.toggleClass('d-none', dhcp);
+    },
+
+    network_value: function (field) {
+        return $.trim(field.val() || '');
+    },
+
+    is_valid_ipv4: function (value) {
+        let parts = value.split('.');
+        if (parts.length !== 4) {
+            return false;
         }
-        if (checkboxComsDHCPEnable.is(':checked')){
-            inputComsConnectionTypeIPAddress.attr('disabled', true);
-            inputComsConnectionTypeSubnetMask.attr('disabled', true);
-            inputComsConnectionTypeGatewayIp.attr('disabled', true);
-            inputComsConnectionTypeDNS.attr('disabled', true);
-        }else{
-            inputComsConnectionTypeIPAddress.attr('disabled', false);
-            inputComsConnectionTypeSubnetMask.attr('disabled', false);
-            inputComsConnectionTypeGatewayIp.attr('disabled', false);
-            inputComsConnectionTypeDNS.attr('disabled', false);
+        return parts.every(function (part) {
+            return /^\d{1,3}$/.test(part) &&
+                parseInt(part, 10) >= 0 && parseInt(part, 10) <= 255;
+        });
+    },
+
+    validate_network_field: function (field, label, required) {
+        let value = COMS.network_value(field);
+        field.removeClass('borderRed');
+        if ((required && !value) || (value && !COMS.is_valid_ipv4(value))) {
+            field.addClass('borderRed');
+            alert(COMS.translated_network_message("invalidIpv4", label));
+            return false;
         }
+        return true;
+    },
+
+    validate_dns_field: function (field, label) {
+        let value = COMS.network_value(field);
+        field.removeClass('borderRed');
+        if (!value) {
+            return true;
+        }
+        let valid = value.split(',').every(function (server) {
+            return COMS.is_valid_ipv4($.trim(server));
+        });
+        if (!valid) {
+            field.addClass('borderRed');
+            alert(COMS.translated_network_message("invalidDns", label));
+        }
+        return valid;
+    },
+
+    validate_network_setup: function () {
+        let mode = parseInt(selectComsNetworkMode.val(), 10);
+        let dhcp = checkboxComsDHCPEnable.is(':checked');
+        let usesWifi = mode === 1 || mode === 3;
+
+        if (usesWifi && !COMS.network_value(inputComsWifiSSID)) {
+            inputComsWifiSSID.addClass('borderRed');
+            alert(COMS.translated_network_message('wifiSsidRequired'));
+            return false;
+        }
+        inputComsWifiSSID.removeClass('borderRed');
+
+        if (usesWifi &&
+            COMS.network_value(inputComsWifiSSID) !== networkSetupState.loaded_ssid &&
+            !COMS.network_value(inputComsWifiPassword)) {
+            inputComsWifiPassword.addClass('borderRed');
+            alert(COMS.translated_network_message('wifiPasswordRequired'));
+            return false;
+        }
+        inputComsWifiPassword.removeClass('borderRed');
+
+        if (dhcp) {
+            return true;
+        }
+
+        if (mode === 0 || mode === 3) {
+            if (!COMS.validate_network_field(inputComsEthernetIP, COMS_I18N.ethernetIp, true) ||
+                !COMS.validate_network_field(inputComsEthernetSubnetMask, COMS_I18N.ethernetSubnetMask, true) ||
+                !COMS.validate_network_field(inputComsEthernetGateway, COMS_I18N.ethernetGateway, false) ||
+                !COMS.validate_dns_field(inputComsEthernetDNS, COMS_I18N.ethernetDns)) {
+                return false;
+            }
+        }
+
+        if (mode === 2) {
+            if (!COMS.validate_network_field(inputComsLan1IP, COMS_I18N.lan1Ip, true) ||
+                !COMS.validate_network_field(inputComsLan1Gateway, COMS_I18N.lan1Gateway, true) ||
+                !COMS.validate_network_field(inputComsLan2IP, COMS_I18N.lan2Ip, true) ||
+                !COMS.validate_network_field(inputComsLan2Gateway, COMS_I18N.lan2Gateway, true) ||
+                !COMS.validate_network_field(inputComsDualLanSubnetMask, COMS_I18N.lanSubnetMask, true) ||
+                !COMS.validate_dns_field(inputComsDualLanDNS, COMS_I18N.lanDns)) {
+                return false;
+            }
+            if (COMS.network_value(inputComsLan1IP) === COMS.network_value(inputComsLan2IP)) {
+                alert(COMS.translated_network_message('lanAddressesDifferent'));
+                return false;
+            }
+        }
+
+        if (usesWifi) {
+            if (!COMS.validate_network_field(inputComsWifiIP, COMS_I18N.wifiIp, true) ||
+                !COMS.validate_network_field(inputComsWifiSubnetMask, COMS_I18N.wifiSubnetMask, true) ||
+                !COMS.validate_network_field(inputComsWifiGateway, COMS_I18N.wifiGateway, false) ||
+                !COMS.validate_dns_field(inputComsWifiDNS, COMS_I18N.wifiDns)) {
+                return false;
+            }
+            if (mode === 3 &&
+                COMS.network_value(inputComsEthernetIP) === COMS.network_value(inputComsWifiIP)) {
+                alert(COMS.translated_network_message('ethernetWifiAddressesDifferent'));
+                return false;
+            }
+        }
+        return true;
     },
 
     get_network_setup: function (elem) {
@@ -244,23 +374,6 @@ let COMS = {
         if (elem !== undefined){
             originalText = elem.html();
         }
-        /*
-        response example:
-            {
-                "type": "ethernet", # ha cambiado a integer
-                "dhcp": True,
-                "ethernet_mac": "80:3f:5d:09:21:f5",
-                "wifi_mac": "80:3f:5d:09:21:f5",
-                "params": {
-                    "ip": "192.168.0.120",
-                    "subnet_mask": "255.255.255.0",
-                    "gateway_ip": "192.168.0.1",
-                    "dns": "8.8.8.8,8.8.4.4",
-                    "ssid": "MI_WIFI",
-                    "password": "password123"
-                }
-            }
-        */
         $.ajax({
             url: COMS.url,
             type: 'POST',
@@ -276,15 +389,40 @@ let COMS = {
                     }
                     spanComsConnectionTypeEthernet.html(response.ethernet_mac);
                     spanComsConnectionTypeWifi.html(response.wifi_mac);
-                    checkboxComsDHCPEnable.attr('checked', response.dhcp);
-                    // params
-                    let params = response.params;
-                    inputComsConnectionTypeIPAddress.val(params.ip);
-                    inputComsConnectionTypeSubnetMask.val(params.subnet_mask);
-                    inputComsConnectionTypeGatewayIp.val(params.gateway_ip);
-                    inputComsConnectionTypeDNS.val(params.dns);
-                    inputComsConnectionTypeWifiSSID.val(params.ssid);
-                    inputComsConnectionTypeWifiPassword.val(params.password);
+                    let params = response.params || {};
+                    let mode = parseInt(response.nw_mode, 10);
+                    if (![0, 1, 2, 3].includes(mode)) {
+                        mode = response.type === 4 || response.type === 5 ? 1 : 0;
+                    }
+
+                    networkSetupState.eth_interface = response.eth_interface ||
+                        params.eth_interface || '';
+                    networkSetupState.loaded_ssid = params.ssid || '';
+                    selectComsNetworkMode.val(String(mode));
+                    checkboxComsDHCPEnable.prop('checked', Boolean(response.dhcp));
+
+                    inputComsEthernetIP.val(response.lan1_ip || params.ip || '192.168.1.100');
+                    inputComsEthernetSubnetMask.val(params.subnet_mask || '255.255.255.0');
+                    inputComsEthernetGateway.val(response.lan1_gateway || params.gateway_ip || '192.168.1.1');
+                    inputComsEthernetDNS.val(params.dns || '8.8.8.8');
+
+                    inputComsLan1IP.val(response.lan1_ip || params.ip || '192.168.1.100');
+                    inputComsLan1Gateway.val(response.lan1_gateway || params.gateway_ip || '192.168.1.1');
+                    inputComsLan2IP.val(response.lan2_ip || '192.168.1.200');
+                    inputComsLan2Gateway.val(response.lan2_gateway || '192.168.1.1');
+                    inputComsDualLanSubnetMask.val(params.subnet_mask || '255.255.255.0');
+                    inputComsDualLanDNS.val(params.dns || '8.8.8.8');
+
+                    inputComsWifiSSID.val(params.ssid || '');
+                    inputComsWifiPassword.val('');
+                    inputComsWifiIP.val(response.wifi_ip || (mode === 1 ? params.ip : '') || '192.168.1.150');
+                    inputComsWifiSubnetMask.val(response.wifi_subnet_mask ||
+                        (mode === 1 ? params.subnet_mask : '') || '255.255.255.0');
+                    inputComsWifiGateway.val(response.wifi_gateway ||
+                        (mode === 1 ? params.gateway_ip : '') || '192.168.1.1');
+                    inputComsWifiDNS.val(response.wifi_dns ||
+                        (mode === 1 ? params.dns : '') || '8.8.8.8');
+                    COMS.update_network_setup_form();
                 }else{
                     alert('Warning: ' + response.message);
                 }
@@ -303,36 +441,56 @@ let COMS = {
         if (elem !== undefined){
             originalText = elem.html();
         }
-        /*
-        body example:
-            {
-                "type": "wifi",
-                "dhcp": False,
-                "params": {
-                    "ip": "192.168.0.120",
-                    "subnet_mask": "255.255.255.0",
-                    "gateway_ip": "192.168.0.1",
-                    "dns": "8.8.8.8,8.8.4.4",
-                    "ssid": "MI_WIFI",
-                    "password": "password123"
-                }
-            }
-        */
-        let conn_type = 'wifi';
-        if (radioComsConnectionTypeEthernet.is(':checked')){
-            conn_type = 'ethernet';
+        if (!COMS.validate_network_setup()) {
+            return false;
         }
+
+        let mode = parseInt(selectComsNetworkMode.val(), 10);
+        let dhcp = checkboxComsDHCPEnable.is(':checked');
+        let wifiOnly = mode === 1;
+        let dualLan = mode === 2;
+        let ethernetIP = dualLan ? COMS.network_value(inputComsLan1IP) :
+            COMS.network_value(inputComsEthernetIP);
+        let ethernetMask = dualLan ? COMS.network_value(inputComsDualLanSubnetMask) :
+            COMS.network_value(inputComsEthernetSubnetMask);
+        let ethernetGateway = dualLan ?
+            (networkSetupState.eth_interface === 'eth0' ?
+                COMS.network_value(inputComsLan2Gateway) :
+                COMS.network_value(inputComsLan1Gateway)) :
+            COMS.network_value(inputComsEthernetGateway);
+        let ethernetDNS = dualLan ? COMS.network_value(inputComsDualLanDNS) :
+            COMS.network_value(inputComsEthernetDNS);
+        let wifiIP = COMS.network_value(inputComsWifiIP);
+        let wifiMask = COMS.network_value(inputComsWifiSubnetMask);
+        let wifiGateway = COMS.network_value(inputComsWifiGateway);
+        let wifiDNS = COMS.network_value(inputComsWifiDNS);
+
         let payload = {
-            "type": conn_type,
-            "dhcp": checkboxComsDHCPEnable.is(':checked'),
+            "type": wifiOnly ? (dhcp ? 4 : 5) : (dhcp ? 2 : 3),
+            "dhcp": dhcp,
+            "nw_mode": mode,
+            "eth_interface": networkSetupState.eth_interface,
+            "lan1_ip": COMS.network_value(inputComsLan1IP) || ethernetIP,
+            "lan1_gateway": COMS.network_value(inputComsLan1Gateway) || ethernetGateway,
+            "lan2_ip": COMS.network_value(inputComsLan2IP),
+            "lan2_gateway": COMS.network_value(inputComsLan2Gateway),
+            "wifi_ip": wifiIP,
+            "wifi_subnet_mask": wifiMask,
+            "wifi_gateway": wifiGateway,
+            "wifi_dns": wifiDNS,
             "params": {
-                "ip": inputComsConnectionTypeIPAddress.val(),
-                "subnet_mask": inputComsConnectionTypeSubnetMask.val(),
-                "gateway_ip": inputComsConnectionTypeGatewayIp.val(),
-                "dns": inputComsConnectionTypeDNS.val(),
-                "ssid": inputComsConnectionTypeWifiSSID.val(),
-                "password": inputComsConnectionTypeWifiPassword.val()
+                "ip": wifiOnly ? wifiIP : ethernetIP,
+                "subnet_mask": wifiOnly ? wifiMask : ethernetMask,
+                "gateway_ip": wifiOnly ? wifiGateway : ethernetGateway,
+                "dns": wifiOnly ? wifiDNS : ethernetDNS,
+                "ssid": COMS.network_value(inputComsWifiSSID),
+                "password": COMS.network_value(inputComsWifiPassword),
+                "eth_interface": networkSetupState.eth_interface
             }
+        };
+        let targetIP = '';
+        if (!dhcp) {
+            targetIP = wifiOnly ? wifiIP : ethernetIP;
         }
         $.ajax({
             url: COMS.url,
@@ -351,8 +509,9 @@ let COMS = {
             success: function(response) {
                 if (response.result === 'ok'){
                     console.log(response.message);
+                    networkSetupState.loaded_ssid = COMS.network_value(inputComsWifiSSID);
                     setTimeout(function() {
-                        COMS.wait_for_web_ui(elem, originalText);
+                        COMS.wait_for_web_ui(elem, originalText, 0, targetIP);
                     }, 1500);
                 }else{
                     if (elem !== undefined){
@@ -362,7 +521,7 @@ let COMS = {
                 }
             },
             error: function (response) {
-                COMS.wait_for_web_ui(elem, originalText);
+                COMS.wait_for_web_ui(elem, originalText, 0, targetIP);
             }
         });
     },

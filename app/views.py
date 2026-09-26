@@ -551,7 +551,8 @@ def coms(request):
             try:
                 if method == 'GET':
                     # dynamic GET request
-                    response = requests.get(f'{BASE_URL_PDU}/{endpoint}', verify=False)
+                    response = requests.get(
+                        f'{BASE_URL_PDU}/{endpoint}', verify=False, timeout=15)
                     if response.status_code == 200:
                         resp = response.json()
                         # network/services
@@ -568,28 +569,23 @@ def coms(request):
                             })
                         # network/interfaces
                         elif endpoint == 'network/interfaces':
-                            # new types and logic based on type and dhcp
-                            type = resp['type']
-                            if type == 2:   # ETH_DHCP
-                                resp['type'] = True
-                                resp['dhcp'] = True
-                            elif type == 3: # ETH_STATIC
-                                resp['type'] = True
-                                resp['dhcp'] = False
-                            elif type == 4:  # WIFI_DHCP
-                                resp['type'] = False
-                                resp['dhcp'] = True
-                            else:   # WIFI_STATIC (5)
-                                resp['type'] = False
-                                resp['dhcp'] = False
-
                             return ok_json(data={
                                 'message': f"{_('Cambios guardados correctamente')}",
-                                'type': type,
-                                'dhcp': resp['dhcp'],
-                                'ethernet_mac': resp['ethernet_mac'],
-                                'wifi_mac': resp['wifi_mac'],
-                                'params': resp['params']
+                                'type': resp.get('type'),
+                                'dhcp': resp.get('dhcp', False),
+                                'ethernet_mac': resp.get('ethernet_mac', ''),
+                                'wifi_mac': resp.get('wifi_mac', ''),
+                                'params': resp.get('params', {}),
+                                'eth_interface': resp.get('eth_interface', ''),
+                                'nw_mode': resp.get('nw_mode', 0),
+                                'lan1_ip': resp.get('lan1_ip', ''),
+                                'lan1_gateway': resp.get('lan1_gateway', ''),
+                                'lan2_ip': resp.get('lan2_ip', ''),
+                                'lan2_gateway': resp.get('lan2_gateway', ''),
+                                'wifi_ip': resp.get('wifi_ip', ''),
+                                'wifi_subnet_mask': resp.get('wifi_subnet_mask', ''),
+                                'wifi_gateway': resp.get('wifi_gateway', ''),
+                                'wifi_dns': resp.get('wifi_dns', ''),
                             })
                         elif endpoint == 'network/snmp/settings':
                             return ok_json(data={
@@ -640,16 +636,22 @@ def coms(request):
                     # dynamic PUT request with payloads (for all endpoints)
                     payload = json.loads(request.POST['payload'])
                     if endpoint == 'network/interfaces':
-                        # new types and logic based on type and dhcp
-                        if payload['type'] == 'ethernet' and payload['dhcp']:
-                            payload['type'] = 2  # ETH_DHCP
-                        elif payload['type'] == 'ethernet' and not payload['dhcp']:
-                            payload['type'] = 3 # ETH_STATIC
-                        elif payload['type'] != 'ethernet' and payload['dhcp']:
-                            payload['type'] = 4 # WIFI_DHCP
-                        else:
-                            payload['type'] = 5  # WIFI_STATIC
-                    response = requests.put(f'{BASE_URL_PDU}/{endpoint}', json=payload, verify=False)
+                        # Keep accepting the legacy string payload while the
+                        # current UI sends the API's numeric network types.
+                        network_type = payload.get('type')
+                        if isinstance(network_type, str):
+                            is_ethernet = network_type == 'ethernet'
+                            if is_ethernet and payload.get('dhcp'):
+                                payload['type'] = 2  # ETH_DHCP
+                            elif is_ethernet:
+                                payload['type'] = 3  # ETH_STATIC
+                            elif payload.get('dhcp'):
+                                payload['type'] = 4  # WIFI_DHCP
+                            else:
+                                payload['type'] = 5  # WIFI_STATIC
+                    response = requests.put(
+                        f'{BASE_URL_PDU}/{endpoint}', json=payload,
+                        verify=False, timeout=15)
                     if response.status_code in (200, 202):
                         return ok_json(data={'message': f"{_('Cambios guardados correctamente')}"})
                     return bad_json(message=f'Error in {method} {endpoint}: {response.text}')
