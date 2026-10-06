@@ -1,0 +1,1138 @@
+# Machine-drafted translation. Review by a native speaker before release.
+# Source strings are the Spanish msgids; edit msgstr values only.
+msgid ""
+msgstr ""
+"Project-Id-Version: NE PDU web\n"
+"Language: zh-Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+msgid "Alarmas"
+msgstr "报警"
+
+msgid "Reconocer todas"
+msgstr "全部确认"
+
+msgid ""
+"Las alarmas se calculan en el PDU y son las mismas que se muestran en su "
+"pantalla. Una alarma reconocida se oculta hasta que la condición desaparece "
+"y vuelve a producirse."
+msgstr "报警由 PDU 计算，与其屏幕上显示的一致。已确认的报警会保持隐藏，直到其状态消失并再次出现。"
+
+msgid "No se ha activado ninguna alarma"
+msgstr "未触发任何报警"
+
+msgid "Reconocidas"
+msgstr "已确认"
+
+msgid "Reconocer"
+msgstr "确认"
+
+msgid "Desde"
+msgstr "起始时间"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Advertencia"
+msgstr "警告"
+
+msgid "No se pudieron cargar las alarmas"
+msgstr "无法加载报警"
+
+msgid "No se pudo reconocer la alarma"
+msgstr "无法确认报警"
+
+msgid "Navegación principal"
+msgstr "主导航"
+
+msgid "Panel"
+msgstr "仪表板"
+
+msgid "Entradas"
+msgstr "输入"
+
+msgid "Salidas"
+msgstr "输出"
+
+msgid "Sensores"
+msgstr "传感器"
+
+msgid "Redes"
+msgstr "网络"
+
+msgid "Ajustes"
+msgstr "设置"
+
+msgid "Idiomas"
+msgstr "语言"
+
+msgid "Usuarios"
+msgstr "用户"
+
+msgid "Salir"
+msgstr "退出登录"
+
+msgid "Menú"
+msgstr "菜单"
+
+msgid ""
+"No se puede contactar con el PDU. Los datos pueden estar desactualizados."
+msgstr "无法连接 PDU。数据可能已过期。"
+
+msgid "No se puede contactar con el PDU"
+msgstr "无法连接 PDU"
+
+msgid "Cancelar"
+msgstr "取消"
+
+msgid "Confirmar"
+msgstr "确认"
+
+msgid "Cambios guardados correctamente"
+msgstr "更改已成功保存"
+
+msgid "Error de Sistema"
+msgstr "系统错误"
+
+msgid "Datos de potencia no disponibles"
+msgstr "功率数据不可用"
+
+msgid "Sin tensión en la entrada"
+msgstr "输入无电压"
+
+msgid "Corriente superior a la nominal"
+msgstr "电流超过额定电流"
+
+msgid "Corriente cercana a la nominal"
+msgstr "电流接近额定电流"
+
+msgid "Red desconectada"
+msgstr "网络已断开"
+
+msgid "Cargando..."
+msgstr "加载中..."
+
+msgid ""
+"La configuración de red se aplicó, pero la interfaz web aún no está "
+"disponible. Compruebe el cable o la dirección IP e inténtelo de nuevo."
+msgstr "网络设置已应用，但网页界面暂时无法访问。请检查网线或 IP 地址后重试。"
+
+msgid "{field} debe ser una dirección IPv4 válida."
+msgstr "{field} 必须是有效的 IPv4 地址。"
+
+msgid "{field} debe contener direcciones IPv4 válidas separadas por comas."
+msgstr "{field} 必须包含以逗号分隔的有效 IPv4 地址。"
+
+msgid "El SSID Wi-Fi es obligatorio."
+msgstr "必须填写 Wi-Fi SSID。"
+
+msgid "Se requiere una contraseña al seleccionar una nueva red Wi-Fi."
+msgstr "选择新的 Wi-Fi 网络时必须输入密码。"
+
+msgid "LAN 1 y LAN 2 deben usar direcciones IP diferentes."
+msgstr "LAN 1 和 LAN 2 必须使用不同的 IP 地址。"
+
+msgid "Ethernet y Wi-Fi deben usar direcciones IP diferentes."
+msgstr "以太网和 Wi-Fi 必须使用不同的 IP 地址。"
+
+msgid "IP Ethernet"
+msgstr "以太网 IP"
+
+msgid "Máscara subnet Ethernet"
+msgstr "以太网子网掩码"
+
+msgid "Gateway Ethernet"
+msgstr "以太网网关"
+
+msgid "DNS Ethernet"
+msgstr "以太网 DNS"
+
+msgid "IP LAN 1"
+msgstr "LAN 1 IP"
+
+msgid "Gateway LAN 1"
+msgstr "LAN 1 网关"
+
+msgid "IP LAN 2"
+msgstr "LAN 2 IP"
+
+msgid "Gateway LAN 2"
+msgstr "LAN 2 网关"
+
+msgid "Máscara subnet LAN"
+msgstr "LAN 子网掩码"
+
+msgid "DNS LAN"
+msgstr "LAN DNS"
+
+msgid "IP Wi-Fi"
+msgstr "Wi-Fi IP"
+
+msgid "Máscara subnet Wi-Fi"
+msgstr "Wi-Fi 子网掩码"
+
+msgid "Gateway Wi-Fi"
+msgstr "Wi-Fi 网关"
+
+msgid "DNS Wi-Fi"
+msgstr "Wi-Fi DNS"
+
+msgid "Conectado"
+msgstr "已连接"
+
+msgid "Emparejado"
+msgstr "已配对"
+
+msgid "Disponible"
+msgstr "可用"
+
+msgid "Conectar"
+msgstr "连接"
+
+msgid "Desconectar"
+msgstr "断开"
+
+msgid "Emparejar"
+msgstr "配对"
+
+msgid "Eliminar"
+msgstr "移除"
+
+msgid "Buscar dispositivos"
+msgstr "搜索设备"
+
+msgid "Detener búsqueda"
+msgstr "停止搜索"
+
+msgid "La acción Bluetooth ha fallado."
+msgstr "蓝牙操作失败。"
+
+msgid "No se pudo cargar el estado de Bluetooth."
+msgstr "无法加载蓝牙状态。"
+
+msgid "Sincronizado"
+msgstr "已同步"
+
+msgid "Sin sincronizar"
+msgstr "未同步"
+
+msgid "Desactivado"
+msgstr "已禁用"
+
+msgid "El servidor NTP es obligatorio"
+msgstr "必须填写 NTP 服务器"
+
+msgid "No se pudieron guardar los cambios"
+msgstr "无法保存更改"
+
+msgid "La configuración SNMP se guardó pero no se pudo aplicar."
+msgstr "SNMP 配置已保存，但无法应用。"
+
+msgid "La comunidad debe tener 1-64 caracteres (letras, números, . _ -)."
+msgstr "团体名必须为 1–64 个字符（字母、数字、. _ -）。"
+
+msgid "El usuario SNMPv3 debe tener 1-32 caracteres (letras, números, . _ -)."
+msgstr "SNMPv3 用户名必须为 1–32 个字符（字母、数字、. _ -）。"
+
+msgid ""
+"La contraseña SNMPv3 debe tener 8-64 caracteres (letras, números y . _ @ # %"
+" + = : -)."
+msgstr "SNMPv3 密码必须为 8–64 个字符（字母、数字以及 . _ @ # % + = : -）。"
+
+msgid "Gestor de traps no válido. Use una dirección IPv4 o un nombre DNS."
+msgstr "无效的陷阱管理器。请使用 IPv4 地址或 DNS 名称。"
+
+msgid "Sin cambios"
+msgstr "未更改"
+
+msgid "La dirección Modbus debe ser un entero entre 0 y 255."
+msgstr "Modbus 地址必须是 0 到 255 之间的整数。"
+
+msgid "No se pudo cambiar el servicio Modbus"
+msgstr "无法更改 Modbus 服务"
+
+msgid "Configuración de Red"
+msgstr "网络设置"
+
+msgid "Modo de Red"
+msgstr "网络模式"
+
+msgid "LAN Única"
+msgstr "单局域网"
+
+msgid "Solo Wi-Fi"
+msgstr "仅 Wi-Fi"
+
+msgid "LAN Dual"
+msgstr "双局域网"
+
+msgid "LAN + Wi-Fi"
+msgstr "局域网 + Wi-Fi"
+
+msgid "DHCP"
+msgstr "DHCP"
+
+msgid "Obtener direcciones automáticamente"
+msgstr "自动获取地址"
+
+msgid "MAC Ethernet"
+msgstr "以太网 MAC"
+
+msgid "MAC Wi-Fi"
+msgstr "Wi-Fi MAC"
+
+msgid "Configuración Ethernet"
+msgstr "以太网配置"
+
+msgid "Dirección IP"
+msgstr "IP 地址"
+
+msgid "Máscara Subnet"
+msgstr "子网掩码"
+
+msgid "Gateway IP"
+msgstr "IP 网关"
+
+msgid "DNS Preferido"
+msgstr "首选 DNS"
+
+msgid "Configuración LAN Dual"
+msgstr "双局域网配置"
+
+msgid "Máscara Subnet (ambas LAN)"
+msgstr "子网掩码（两个局域网）"
+
+msgid "Configuración Wi-Fi"
+msgstr "Wi-Fi 配置"
+
+msgid "WiFi SSID"
+msgstr "Wi-Fi SSID"
+
+msgid "Contraseña WiFi"
+msgstr "Wi-Fi 密码"
+
+msgid "Dejar vacío para conservarla"
+msgstr "留空则保留当前密码"
+
+msgid "Dirección IP Wi-Fi"
+msgstr "Wi-Fi IP 地址"
+
+msgid "Máscara Subnet Wi-Fi"
+msgstr "Wi-Fi 子网掩码"
+
+msgid "Deshacer"
+msgstr "放弃"
+
+msgid "Guardar Cambios"
+msgstr "保存更改"
+
+msgid "Servicios"
+msgstr "服务"
+
+msgid "SSH"
+msgstr "SSH"
+
+msgid "Hosts"
+msgstr "主机"
+
+msgid "NOMBRE"
+msgstr "名称"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Adicionar Host"
+msgstr "添加主机"
+
+msgid "Bluetooth activado"
+msgstr "蓝牙开启"
+
+msgid "Visible"
+msgstr "可被发现"
+
+msgid "Emparejable"
+msgstr "可配对"
+
+msgid "Solicitud de emparejamiento"
+msgstr "配对请求"
+
+msgid "Código"
+msgstr "配对码"
+
+msgid "Aceptar"
+msgstr "接受"
+
+msgid "Rechazar"
+msgstr "拒绝"
+
+msgid "No hay dispositivos Bluetooth"
+msgstr "没有蓝牙设备"
+
+msgid "Servicio SNMP activado"
+msgstr "SNMP 服务开启"
+
+msgid "Versión"
+msgstr "版本"
+
+msgid "Comunidad"
+msgstr "团体名"
+
+msgid "Permitir escritura (SET)"
+msgstr "允许写入访问 (SET)"
+
+msgid "Usuario"
+msgstr "用户"
+
+msgid "Nivel de seguridad"
+msgstr "安全级别"
+
+msgid "Algoritmo de autenticación"
+msgstr "认证算法"
+
+msgid "Contraseña de autenticación"
+msgstr "认证密码"
+
+msgid "Algoritmo de privacidad"
+msgstr "加密算法"
+
+msgid "Contraseña de privacidad"
+msgstr "加密密码"
+
+msgid "Mínimo 8 caracteres. Déjela vacía para conservar la actual."
+msgstr "至少 8 个字符。留空则保留当前值。"
+
+msgid "Alarmas SNMP Trap"
+msgstr "SNMP 陷阱报警"
+
+msgid "Enviar traps"
+msgstr "发送陷阱"
+
+msgid "Gestor"
+msgstr "管理器"
+
+msgid "Dirección IPv4 o nombre DNS."
+msgstr "IPv4 地址或 DNS 名称。"
+
+msgid "Guardar"
+msgstr "保存"
+
+msgid "Servicio Modbus activado"
+msgstr "Modbus 服务开启"
+
+msgid "Dirección Modbus"
+msgstr "Modbus 地址"
+
+msgid ""
+"Al guardar una dirección el servicio Modbus se reinicia y queda activado."
+msgstr "保存地址后，Modbus 服务将重启并自动开启。"
+
+msgid "Sincronizar la hora con un servidor NTP"
+msgstr "通过 NTP 服务器同步时间"
+
+msgid "Servidor"
+msgstr "服务器"
+
+msgid "Desfase horario (UTC)"
+msgstr "时区偏移（UTC）"
+
+msgid "Configuraciones Detalles SNMP"
+msgstr "SNMP 详细设置"
+
+msgid "Configuraciones Generales"
+msgstr "常规设置"
+
+msgid "Puerto SNMP"
+msgstr "SNMP 端口"
+
+msgid "Alarma para SNMP Trap"
+msgstr "报警发送至 SNMP 陷阱"
+
+msgid "SNMP v1/v2c"
+msgstr "SNMP v1/v2c"
+
+msgid "Comunidad Lectura"
+msgstr "读取团体名"
+
+msgid "Público"
+msgstr "Public"
+
+msgid "Privado"
+msgstr "Private"
+
+msgid "Comunidad Escritura"
+msgstr "写入团体名"
+
+msgid "Configuraciones Trap"
+msgstr "陷阱设置"
+
+msgid "Manager 1"
+msgstr "管理器 1"
+
+msgid "Manager 2"
+msgstr "管理器 2"
+
+msgid "Manager 3"
+msgstr "管理器 3"
+
+msgid "Manager 4"
+msgstr "管理器 4"
+
+msgid "SNMP v3"
+msgstr "SNMP v3"
+
+msgid "Usuario USM"
+msgstr "USM 用户"
+
+msgid "Lectura (r)"
+msgstr "读取 (r)"
+
+msgid "Nivel de Seguridad"
+msgstr "安全级别"
+
+msgid "Accesos Correctos"
+msgstr "访问权限"
+
+msgid "Auto Algoritmo"
+msgstr "自动算法"
+
+msgid "Auth Contraseña"
+msgstr "认证密码"
+
+msgid "Privacidad Algoritmo"
+msgstr "加密算法"
+
+msgid "Privacidad Contraseña"
+msgstr "加密密码"
+
+msgid ""
+"Para poder acceder a otras PDU PowerIT® desde esta PDU sin tener que "
+"memorizar sus IP, puede guardarlas aquí, agregándolas una por una."
+msgstr "如需从本 PDU 访问其他 PowerIT® PDU 而无需记住它们的 IP，可以在此逐个保存。"
+
+msgid "Ver todas"
+msgstr "查看全部"
+
+msgid "Detalle"
+msgstr "详情"
+
+msgid "Potencia activa total"
+msgstr "总有功功率"
+
+msgid "Energia"
+msgstr "能量"
+
+msgid "Corriente máxima"
+msgstr "最大电流"
+
+msgid "Carga"
+msgstr "负载"
+
+msgid "Controlar"
+msgstr "控制"
+
+msgid "activas"
+msgstr "开"
+
+msgid "Modelo"
+msgstr "型号"
+
+msgid "Número de serie"
+msgstr "序列号"
+
+msgid "Tiempo activo"
+msgstr "运行时间"
+
+msgid "Red"
+msgstr "网络"
+
+msgid "Configurar"
+msgstr "配置"
+
+msgid "alarmas activas"
+msgstr "个活动报警"
+
+msgid "Desconectado"
+msgstr "已断开"
+
+msgid "Su licencia no permite controlar las salidas"
+msgstr "您的许可证不允许控制输出"
+
+msgid "Actualizado"
+msgstr "已更新"
+
+msgid ""
+"¿Olvidaste tu contraseña? Introduce tu correo electrónico y te enviaremos "
+"uno nuevo."
+msgstr "忘记密码？请输入您的电子邮件，我们将发送新密码给您。"
+
+msgid "Email"
+msgstr "电子邮件"
+
+msgid "Enviar"
+msgstr "发送"
+
+msgid "Ir a Ingreso"
+msgstr "前往登录"
+
+msgid "Ingresar"
+msgstr "登录"
+
+msgid "Fase"
+msgstr "相位"
+
+msgid "Voltaje (V)"
+msgstr "电压 (V)"
+
+msgid "Corriente (A)"
+msgstr "电流 (A)"
+
+msgid "Potencia Aparente (VA)"
+msgstr "视在功率 (VA)"
+
+msgid "Potencia Activa (W)"
+msgstr "有功功率 (W)"
+
+msgid "Potencia Reactiva (VAr)"
+msgstr "无功功率 (VAr)"
+
+msgid "Factor Potencia"
+msgstr "功率因数"
+
+msgid "Fase V-I (º)"
+msgstr "相位 V-I (º)"
+
+msgid "Frecuencia (Hz)"
+msgstr "频率 (Hz)"
+
+msgid "Descargar Fase de Corriente actual"
+msgstr "下载当前相位数据"
+
+msgid "Voltaje"
+msgstr "电压"
+
+msgid "Corriente"
+msgstr "电流"
+
+msgid "Potencia Activa"
+msgstr "有功功率"
+
+msgid ""
+"Bienvenido a PDUSoftware. Inicie sesión con las credenciales proporcionadas."
+msgstr "欢迎使用 PDU 软件。请使用您的账户凭据登录。"
+
+msgid "User"
+msgstr "用户名"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "El Usuario es requerido"
+msgstr "必须填写用户名"
+
+msgid "La Contraseña es requerida"
+msgstr "必须填写密码"
+
+msgid "Activar todas"
+msgstr "全部启用"
+
+msgid "Desactivar todas"
+msgstr "全部禁用"
+
+msgid "No se encontraron salidas"
+msgstr "未找到输出"
+
+msgid "Activada"
+msgstr "开"
+
+msgid "Desactivada"
+msgstr "关"
+
+msgid "Tipo de Socket"
+msgstr "插座类型"
+
+msgid "Power Reactiva"
+msgstr "有功功率"
+
+msgid "Potencia Aparente"
+msgstr "视在功率"
+
+msgid "Factor de Potencia"
+msgstr "功率因数"
+
+msgid "Fase V-I"
+msgstr "相位 V-I"
+
+msgid "Frecuencia"
+msgstr "频率"
+
+msgid "Fusible"
+msgstr "保险丝"
+
+msgid "Detalles"
+msgstr "详情"
+
+msgid "Descargar"
+msgstr "下载"
+
+msgid "Desconocido"
+msgstr "未知"
+
+msgid "Presente"
+msgstr "存在"
+
+msgid "Sin tensión"
+msgstr "无电压"
+
+msgid "No disponible"
+msgstr "不可用"
+
+msgid "¿Seguro que desea cambiar el estado de la salida?"
+msgstr "确定要更改输出状态吗？"
+
+msgid "Activar"
+msgstr "启用"
+
+msgid "Desactivar"
+msgstr "禁用"
+
+msgid "¿Seguro que desea activar todas las salidas?"
+msgstr "确定要启用所有输出吗？"
+
+msgid "¿Seguro que desea desactivar todas las salidas?"
+msgstr "确定要禁用所有输出吗？"
+
+msgid "No se pudo actualizar la salida"
+msgstr "无法更新输出"
+
+msgid "No se pudieron actualizar algunas salidas"
+msgstr "部分输出无法更新"
+
+msgid "No se pudieron cargar las salidas"
+msgstr "无法加载输出"
+
+msgid "Su licencia no permite ver datos ni controlar las salidas."
+msgstr "您的许可证不允许查看数据或控制输出。"
+
+msgid "Su licencia no permite controlar las salidas."
+msgstr "您的许可证不允许控制输出。"
+
+msgid "Su licencia no permite ver los datos de las salidas."
+msgstr "您的许可证不允许查看输出数据。"
+
+msgid "Perfil"
+msgstr "个人资料"
+
+msgid "PROFILE"
+msgstr "个人资料"
+
+msgid "Sensores y Datos"
+msgstr "传感器和数据"
+
+msgid "Datos"
+msgstr "数据"
+
+msgid "Dirección Mac"
+msgstr "MAC 地址"
+
+msgid "Nombre"
+msgstr "名称"
+
+msgid "Ultimo valor bateria"
+msgstr "最后电池电量"
+
+msgid "Ultimos datos recibidos"
+msgstr "最后接收数据时间"
+
+msgid "Fecha/Hora"
+msgstr "日期时间"
+
+msgid "Sensor"
+msgstr "传感器"
+
+msgid "Temperatura (ºC)"
+msgstr "温度 (ºC)"
+
+msgid "Humedad (%)"
+msgstr "湿度 (%)"
+
+msgid "Presión (Pa)"
+msgstr "压力 (Pa)"
+
+msgid "Rssi (dB)"
+msgstr "信号强度 RSSI (dB)"
+
+msgid "Bateria"
+msgstr "电池"
+
+msgid "Paginación"
+msgstr "分页"
+
+msgid "Anterior"
+msgstr "上一页"
+
+msgid "Siguiente"
+msgstr "下一页"
+
+msgid "Adicionar Nuevo Sensor"
+msgstr "添加新传感器"
+
+msgid "%(first)s-%(last)s de %(total)s"
+msgstr "%(first)s–%(last)s，共 %(total)s"
+
+msgid "Secciones"
+msgstr "分区"
+
+msgid "Pantalla"
+msgstr "屏幕"
+
+msgid "Actualización"
+msgstr "更新"
+
+msgid "Certificados"
+msgstr "证书"
+
+msgid "Mantenimiento"
+msgstr "维护"
+
+msgid "Información del PDU"
+msgstr "PDU 信息"
+
+msgid "Controlador"
+msgstr "控制器"
+
+msgid "Tipo"
+msgstr "类型"
+
+msgid "Corriente nominal"
+msgstr "额定电流"
+
+msgid "Las alarmas de corriente se calculan con este valor."
+msgstr "当前报警基于此值计算。"
+
+msgid "Pantalla táctil"
+msgstr "触摸屏"
+
+msgid "Orientación"
+msgstr "方向"
+
+msgid "Vertical"
+msgstr "竖屏"
+
+msgid "Horizontal"
+msgstr "横屏"
+
+msgid "Al cambiar la orientación la aplicación de la pantalla se reinicia."
+msgstr "更改方向后，屏幕应用将重启。"
+
+msgid "Tiempo de inactividad (minutos)"
+msgstr "无操作超时（分钟）"
+
+msgid "No solicitar la contraseña en la pantalla"
+msgstr "屏幕上不再要求输入密码"
+
+msgid "Información de ubicación del PDU"
+msgstr "PDU 位置信息"
+
+msgid "Empresa"
+msgstr "公司"
+
+msgid "Sistema"
+msgstr "系统"
+
+msgid "Cuadro eléctrico"
+msgstr "配电板"
+
+msgid "Interruptor"
+msgstr "断路器"
+
+msgid "Servicio"
+msgstr "服务"
+
+msgid "Actualización de software"
+msgstr "软件更新"
+
+msgid "Buscar ahora"
+msgstr "立即检查"
+
+msgid "Versión instalada"
+msgstr "已安装版本"
+
+msgid "Versión disponible"
+msgstr "可用版本"
+
+msgid "Última comprobación"
+msgstr "上次检查"
+
+msgid "Estado"
+msgstr "状态"
+
+msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
+msgstr "有待处理的更新。请在 PDU 屏幕上确认。"
+
+msgid "Comprobar actualizaciones en línea"
+msgstr "在线检查更新"
+
+msgid "Actualizar automáticamente"
+msgstr "自动更新"
+
+msgid "Intervalo de comprobación (horas)"
+msgstr "检查间隔（小时）"
+
+msgid "Servidor de actualización"
+msgstr "更新服务器"
+
+msgid "Subir Actualización de Software"
+msgstr "上传软件更新"
+
+msgid "Subir"
+msgstr "上传"
+
+msgid "Certificado CA"
+msgstr "CA 证书"
+
+msgid "Clave CA"
+msgstr "CA 密钥"
+
+msgid "Estas acciones afectan a todo el PDU."
+msgstr "以下操作将影响整个 PDU。"
+
+msgid "Reiniciar Sistema"
+msgstr "重启系统"
+
+msgid "Resetear de Fábrica"
+msgstr "恢复出厂设置"
+
+msgid "No se pudo cargar la información"
+msgstr "无法加载信息"
+
+msgid "Valor fuera de rango"
+msgstr "数值超出范围"
+
+msgid "File es requerido"
+msgstr "必须选择文件"
+
+msgid "Extensión Incorrecta"
+msgstr "文件扩展名错误"
+
+msgid "Error subiendo el archivo"
+msgstr "上传文件时出错"
+
+msgid "¿Seguro que desea reiniciar el sistema?"
+msgstr "确定要重启系统吗？"
+
+msgid ""
+"¿Seguro que desea restablecer los valores de fábrica? Se perderán todos los "
+"ajustes."
+msgstr "确定要恢复出厂设置吗？所有设置都将丢失。"
+
+msgid "Solicitud enviada"
+msgstr "请求已发送"
+
+msgid ""
+"Al cambiar la orientación la aplicación de la pantalla se reinicia. "
+"¿Continuar?"
+msgstr "更改方向后屏幕应用将重启。是否继续？"
+
+msgid "Buscando actualizaciones..."
+msgstr "正在检查更新..."
+
+msgid "Sin actividad"
+msgstr "空闲"
+
+msgid "Preparando la actualización"
+msgstr "正在准备更新"
+
+msgid "Instalando la actualización. No apague el PDU."
+msgstr "正在安装更新。请勿关闭 PDU 电源。"
+
+msgid "Descargando"
+msgstr "正在下载"
+
+msgid "Verificando la actualización"
+msgstr "正在验证更新"
+
+msgid "Actualización instalada. Reinicie el PDU para terminar."
+msgstr "更新已安装。请重启 PDU 以完成。"
+
+msgid "Esperando la confirmación en la pantalla del PDU"
+msgstr "等待在 PDU 屏幕上确认"
+
+msgid "Buscando actualizaciones"
+msgstr "正在检查更新"
+
+msgid "La actualización ha fallado"
+msgstr "更新失败"
+
+msgid "El PDU no responde. Puede estar reiniciándose."
+msgstr "PDU 无响应，可能正在重启。"
+
+msgid "archivo subido"
+msgstr "已上传的文件"
+
+msgid "en línea"
+msgstr "在线"
+
+msgid "Hay una actualización en curso"
+msgstr "正在进行更新"
+
+msgid "Apellidos"
+msgstr "姓氏"
+
+msgid "Acciones"
+msgstr "操作"
+
+msgid "Adicionar Usuario"
+msgstr "添加用户"
+
+msgid "Solicitud Incorrecta"
+msgstr "请求无效"
+
+msgid "Error guardando datos"
+msgstr "保存数据时出错"
+
+msgid "Error actualizando datos"
+msgstr "更新数据时出错"
+
+msgid "Error borrando datos"
+msgstr "删除数据时出错"
+
+msgid "Ud no tiene permisos para ejecutar esta acción"
+msgstr "您没有执行此操作的权限"
+
+msgid "Error generando la información"
+msgstr "生成信息时出错"
+
+msgid "Credenciales Incorrectas"
+msgstr "凭据无效"
+
+msgid "Objeto no existe"
+msgstr "对象不存在"
+
+msgid "Inputs"
+msgstr "输入"
+
+msgid "Datos - Resumen"
+msgstr "数据 - 摘要"
+
+msgid "Datos - Entradas"
+msgstr "数据 - 输入"
+
+msgid "Datos - Salidas"
+msgstr "数据 - 输出"
+
+msgid "Presión (pa)"
+msgstr "压力 (Pa)"
+
+msgid "Datos - Sensores"
+msgstr "数据 - 传感器"
+
+msgid "Ingreso"
+msgstr "登录"
+
+msgid "Olvidar Contraseña"
+msgstr "忘记密码"
+
+msgid "Dashboard"
+msgstr "仪表板"
+
+msgid "Actualizar Limites"
+msgstr "更新限值"
+
+msgid "model_name es requerido"
+msgstr "必须填写 model_name"
+
+msgid "obj_id es requerido"
+msgstr "必须填写 obj_id"
+
+msgid "low limit es requerido"
+msgstr "必须填写下限"
+
+msgid "high limit es requerido"
+msgstr "必须填写上限"
+
+msgid "Entrada - Descargar Ultimos Datos"
+msgstr "输入 - 下载最新数据"
+
+msgid "Salida - Descargar Ultimos Datos"
+msgstr "输出 - 下载最新数据"
+
+msgid "Configuraciones"
+msgstr "设置"
+
+msgid "Extensión Incorrecta. Tiene que ser .crt"
+msgstr "扩展名无效。有效扩展名：.crt"
+
+msgid "Extensión Incorrecta. Tiene que ser .key"
+msgstr "扩展名无效。有效扩展名：.key"
+
+msgid "Update uploaded. Confirm it on the PDU display."
+msgstr "更新已上传。请在 PDU 屏幕上确认。"
+
+msgid "Update uploaded. Device update will start shortly."
+msgstr "更新已上传。设备更新即将开始。"
+
+msgid "Update blocked: %(reason)s"
+msgstr "更新被阻止：%(reason)s"
+
+msgid "action es requerido"
+msgstr "必须填写 action"
+
+msgid "host_id es requerido"
+msgstr "必须填写 host_id"
+
+msgid "name es requerido"
+msgstr "必须填写 name"
+
+msgid "ip es requerido"
+msgstr "必须填写 ip"
+
+msgid "La IP está siendo usada por otro host"
+msgstr "该 IP 已被其他主机使用"
+
+msgid "creado"
+msgstr "已创建"
+
+msgid "actualizado"
+msgstr "已更新"
+
+msgid "borrado"
+msgstr "已删除"
+
+msgid "Host exitosamente"
+msgstr "主机保存成功"
+
+msgid "Sensor - Actualizar Nombre"
+msgstr "传感器 - 更新名称"
+
+msgid "Sensor - Comprobar Nuevo"
+msgstr "传感器 - 检查新传感器"
+
+msgid "user_id es requerido"
+msgstr "必须填写 user_id"
+
+msgid "first_name es requerido"
+msgstr "必须填写 first_name"
+
+msgid "last_name es requerido"
+msgstr "必须填写 last_name"
+
+msgid "username es requerido"
+msgstr "必须填写 username"
+
+msgid "password es requerido"
+msgstr "必须填写 password"
+
+msgid "El nombre de usuario es usado por otro usuario"
+msgstr "该用户名已被其他用户使用"
+
+msgid "Usuario satisfactoriamente"
+msgstr "用户保存成功"
+
+msgid "Spanish"
+msgstr "西班牙语"
+
+msgid "English"
+msgstr "英语"

@@ -161,11 +161,20 @@ USE_TZ = True
 # Languages
 LANGUAGE_ES = 'es'
 LANGUAGE_EN = 'en'
+LANGUAGE_DE = 'de'
+LANGUAGE_ZH = 'zh-hans'
+LANGUAGE_AR = 'ar'
 
 LANGUAGES = (
     (LANGUAGE_ES, _('Spanish')),
     (LANGUAGE_EN, _('English')),
+    (LANGUAGE_DE, _('German')),
+    (LANGUAGE_ZH, _('Chinese (Simplified)')),
+    (LANGUAGE_AR, _('Arabic')),
 )
+
+# Right-to-left languages need a mirrored layout (see templates/base.html)
+RTL_LANGUAGES = (LANGUAGE_AR,)
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),

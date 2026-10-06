@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load extras %}
 
 {% block content %}
 
     <div class="ne-login">
         <main class="ne-card">
             <div class="ne-brand" role="img" aria-label="Network Engineering"></div>
+            <form method="post" action="{% url 'set_language' %}" class="d-flex flex-wrap gap-2 mb-3" aria-label="{% translate 'Idiomas' %}">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{% url 'login' %}">
+                {% for l in languages %}
+                    <button type="submit" name="language" value="{{ l.0 }}" class="ne-btn sm {% if l.0 == current_language %}primary{% endif %}" hreflang="{{ l.0 }}">{% native_name l.0 %}</button>
+                {% endfor %}
+            </form>
             <p class="ne-muted">
                 {% translate 'Bienvenido a PDUSoftware. Inicie sesión con las credenciales proporcionadas.' %}
             </p>

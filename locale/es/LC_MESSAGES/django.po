@@ -164,14 +164,6 @@ msgstr ""
 msgid "Extensión Incorrecta. Tiene que ser .key"
 msgstr ""
 
-#: app/views.py:204
-msgid "Fichero guardado correctamente"
-msgstr ""
-
-#: app/views.py:277 templates/base.html:71 templates/dashboard.html:44
-msgid "Coms"
-msgstr ""
-
 #: app/views.py:405 app/views.py:492
 msgid "action es requerido"
 msgstr ""
@@ -273,24 +265,8 @@ msgstr ""
 msgid "Cargando..."
 msgstr ""
 
-#: templates/coms.html:16
-msgid "COMS"
-msgstr ""
-
 #: templates/coms.html:26
 msgid "Configuración de Red"
-msgstr ""
-
-#: templates/coms.html:31
-msgid "Tipo de Conexión"
-msgstr ""
-
-#: templates/coms.html:38
-msgid "Ethernet"
-msgstr ""
-
-#: templates/coms.html:44
-msgid "Wi-Fi"
 msgstr ""
 
 #: templates/coms.html:52
@@ -337,14 +313,6 @@ msgstr ""
 
 #: templates/coms.html:190
 msgid "SSH"
-msgstr ""
-
-#: templates/coms.html:202
-msgid "SNMP"
-msgstr ""
-
-#: templates/coms.html:214
-msgid "Modbus"
 msgstr ""
 
 #: templates/coms.html:226
@@ -483,10 +451,6 @@ msgstr ""
 msgid "Ingresar"
 msgstr ""
 
-#: templates/inputs.html:26
-msgid "ENTRADAS"
-msgstr ""
-
 #: templates/inputs.html:36
 msgid "Fase"
 msgstr ""
@@ -517,10 +481,6 @@ msgstr ""
 
 #: templates/inputs.html:104 templates/outputs.html:46
 msgid "Energia"
-msgstr ""
-
-#: templates/inputs.html:110
-msgid "Fase Total (º)"
 msgstr ""
 
 #: templates/inputs.html:118
@@ -568,14 +528,6 @@ msgstr ""
 msgid "La Contraseña es requerida"
 msgstr ""
 
-#: templates/outputs.html:17
-msgid "SALIDAS"
-msgstr ""
-
-#: templates/outputs.html:32
-msgid "No se muestran los outlets debido a licencia inválida"
-msgstr ""
-
 #: templates/outputs.html:38 templates/sensors.html:51 templates/users.html:35
 msgid "Nombre"
 msgstr ""
@@ -596,10 +548,6 @@ msgstr ""
 msgid "Factor de Potencia"
 msgstr ""
 
-#: templates/outputs.html:47
-msgid "Fase Total"
-msgstr ""
-
 #: templates/outputs.html:48
 msgid "Fase V-I"
 msgstr ""
@@ -618,10 +566,6 @@ msgstr ""
 
 #: templates/profile.html:20
 msgid "PROFILE"
-msgstr ""
-
-#: templates/sensors.html:20
-msgid "SENSORES"
 msgstr ""
 
 #: templates/sensors.html:29
@@ -652,11 +596,6 @@ msgstr ""
 msgid "Sensor"
 msgstr ""
 
-#: templates/sensors.html:81
-#, python-format
-msgid "Humedad (%%)"
-msgstr ""
-
 #: templates/sensors.html:82
 msgid "Presión (Pa)"
 msgstr ""
@@ -669,67 +608,6 @@ msgstr ""
 msgid "Adicionar Nuevo Sensor"
 msgstr ""
 
-#: templates/settings.html:16
-msgid "CONFIGURACIONES"
-msgstr ""
-
-#: templates/settings.html:31
-msgid "Información de Sistema"
-msgstr ""
-
-#: templates/settings.html:36
-msgid "Nombre del Producto"
-msgstr ""
-
-#: templates/settings.html:46
-msgid "Producto P/N"
-msgstr ""
-
-#: templates/settings.html:56
-msgid "Producto S/N"
-msgstr ""
-
-#: templates/settings.html:66
-msgid "LAN MAC"
-msgstr ""
-
-#: templates/settings.html:76
-msgid "Versión de Software"
-msgstr ""
-
-#: templates/settings.html:159
-msgid "Subir Certificado CA"
-msgstr ""
-
-#: templates/settings.html:164 templates/settings.html:204
-#: templates/settings.html:406
-msgid "Seleccione fichero para subir"
-msgstr ""
-
-#: templates/settings.html:167
-msgid "Formato Certificado (*.crt)"
-msgstr ""
-
-#: templates/settings.html:199
-msgid "Subir LLave de Certificado"
-msgstr ""
-
-#: templates/settings.html:207
-msgid "Formato Certificado (*.key)"
-msgstr ""
-
-#: templates/settings.html:246
-msgid "Información PDU"
-msgstr ""
-
-#: templates/settings.html:251
-msgid "Cantidad de Outlets"
-msgstr ""
-
-#: templates/settings.html:261
-msgid "Corriente Nominal"
-msgstr ""
-
 #: templates/settings.html:271
 msgid "Controlador"
 msgstr ""
@@ -738,44 +616,16 @@ msgstr ""
 msgid "Tipo"
 msgstr ""
 
-#: templates/settings.html:299
-msgid "Herramientas"
-msgstr ""
-
 #: templates/settings.html:304
 msgid "Reiniciar Sistema"
-msgstr ""
-
-#: templates/settings.html:307
-msgid "Resetear la terminal"
-msgstr ""
-
-#: templates/settings.html:313
-msgid "REINICIAR PDU"
 msgstr ""
 
 #: templates/settings.html:320
 msgid "Resetear de Fábrica"
 msgstr ""
 
-#: templates/settings.html:323
-msgid "¡La configuración actual se perderá después de restaurarla!"
-msgstr ""
-
-#: templates/settings.html:329
-msgid "RESTAURAR CONFIGURACIONES DE FABRICA"
-msgstr ""
-
 #: templates/settings.html:401
 msgid "Subir Actualización de Software"
-msgstr ""
-
-#: templates/settings.html:409
-msgid "*.bin files - PDU's Firmware y software"
-msgstr ""
-
-#: templates/users.html:16
-msgid "USUARIOS"
 msgstr ""
 
 #: templates/users.html:34

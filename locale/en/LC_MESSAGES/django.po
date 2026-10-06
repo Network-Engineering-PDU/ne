@@ -114,7 +114,7 @@ msgstr "Forgot Password"
 
 #: app/views.py:72
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #: app/views.py:79 templates/base.html:44 templates/dashboard.html:14
 msgid "Entradas"
@@ -164,14 +164,6 @@ msgstr "Invalid Extension. Valid extension: .crt"
 msgid "Extensión Incorrecta. Tiene que ser .key"
 msgstr "Invalid Extension. Valid extension: .key"
 
-#: app/views.py:204
-msgid "Fichero guardado correctamente"
-msgstr ""
-
-#: app/views.py:277 templates/base.html:71 templates/dashboard.html:44
-msgid "Coms"
-msgstr "Coms"
-
 #: app/views.py:405 app/views.py:492
 msgid "action es requerido"
 msgstr "action is required"
@@ -206,7 +198,7 @@ msgstr "deleted"
 
 #: app/views.py:443
 msgid "Host exitosamente"
-msgstr ""
+msgstr "Host saved successfully"
 
 #: app/views.py:461
 msgid "Sensor - Actualizar Nombre"
@@ -247,7 +239,7 @@ msgstr "The username is used by other user"
 
 #: app/views.py:545
 msgid "Usuario satisfactoriamente"
-msgstr "User succesfully"
+msgstr "User saved successfully"
 
 #: ne/settings.py:166
 msgid "Spanish"
@@ -273,25 +265,9 @@ msgstr "Log Out"
 msgid "Cargando..."
 msgstr "Loading..."
 
-#: templates/coms.html:16
-msgid "COMS"
-msgstr "COMS"
-
 #: templates/coms.html:26
 msgid "Configuración de Red"
 msgstr "Network Settings"
-
-#: templates/coms.html:31
-msgid "Tipo de Conexión"
-msgstr "Connection Type"
-
-#: templates/coms.html:38
-msgid "Ethernet"
-msgstr "Ethernet"
-
-#: templates/coms.html:44
-msgid "Wi-Fi"
-msgstr "WiFi"
 
 #: templates/coms.html:52
 msgid "DHCP"
@@ -338,14 +314,6 @@ msgstr "Services"
 #: templates/coms.html:190
 msgid "SSH"
 msgstr "SSH"
-
-#: templates/coms.html:202
-msgid "SNMP"
-msgstr "SNMP"
-
-#: templates/coms.html:214
-msgid "Modbus"
-msgstr "Modbus"
 
 #: templates/coms.html:226
 msgid "Dirección Modbus"
@@ -486,10 +454,6 @@ msgstr "Go to Log In"
 msgid "Ingresar"
 msgstr "Log In"
 
-#: templates/inputs.html:26
-msgid "ENTRADAS"
-msgstr "INPUTS"
-
 #: templates/inputs.html:36
 msgid "Fase"
 msgstr "Phase"
@@ -504,7 +468,7 @@ msgstr "Current (A)"
 
 #: templates/inputs.html:72
 msgid "Potencia Aparente (VA)"
-msgstr "Aparent Power (VA)"
+msgstr "Apparent Power (VA)"
 
 #: templates/inputs.html:80
 msgid "Potencia Activa (W)"
@@ -521,10 +485,6 @@ msgstr "Power Factor"
 #: templates/inputs.html:104 templates/outputs.html:46
 msgid "Energia"
 msgstr "Energy"
-
-#: templates/inputs.html:110
-msgid "Fase Total (º)"
-msgstr "Phase Total (º)"
 
 #: templates/inputs.html:118
 msgid "Fase V-I (º)"
@@ -571,25 +531,17 @@ msgstr "The user is required"
 msgid "La Contraseña es requerida"
 msgstr "The password is required"
 
-#: templates/outputs.html:17
-msgid "SALIDAS"
-msgstr "OUTPUTS"
-
-#: templates/outputs.html:32
-msgid "No se muestran los outlets debido a licencia inválida"
-msgstr "Outlets are not showing up because the license is invalid"
-
 #: templates/outputs.html:38 templates/sensors.html:51 templates/users.html:35
 msgid "Nombre"
 msgstr "Name"
 
 #: templates/outputs.html:39
 msgid "Tipo de Socket"
-msgstr "Socker Type"
+msgstr "Socket Type"
 
 #: templates/outputs.html:42
 msgid "Potencia Aparente"
-msgstr "Aparent Power"
+msgstr "Apparent Power"
 
 #: templates/outputs.html:44
 msgid "Power Reactiva"
@@ -598,10 +550,6 @@ msgstr "Active Power"
 #: templates/outputs.html:45
 msgid "Factor de Potencia"
 msgstr "Power Factor"
-
-#: templates/outputs.html:47
-msgid "Fase Total"
-msgstr "Total Phase"
 
 #: templates/outputs.html:48
 msgid "Fase V-I"
@@ -622,10 +570,6 @@ msgstr "Profile"
 #: templates/profile.html:20
 msgid "PROFILE"
 msgstr "PROFILE"
-
-#: templates/sensors.html:20
-msgid "SENSORES"
-msgstr "SENSORS"
 
 #: templates/sensors.html:29
 msgid "Sensores y Datos"
@@ -655,12 +599,6 @@ msgstr "Datetime"
 msgid "Sensor"
 msgstr "Sensor"
 
-#: templates/sensors.html:81
-#, fuzzy, python-format
-#| msgid "Humedad (%)"
-msgid "Humedad (%%)"
-msgstr "Humidity (%)"
-
 #: templates/sensors.html:82
 msgid "Presión (Pa)"
 msgstr "Pressure (Pa)"
@@ -673,67 +611,6 @@ msgstr "Battery"
 msgid "Adicionar Nuevo Sensor"
 msgstr "Add New Sensor"
 
-#: templates/settings.html:16
-msgid "CONFIGURACIONES"
-msgstr "SETTINGS"
-
-#: templates/settings.html:31
-msgid "Información de Sistema"
-msgstr "System Info"
-
-#: templates/settings.html:36
-msgid "Nombre del Producto"
-msgstr "Product Name"
-
-#: templates/settings.html:46
-msgid "Producto P/N"
-msgstr "Product P/N"
-
-#: templates/settings.html:56
-msgid "Producto S/N"
-msgstr "Product S/N"
-
-#: templates/settings.html:66
-msgid "LAN MAC"
-msgstr "LAN MAC"
-
-#: templates/settings.html:76
-msgid "Versión de Software"
-msgstr "Software Version"
-
-#: templates/settings.html:159
-msgid "Subir Certificado CA"
-msgstr "Upload CA Certificate"
-
-#: templates/settings.html:164 templates/settings.html:204
-#: templates/settings.html:406
-msgid "Seleccione fichero para subir"
-msgstr "Select file to upload"
-
-#: templates/settings.html:167
-msgid "Formato Certificado (*.crt)"
-msgstr "Certificate Format (*.crt)"
-
-#: templates/settings.html:199
-msgid "Subir LLave de Certificado"
-msgstr "Upload CA Key"
-
-#: templates/settings.html:207
-msgid "Formato Certificado (*.key)"
-msgstr "Certificate Format (*.key)"
-
-#: templates/settings.html:246
-msgid "Información PDU"
-msgstr "PDU Info"
-
-#: templates/settings.html:251
-msgid "Cantidad de Outlets"
-msgstr "Outlets Count"
-
-#: templates/settings.html:261
-msgid "Corriente Nominal"
-msgstr "Rated Current"
-
 #: templates/settings.html:271
 msgid "Controlador"
 msgstr "Controller"
@@ -742,45 +619,17 @@ msgstr "Controller"
 msgid "Tipo"
 msgstr "Type"
 
-#: templates/settings.html:299
-msgid "Herramientas"
-msgstr "Tools"
-
 #: templates/settings.html:304
 msgid "Reiniciar Sistema"
 msgstr "System Reboot"
-
-#: templates/settings.html:307
-msgid "Resetear la terminal"
-msgstr "Terminal Reset"
-
-#: templates/settings.html:313
-msgid "REINICIAR PDU"
-msgstr "REBOOT PDU"
 
 #: templates/settings.html:320
 msgid "Resetear de Fábrica"
 msgstr "Factory Reset"
 
-#: templates/settings.html:323
-msgid "¡La configuración actual se perderá después de restaurarla!"
-msgstr "Current settings would be lost after restored!"
-
-#: templates/settings.html:329
-msgid "RESTAURAR CONFIGURACIONES DE FABRICA"
-msgstr "RESET FACTORY SETTINGS"
-
 #: templates/settings.html:401
 msgid "Subir Actualización de Software"
 msgstr "Upload Software Update"
-
-#: templates/settings.html:409
-msgid "*.bin files - PDU's Firmware y software"
-msgstr "*.bin files - PDU's Firmware and software"
-
-#: templates/users.html:16
-msgid "USUARIOS"
-msgstr "USERS"
 
 #: templates/users.html:34
 msgid "Usuario"
@@ -788,7 +637,7 @@ msgstr "User"
 
 #: templates/users.html:36
 msgid "Apellidos"
-msgstr "LastName"
+msgstr "Last name"
 
 #: templates/users.html:39
 msgid "Acciones"
@@ -1672,3 +1521,15 @@ msgstr "Next"
 #, python-format
 msgid "%(first)s-%(last)s de %(total)s"
 msgstr "%(first)s-%(last)s of %(total)s"
+
+#: app/views.py
+msgid "Update uploaded. Confirm it on the PDU display."
+msgstr "Update uploaded. Confirm it on the PDU display."
+
+#: app/views.py
+msgid "Update uploaded. Device update will start shortly."
+msgstr "Update uploaded. Device update will start shortly."
+
+#: app/views.py
+msgid "Update blocked: %(reason)s"
+msgstr "Update blocked: %(reason)s"

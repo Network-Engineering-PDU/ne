@@ -69,3 +69,25 @@ def static_v(path):
         return f"{url}?v={int(os.path.getmtime(found))}" if found else url
     except OSError:
         return url
+
+
+# Names are shown in their own language so a user can find theirs.
+NATIVE_LANGUAGE_NAMES = {
+    'es': 'Español',
+    'en': 'English',
+    'de': 'Deutsch',
+    'zh-hans': '中文',
+    'ar': 'العربية',
+}
+
+
+@register.simple_tag
+def native_name(code):
+    return NATIVE_LANGUAGE_NAMES.get(code, code)
+
+
+@register.simple_tag
+def text_direction(code):
+    """'rtl' for right-to-left languages, otherwise 'ltr'."""
+    from django.conf import settings
+    return 'rtl' if code in getattr(settings, 'RTL_LANGUAGES', ()) else 'ltr'

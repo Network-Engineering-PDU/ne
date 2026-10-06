@@ -91,8 +91,8 @@ h4 { font-size: 1rem; }
 .ne-nav .ne-count { margin-left: auto; }
 .ne-side-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--ne-border); display: grid; gap: 4px; }
 .ne-user { padding: 6px 12px; color: var(--ne-muted); font-size: .85rem; overflow-wrap: anywhere; }
-.ne-lang { display: flex; gap: 6px; padding: 4px 12px 8px; }
-.ne-lang a { padding: 2px 8px; border: 1px solid var(--ne-border); border-radius: 999px; font-size: .8rem; color: var(--ne-muted); }
+.ne-lang { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 12px 8px; }
+.ne-lang a { padding: 2px 8px; border: 1px solid var(--ne-border); border-radius: 999px; font-size: .8rem; color: var(--ne-muted); white-space: nowrap; line-height: 1.4; }
 .ne-lang a[aria-current="true"] { background: var(--ne-brand-soft); color: var(--ne-brand); border-color: var(--ne-brand-2); }
 .ne-main { flex: 1; min-width: 0; margin-left: var(--ne-sidebar); }
 .ne-topbar {
@@ -280,3 +280,27 @@ section > .container { padding-left: 20px; padding-right: 20px; }
   background: var(--ne-bg) url("../assets/img/LoginBackground.jpg") center bottom / cover no-repeat; }
 .ne-login .ne-card { width: min(400px, 100%); padding: 32px 28px; }
 .ne-login .ne-brand { height: 56px; margin: 0 0 20px; }
+
+/* ---- Languages ----------------------------------------------------------
+   Chinese and Arabic glyphs come from Google Fonts (loaded in base.html).
+   Arabic is right-to-left: the layout is mirrored under html[dir="rtl"]. */
+:lang(zh-hans) body { font-family: "Noto Sans SC", var(--ne-font); }
+:lang(ar) body { font-family: "Noto Sans Arabic", var(--ne-font); }
+
+html[dir="rtl"] .ne-sidebar { inset: 0 0 0 auto; border-right: 0; border-left: 1px solid var(--ne-border); }
+html[dir="rtl"] .ne-main { margin-left: 0; margin-right: var(--ne-sidebar); }
+html[dir="rtl"] .ne-toasts { right: auto; left: 16px; }
+html[dir="rtl"] h1, html[dir="rtl"] h2 { text-align: right; }
+html[dir="rtl"] .ne-table th, html[dir="rtl"] .ne-table td { text-align: right; }
+html[dir="rtl"] .ne-switch input:checked + span::after { transform: translateX(-20px); }
+html[dir="rtl"] .ne-alarm { border-left: 1px solid var(--ne-border); border-right: 4px solid var(--ne-muted); }
+html[dir="rtl"] .ne-alarm.error { border-right-color: var(--ne-err); }
+html[dir="rtl"] .ne-alarm.warning { border-right-color: var(--ne-warn); }
+/* Numbers, IP addresses and codes read left to right even in Arabic */
+html[dir="rtl"] input[type="number"], html[dir="rtl"] .ne-ltr { direction: ltr; text-align: left; }
+
+@media (max-width: 991.98px) {
+  html[dir="rtl"] .ne-sidebar { transform: translateX(100%); }
+  html[dir="rtl"] .ne-shell.open .ne-sidebar { transform: none; }
+  html[dir="rtl"] .ne-main { margin-right: 0; }
+}

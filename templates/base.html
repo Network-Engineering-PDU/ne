@@ -4,7 +4,8 @@
 {% get_available_languages as languages %}
 {% get_current_language as current_language %}
 <!DOCTYPE html>
-<html lang="{{ current_language }}">
+{% text_direction current_language as dir %}
+<html lang="{{ current_language }}" dir="{{ dir }}">
 
 <head>
     <meta charset="UTF-8">
@@ -15,7 +16,18 @@
     <title>{{ title }} · PDU</title>
 
     <link href="{% static 'assets/favicon.ico' %}" rel="icon">
+    {% if dir == 'rtl' %}
+    <link href="{% static_v 'css/bootstrap.rtl.min.css' %}" rel="stylesheet">
+    {% else %}
     <link href="{% static_v 'css/bootstrap.min.css' %}" rel="stylesheet">
+    {% endif %}
+    {% if current_language == 'zh-hans' %}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% elif current_language == 'ar' %}
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% endif %}
     <link href="{% static_v 'css/styles.css' %}" rel="stylesheet">
     <link href="{% static_v 'css/app.css' %}" rel="stylesheet">
 </head>
@@ -43,7 +55,7 @@
         <div class="ne-side-foot">
             <div class="ne-lang" role="group" aria-label="{% translate 'Idiomas' %}">
                 {% for l in languages %}
-                    <a href="{% change_lang l.0 %}" hreflang="{{ l.0 }}" {% if l.0 == current_language %}aria-current="true"{% endif %}>{{ l.0|upper }}</a>
+                    <a href="{% change_lang l.0 %}" hreflang="{{ l.0 }}" {% if l.0 == current_language %}aria-current="true"{% endif %}>{% native_name l.0 %}</a>
                 {% endfor %}
             </div>
             <ul class="ne-nav">

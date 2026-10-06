@@ -33,3 +33,23 @@ NTP cards on Coms) are rendered by the browser from the PDU API:
   `django.mo` after editing the `.po` (no `msgfmt` needed: `polib` works).
 
 Tests: `python manage.py test app`.
+
+## Languages
+
+Supported: Spanish (`es`, default), English, German (`de`), Chinese Simplified
+(`zh-hans`) and Arabic (`ar`, right-to-left). Each language is one text file:
+`locale/<lang>/LC_MESSAGES/django.po` (`zh_Hans` and `ar` folders for the last two).
+
+To change a translation, edit the `msgstr` line in that file, then compile:
+```
+python -c "import polib; p=polib.pofile('locale/de/LC_MESSAGES/django.po'); p.save_as_mofile('locale/de/LC_MESSAGES/django.mo')"
+```
+(`msgfmt`/`compilemessages` from gettext works too.) Keep placeholders such as
+`{field}`, `%(total)s` and `%(reason)s` unchanged; `python manage.py test app.tests.test_i18n`
+fails if a placeholder is lost.
+
+The German, Chinese and Arabic files are machine-drafted and need review by a
+native speaker before release.
+
+To add a new string, wrap it in `{% translate '...' %}` (or `_()` in Python) using
+the Spanish text as the key, then add the English and other languages to the `.po` files.

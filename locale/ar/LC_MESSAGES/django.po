@@ -1,0 +1,1148 @@
+# Machine-drafted translation. Review by a native speaker before release.
+# Source strings are the Spanish msgids; edit msgstr values only.
+msgid ""
+msgstr ""
+"Project-Id-Version: NE PDU web\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+
+msgid "Alarmas"
+msgstr "الإنذارات"
+
+msgid "Reconocer todas"
+msgstr "تأكيد الكل"
+
+msgid ""
+"Las alarmas se calculan en el PDU y son las mismas que se muestran en su "
+"pantalla. Una alarma reconocida se oculta hasta que la condición desaparece "
+"y vuelve a producirse."
+msgstr ""
+"تُحسب الإنذارات في وحدة PDU وهي نفسها المعروضة على شاشتها. يبقى الإنذار "
+"المؤكَّد مخفيًا حتى تزول حالته ثم تتكرر."
+
+msgid "No se ha activado ninguna alarma"
+msgstr "لم يُفعَّل أي إنذار"
+
+msgid "Reconocidas"
+msgstr "مؤكَّد"
+
+msgid "Reconocer"
+msgstr "تأكيد"
+
+msgid "Desde"
+msgstr "منذ"
+
+msgid "Error"
+msgstr "خطأ"
+
+msgid "Advertencia"
+msgstr "تحذير"
+
+msgid "No se pudieron cargar las alarmas"
+msgstr "تعذّر تحميل الإنذارات"
+
+msgid "No se pudo reconocer la alarma"
+msgstr "تعذّر تأكيد الإنذار"
+
+msgid "Navegación principal"
+msgstr "التنقل الرئيسي"
+
+msgid "Panel"
+msgstr "لوحة التحكم"
+
+msgid "Entradas"
+msgstr "المدخلات"
+
+msgid "Salidas"
+msgstr "المخارج"
+
+msgid "Sensores"
+msgstr "أجهزة الاستشعار"
+
+msgid "Redes"
+msgstr "الشبكات"
+
+msgid "Ajustes"
+msgstr "الإعدادات"
+
+msgid "Idiomas"
+msgstr "اللغات"
+
+msgid "Usuarios"
+msgstr "المستخدمون"
+
+msgid "Salir"
+msgstr "تسجيل الخروج"
+
+msgid "Menú"
+msgstr "القائمة"
+
+msgid ""
+"No se puede contactar con el PDU. Los datos pueden estar desactualizados."
+msgstr "تعذّر الاتصال بوحدة PDU. قد تكون البيانات قديمة."
+
+msgid "No se puede contactar con el PDU"
+msgstr "تعذّر الاتصال بوحدة PDU"
+
+msgid "Cancelar"
+msgstr "إلغاء"
+
+msgid "Confirmar"
+msgstr "تأكيد"
+
+msgid "Cambios guardados correctamente"
+msgstr "تم حفظ التغييرات بنجاح"
+
+msgid "Error de Sistema"
+msgstr "خطأ في النظام"
+
+msgid "Datos de potencia no disponibles"
+msgstr "بيانات الطاقة غير متوفرة"
+
+msgid "Sin tensión en la entrada"
+msgstr "لا يوجد جهد على المدخل"
+
+msgid "Corriente superior a la nominal"
+msgstr "التيار يتجاوز التيار المقنَّن"
+
+msgid "Corriente cercana a la nominal"
+msgstr "التيار قريب من التيار المقنَّن"
+
+msgid "Red desconectada"
+msgstr "الشبكة غير متصلة"
+
+msgid "Cargando..."
+msgstr "جارٍ التحميل..."
+
+msgid ""
+"La configuración de red se aplicó, pero la interfaz web aún no está "
+"disponible. Compruebe el cable o la dirección IP e inténtelo de nuevo."
+msgstr ""
+"طُبِّقت إعدادات الشبكة، لكن واجهة الويب غير متاحة بعد. تحقق من الكابل أو "
+"عنوان IP ثم أعد المحاولة."
+
+msgid "{field} debe ser una dirección IPv4 válida."
+msgstr "يجب أن يكون {field} عنوان IPv4 صالحًا."
+
+msgid "{field} debe contener direcciones IPv4 válidas separadas por comas."
+msgstr "يجب أن يحتوي {field} على عناوين IPv4 صالحة مفصولة بفواصل."
+
+msgid "El SSID Wi-Fi es obligatorio."
+msgstr "اسم شبكة Wi-Fi (SSID) مطلوب."
+
+msgid "Se requiere una contraseña al seleccionar una nueva red Wi-Fi."
+msgstr "كلمة المرور مطلوبة عند اختيار شبكة Wi-Fi جديدة."
+
+msgid "LAN 1 y LAN 2 deben usar direcciones IP diferentes."
+msgstr "يجب أن تستخدم LAN 1 وLAN 2 عناوين IP مختلفة."
+
+msgid "Ethernet y Wi-Fi deben usar direcciones IP diferentes."
+msgstr "يجب أن يستخدم Ethernet وWi-Fi عناوين IP مختلفة."
+
+msgid "IP Ethernet"
+msgstr "عنوان IP لـ Ethernet"
+
+msgid "Máscara subnet Ethernet"
+msgstr "قناع الشبكة الفرعية لـ Ethernet"
+
+msgid "Gateway Ethernet"
+msgstr "البوابة لـ Ethernet"
+
+msgid "DNS Ethernet"
+msgstr "DNS لـ Ethernet"
+
+msgid "IP LAN 1"
+msgstr "عنوان IP لـ LAN 1"
+
+msgid "Gateway LAN 1"
+msgstr "بوابة LAN 1"
+
+msgid "IP LAN 2"
+msgstr "عنوان IP لـ LAN 2"
+
+msgid "Gateway LAN 2"
+msgstr "بوابة LAN 2"
+
+msgid "Máscara subnet LAN"
+msgstr "قناع الشبكة الفرعية للشبكة المحلية"
+
+msgid "DNS LAN"
+msgstr "DNS للشبكة المحلية"
+
+msgid "IP Wi-Fi"
+msgstr "عنوان IP لـ Wi-Fi"
+
+msgid "Máscara subnet Wi-Fi"
+msgstr "قناع الشبكة الفرعية لـ Wi-Fi"
+
+msgid "Gateway Wi-Fi"
+msgstr "بوابة Wi-Fi"
+
+msgid "DNS Wi-Fi"
+msgstr "DNS لـ Wi-Fi"
+
+msgid "Conectado"
+msgstr "متصل"
+
+msgid "Emparejado"
+msgstr "مقترن"
+
+msgid "Disponible"
+msgstr "متاح"
+
+msgid "Conectar"
+msgstr "اتصال"
+
+msgid "Desconectar"
+msgstr "فصل"
+
+msgid "Emparejar"
+msgstr "إقران"
+
+msgid "Eliminar"
+msgstr "إزالة"
+
+msgid "Buscar dispositivos"
+msgstr "البحث عن أجهزة"
+
+msgid "Detener búsqueda"
+msgstr "إيقاف البحث"
+
+msgid "La acción Bluetooth ha fallado."
+msgstr "فشلت عملية البلوتوث."
+
+msgid "No se pudo cargar el estado de Bluetooth."
+msgstr "تعذّر تحميل حالة البلوتوث."
+
+msgid "Sincronizado"
+msgstr "متزامن"
+
+msgid "Sin sincronizar"
+msgstr "غير متزامن"
+
+msgid "Desactivado"
+msgstr "معطّل"
+
+msgid "El servidor NTP es obligatorio"
+msgstr "خادم NTP مطلوب"
+
+msgid "No se pudieron guardar los cambios"
+msgstr "تعذّر حفظ التغييرات"
+
+msgid "La configuración SNMP se guardó pero no se pudo aplicar."
+msgstr "تم حفظ إعدادات SNMP لكن تعذّر تطبيقها."
+
+msgid "La comunidad debe tener 1-64 caracteres (letras, números, . _ -)."
+msgstr "يجب أن يتكون اسم المجتمع من 1 إلى 64 حرفًا (أحرف وأرقام و. _ -)."
+
+msgid "El usuario SNMPv3 debe tener 1-32 caracteres (letras, números, . _ -)."
+msgstr "يجب أن يتكون مستخدم SNMPv3 من 1 إلى 32 حرفًا (أحرف وأرقام و. _ -)."
+
+msgid ""
+"La contraseña SNMPv3 debe tener 8-64 caracteres (letras, números y . _ @ # %"
+" + = : -)."
+msgstr ""
+"يجب أن تتكون كلمة مرور SNMPv3 من 8 إلى 64 حرفًا (أحرف وأرقام و. _ @ # % + = "
+": -)."
+
+msgid "Gestor de traps no válido. Use una dirección IPv4 o un nombre DNS."
+msgstr "مدير المصائد غير صالح. استخدم عنوان IPv4 أو اسم DNS."
+
+msgid "Sin cambios"
+msgstr "دون تغيير"
+
+msgid "La dirección Modbus debe ser un entero entre 0 y 255."
+msgstr "يجب أن يكون عنوان Modbus عددًا صحيحًا بين 0 و255."
+
+msgid "No se pudo cambiar el servicio Modbus"
+msgstr "تعذّر تغيير خدمة Modbus"
+
+msgid "Configuración de Red"
+msgstr "إعدادات الشبكة"
+
+msgid "Modo de Red"
+msgstr "وضع الشبكة"
+
+msgid "LAN Única"
+msgstr "شبكة محلية واحدة"
+
+msgid "Solo Wi-Fi"
+msgstr "Wi-Fi فقط"
+
+msgid "LAN Dual"
+msgstr "شبكتان محليتان"
+
+msgid "LAN + Wi-Fi"
+msgstr "شبكة محلية + Wi-Fi"
+
+msgid "DHCP"
+msgstr "DHCP"
+
+msgid "Obtener direcciones automáticamente"
+msgstr "الحصول على العناوين تلقائيًا"
+
+msgid "MAC Ethernet"
+msgstr "عنوان MAC لـ Ethernet"
+
+msgid "MAC Wi-Fi"
+msgstr "عنوان MAC لـ Wi-Fi"
+
+msgid "Configuración Ethernet"
+msgstr "إعدادات Ethernet"
+
+msgid "Dirección IP"
+msgstr "عنوان IP"
+
+msgid "Máscara Subnet"
+msgstr "قناع الشبكة الفرعية"
+
+msgid "Gateway IP"
+msgstr "بوابة IP"
+
+msgid "DNS Preferido"
+msgstr "DNS المفضل"
+
+msgid "Configuración LAN Dual"
+msgstr "إعدادات الشبكتين المحليتين"
+
+msgid "Máscara Subnet (ambas LAN)"
+msgstr "قناع الشبكة الفرعية (للشبكتين)"
+
+msgid "Configuración Wi-Fi"
+msgstr "إعدادات Wi-Fi"
+
+msgid "WiFi SSID"
+msgstr "معرّف شبكة Wi-Fi (SSID)"
+
+msgid "Contraseña WiFi"
+msgstr "كلمة مرور Wi-Fi"
+
+msgid "Dejar vacío para conservarla"
+msgstr "اتركه فارغًا للاحتفاظ بكلمة المرور الحالية"
+
+msgid "Dirección IP Wi-Fi"
+msgstr "عنوان IP لـ Wi-Fi"
+
+msgid "Máscara Subnet Wi-Fi"
+msgstr "قناع الشبكة الفرعية لـ Wi-Fi"
+
+msgid "Deshacer"
+msgstr "تجاهل"
+
+msgid "Guardar Cambios"
+msgstr "حفظ التغييرات"
+
+msgid "Servicios"
+msgstr "الخدمات"
+
+msgid "SSH"
+msgstr "SSH"
+
+msgid "Hosts"
+msgstr "المضيفون"
+
+msgid "NOMBRE"
+msgstr "الاسم"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Adicionar Host"
+msgstr "إضافة مضيف"
+
+msgid "Bluetooth activado"
+msgstr "البلوتوث مفعّل"
+
+msgid "Visible"
+msgstr "قابل للاكتشاف"
+
+msgid "Emparejable"
+msgstr "قابل للإقران"
+
+msgid "Solicitud de emparejamiento"
+msgstr "طلب إقران"
+
+msgid "Código"
+msgstr "رمز المرور"
+
+msgid "Aceptar"
+msgstr "قبول"
+
+msgid "Rechazar"
+msgstr "رفض"
+
+msgid "No hay dispositivos Bluetooth"
+msgstr "لا توجد أجهزة بلوتوث"
+
+msgid "Servicio SNMP activado"
+msgstr "خدمة SNMP مفعّلة"
+
+msgid "Versión"
+msgstr "الإصدار"
+
+msgid "Comunidad"
+msgstr "اسم المجتمع"
+
+msgid "Permitir escritura (SET)"
+msgstr "السماح بالكتابة (SET)"
+
+msgid "Usuario"
+msgstr "المستخدم"
+
+msgid "Nivel de seguridad"
+msgstr "مستوى الأمان"
+
+msgid "Algoritmo de autenticación"
+msgstr "خوارزمية المصادقة"
+
+msgid "Contraseña de autenticación"
+msgstr "كلمة مرور المصادقة"
+
+msgid "Algoritmo de privacidad"
+msgstr "خوارزمية الخصوصية"
+
+msgid "Contraseña de privacidad"
+msgstr "كلمة مرور الخصوصية"
+
+msgid "Mínimo 8 caracteres. Déjela vacía para conservar la actual."
+msgstr "8 أحرف على الأقل. اتركه فارغًا للاحتفاظ بالحالي."
+
+msgid "Alarmas SNMP Trap"
+msgstr "إنذارات مصائد SNMP"
+
+msgid "Enviar traps"
+msgstr "إرسال المصائد"
+
+msgid "Gestor"
+msgstr "المدير"
+
+msgid "Dirección IPv4 o nombre DNS."
+msgstr "عنوان IPv4 أو اسم DNS."
+
+msgid "Guardar"
+msgstr "حفظ"
+
+msgid "Servicio Modbus activado"
+msgstr "خدمة Modbus مفعّلة"
+
+msgid "Dirección Modbus"
+msgstr "عنوان Modbus"
+
+msgid ""
+"Al guardar una dirección el servicio Modbus se reinicia y queda activado."
+msgstr "حفظ العنوان يعيد تشغيل خدمة Modbus ويفعّلها."
+
+msgid "Sincronizar la hora con un servidor NTP"
+msgstr "مزامنة الوقت مع خادم NTP"
+
+msgid "Servidor"
+msgstr "الخادم"
+
+msgid "Desfase horario (UTC)"
+msgstr "الفرق الزمني (UTC)"
+
+msgid "Configuraciones Detalles SNMP"
+msgstr "إعدادات SNMP التفصيلية"
+
+msgid "Configuraciones Generales"
+msgstr "الإعدادات العامة"
+
+msgid "Puerto SNMP"
+msgstr "منفذ SNMP"
+
+msgid "Alarma para SNMP Trap"
+msgstr "إرسال الإنذار كمصيدة SNMP"
+
+msgid "SNMP v1/v2c"
+msgstr "SNMP v1/v2c"
+
+msgid "Comunidad Lectura"
+msgstr "اسم مجتمع القراءة"
+
+msgid "Público"
+msgstr "Public"
+
+msgid "Privado"
+msgstr "Private"
+
+msgid "Comunidad Escritura"
+msgstr "اسم مجتمع الكتابة"
+
+msgid "Configuraciones Trap"
+msgstr "إعدادات المصائد"
+
+msgid "Manager 1"
+msgstr "المدير 1"
+
+msgid "Manager 2"
+msgstr "المدير 2"
+
+msgid "Manager 3"
+msgstr "المدير 3"
+
+msgid "Manager 4"
+msgstr "المدير 4"
+
+msgid "SNMP v3"
+msgstr "SNMP v3"
+
+msgid "Usuario USM"
+msgstr "مستخدم USM"
+
+msgid "Lectura (r)"
+msgstr "قراءة (r)"
+
+msgid "Nivel de Seguridad"
+msgstr "مستوى الأمان"
+
+msgid "Accesos Correctos"
+msgstr "صلاحية الوصول"
+
+msgid "Auto Algoritmo"
+msgstr "الخوارزمية التلقائية"
+
+msgid "Auth Contraseña"
+msgstr "كلمة مرور المصادقة"
+
+msgid "Privacidad Algoritmo"
+msgstr "خوارزمية الخصوصية"
+
+msgid "Privacidad Contraseña"
+msgstr "كلمة مرور الخصوصية"
+
+msgid ""
+"Para poder acceder a otras PDU PowerIT® desde esta PDU sin tener que "
+"memorizar sus IP, puede guardarlas aquí, agregándolas una por una."
+msgstr ""
+"للوصول إلى وحدات PowerIT® PDU الأخرى من هذه الوحدة دون حفظ عناوين IP الخاصة "
+"بها، يمكنك حفظها هنا واحدةً تلو الأخرى."
+
+msgid "Ver todas"
+msgstr "عرض الكل"
+
+msgid "Detalle"
+msgstr "التفاصيل"
+
+msgid "Potencia activa total"
+msgstr "إجمالي القدرة الفعالة"
+
+msgid "Energia"
+msgstr "الطاقة"
+
+msgid "Corriente máxima"
+msgstr "أعلى تيار"
+
+msgid "Carga"
+msgstr "الحمل"
+
+msgid "Controlar"
+msgstr "التحكم"
+
+msgid "activas"
+msgstr "تشغيل"
+
+msgid "Modelo"
+msgstr "الطراز"
+
+msgid "Número de serie"
+msgstr "الرقم التسلسلي"
+
+msgid "Tiempo activo"
+msgstr "مدة التشغيل"
+
+msgid "Red"
+msgstr "الشبكة"
+
+msgid "Configurar"
+msgstr "إعداد"
+
+msgid "alarmas activas"
+msgstr "إنذارات نشطة"
+
+msgid "Desconectado"
+msgstr "غير متصل"
+
+msgid "Su licencia no permite controlar las salidas"
+msgstr "ترخيصك لا يسمح بالتحكم في المخارج"
+
+msgid "Actualizado"
+msgstr "تم التحديث"
+
+msgid ""
+"¿Olvidaste tu contraseña? Introduce tu correo electrónico y te enviaremos "
+"uno nuevo."
+msgstr "نسيت كلمة المرور؟ أدخل بريدك الإلكتروني وسنرسل لك كلمة مرور جديدة."
+
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+msgid "Enviar"
+msgstr "إرسال"
+
+msgid "Ir a Ingreso"
+msgstr "الذهاب إلى تسجيل الدخول"
+
+msgid "Ingresar"
+msgstr "تسجيل الدخول"
+
+msgid "Fase"
+msgstr "الطور"
+
+msgid "Voltaje (V)"
+msgstr "الجهد (V)"
+
+msgid "Corriente (A)"
+msgstr "التيار (A)"
+
+msgid "Potencia Aparente (VA)"
+msgstr "القدرة الظاهرية (VA)"
+
+msgid "Potencia Activa (W)"
+msgstr "القدرة الفعالة (W)"
+
+msgid "Potencia Reactiva (VAr)"
+msgstr "القدرة غير الفعالة (VAr)"
+
+msgid "Factor Potencia"
+msgstr "معامل القدرة"
+
+msgid "Fase V-I (º)"
+msgstr "الزاوية V-I (º)"
+
+msgid "Frecuencia (Hz)"
+msgstr "التردد (Hz)"
+
+msgid "Descargar Fase de Corriente actual"
+msgstr "تنزيل بيانات الطور الحالي"
+
+msgid "Voltaje"
+msgstr "الجهد"
+
+msgid "Corriente"
+msgstr "التيار"
+
+msgid "Potencia Activa"
+msgstr "القدرة الفعالة"
+
+msgid ""
+"Bienvenido a PDUSoftware. Inicie sesión con las credenciales proporcionadas."
+msgstr ""
+"مرحبًا بك في برنامج PDU. يُرجى تسجيل الدخول باستخدام بيانات الاعتماد الخاصة "
+"بك."
+
+msgid "User"
+msgstr "اسم المستخدم"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "El Usuario es requerido"
+msgstr "اسم المستخدم مطلوب"
+
+msgid "La Contraseña es requerida"
+msgstr "كلمة المرور مطلوبة"
+
+msgid "Activar todas"
+msgstr "تفعيل الكل"
+
+msgid "Desactivar todas"
+msgstr "تعطيل الكل"
+
+msgid "No se encontraron salidas"
+msgstr "لم يتم العثور على مخارج"
+
+msgid "Activada"
+msgstr "تشغيل"
+
+msgid "Desactivada"
+msgstr "إيقاف"
+
+msgid "Tipo de Socket"
+msgstr "نوع المقبس"
+
+msgid "Power Reactiva"
+msgstr "القدرة الفعالة"
+
+msgid "Potencia Aparente"
+msgstr "القدرة الظاهرية"
+
+msgid "Factor de Potencia"
+msgstr "معامل القدرة"
+
+msgid "Fase V-I"
+msgstr "الزاوية V-I"
+
+msgid "Frecuencia"
+msgstr "التردد"
+
+msgid "Fusible"
+msgstr "الصمام"
+
+msgid "Detalles"
+msgstr "التفاصيل"
+
+msgid "Descargar"
+msgstr "تنزيل"
+
+msgid "Desconocido"
+msgstr "غير معروف"
+
+msgid "Presente"
+msgstr "موجود"
+
+msgid "Sin tensión"
+msgstr "لا يوجد جهد"
+
+msgid "No disponible"
+msgstr "غير متوفر"
+
+msgid "¿Seguro que desea cambiar el estado de la salida?"
+msgstr "هل أنت متأكد من تغيير حالة المخرج؟"
+
+msgid "Activar"
+msgstr "تفعيل"
+
+msgid "Desactivar"
+msgstr "تعطيل"
+
+msgid "¿Seguro que desea activar todas las salidas?"
+msgstr "هل أنت متأكد من تفعيل جميع المخارج؟"
+
+msgid "¿Seguro que desea desactivar todas las salidas?"
+msgstr "هل أنت متأكد من تعطيل جميع المخارج؟"
+
+msgid "No se pudo actualizar la salida"
+msgstr "تعذّر تحديث المخرج"
+
+msgid "No se pudieron actualizar algunas salidas"
+msgstr "تعذّر تحديث بعض المخارج"
+
+msgid "No se pudieron cargar las salidas"
+msgstr "تعذّر تحميل المخارج"
+
+msgid "Su licencia no permite ver datos ni controlar las salidas."
+msgstr "ترخيصك لا يسمح بعرض البيانات أو التحكم في المخارج."
+
+msgid "Su licencia no permite controlar las salidas."
+msgstr "ترخيصك لا يسمح بالتحكم في المخارج."
+
+msgid "Su licencia no permite ver los datos de las salidas."
+msgstr "ترخيصك لا يسمح بعرض بيانات المخارج."
+
+msgid "Perfil"
+msgstr "الملف الشخصي"
+
+msgid "PROFILE"
+msgstr "الملف الشخصي"
+
+msgid "Sensores y Datos"
+msgstr "أجهزة الاستشعار والبيانات"
+
+msgid "Datos"
+msgstr "البيانات"
+
+msgid "Dirección Mac"
+msgstr "عنوان MAC"
+
+msgid "Nombre"
+msgstr "الاسم"
+
+msgid "Ultimo valor bateria"
+msgstr "آخر قيمة للبطارية"
+
+msgid "Ultimos datos recibidos"
+msgstr "آخر استقبال للبيانات"
+
+msgid "Fecha/Hora"
+msgstr "التاريخ والوقت"
+
+msgid "Sensor"
+msgstr "المستشعر"
+
+msgid "Temperatura (ºC)"
+msgstr "درجة الحرارة (ºC)"
+
+msgid "Humedad (%)"
+msgstr "الرطوبة (%)"
+
+msgid "Presión (Pa)"
+msgstr "الضغط (Pa)"
+
+msgid "Rssi (dB)"
+msgstr "قوة الإشارة RSSI (dB)"
+
+msgid "Bateria"
+msgstr "البطارية"
+
+msgid "Paginación"
+msgstr "ترقيم الصفحات"
+
+msgid "Anterior"
+msgstr "السابق"
+
+msgid "Siguiente"
+msgstr "التالي"
+
+msgid "Adicionar Nuevo Sensor"
+msgstr "إضافة مستشعر جديد"
+
+msgid "%(first)s-%(last)s de %(total)s"
+msgstr "%(first)s–%(last)s من %(total)s"
+
+msgid "Secciones"
+msgstr "الأقسام"
+
+msgid "Pantalla"
+msgstr "الشاشة"
+
+msgid "Actualización"
+msgstr "التحديث"
+
+msgid "Certificados"
+msgstr "الشهادات"
+
+msgid "Mantenimiento"
+msgstr "الصيانة"
+
+msgid "Información del PDU"
+msgstr "معلومات PDU"
+
+msgid "Controlador"
+msgstr "المتحكم"
+
+msgid "Tipo"
+msgstr "النوع"
+
+msgid "Corriente nominal"
+msgstr "التيار المقنَّن"
+
+msgid "Las alarmas de corriente se calculan con este valor."
+msgstr "تُحسب الإنذارات الحالية بناءً على هذه القيمة."
+
+msgid "Pantalla táctil"
+msgstr "شاشة اللمس"
+
+msgid "Orientación"
+msgstr "الاتجاه"
+
+msgid "Vertical"
+msgstr "عمودي"
+
+msgid "Horizontal"
+msgstr "أفقي"
+
+msgid "Al cambiar la orientación la aplicación de la pantalla se reinicia."
+msgstr "تغيير الاتجاه يعيد تشغيل تطبيق الشاشة."
+
+msgid "Tiempo de inactividad (minutos)"
+msgstr "مهلة عدم النشاط (بالدقائق)"
+
+msgid "No solicitar la contraseña en la pantalla"
+msgstr "عدم طلب كلمة المرور على الشاشة"
+
+msgid "Información de ubicación del PDU"
+msgstr "معلومات موقع PDU"
+
+msgid "Empresa"
+msgstr "الشركة"
+
+msgid "Sistema"
+msgstr "النظام"
+
+msgid "Cuadro eléctrico"
+msgstr "اللوحة الكهربائية"
+
+msgid "Interruptor"
+msgstr "القاطع"
+
+msgid "Servicio"
+msgstr "الخدمة"
+
+msgid "Actualización de software"
+msgstr "تحديث البرنامج"
+
+msgid "Buscar ahora"
+msgstr "تحقق الآن"
+
+msgid "Versión instalada"
+msgstr "الإصدار المثبّت"
+
+msgid "Versión disponible"
+msgstr "الإصدار المتاح"
+
+msgid "Última comprobación"
+msgstr "آخر فحص"
+
+msgid "Estado"
+msgstr "الحالة"
+
+msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
+msgstr "يوجد تحديث معلّق. أكّده على شاشة PDU."
+
+msgid "Comprobar actualizaciones en línea"
+msgstr "التحقق من التحديثات عبر الإنترنت"
+
+msgid "Actualizar automáticamente"
+msgstr "التحديث تلقائيًا"
+
+msgid "Intervalo de comprobación (horas)"
+msgstr "فترة الفحص (بالساعات)"
+
+msgid "Servidor de actualización"
+msgstr "خادم التحديث"
+
+msgid "Subir Actualización de Software"
+msgstr "رفع تحديث البرنامج"
+
+msgid "Subir"
+msgstr "رفع"
+
+msgid "Certificado CA"
+msgstr "شهادة CA"
+
+msgid "Clave CA"
+msgstr "مفتاح CA"
+
+msgid "Estas acciones afectan a todo el PDU."
+msgstr "تؤثر هذه الإجراءات على وحدة PDU بأكملها."
+
+msgid "Reiniciar Sistema"
+msgstr "إعادة تشغيل النظام"
+
+msgid "Resetear de Fábrica"
+msgstr "إعادة ضبط المصنع"
+
+msgid "No se pudo cargar la información"
+msgstr "تعذّر تحميل المعلومات"
+
+msgid "Valor fuera de rango"
+msgstr "القيمة خارج النطاق"
+
+msgid "File es requerido"
+msgstr "الملف مطلوب"
+
+msgid "Extensión Incorrecta"
+msgstr "امتداد غير صحيح"
+
+msgid "Error subiendo el archivo"
+msgstr "خطأ أثناء رفع الملف"
+
+msgid "¿Seguro que desea reiniciar el sistema?"
+msgstr "هل أنت متأكد من إعادة تشغيل النظام؟"
+
+msgid ""
+"¿Seguro que desea restablecer los valores de fábrica? Se perderán todos los "
+"ajustes."
+msgstr "هل أنت متأكد من استعادة إعدادات المصنع؟ ستفقد جميع الإعدادات."
+
+msgid "Solicitud enviada"
+msgstr "تم إرسال الطلب"
+
+msgid ""
+"Al cambiar la orientación la aplicación de la pantalla se reinicia. "
+"¿Continuar?"
+msgstr "تغيير الاتجاه يعيد تشغيل تطبيق الشاشة. هل تريد المتابعة؟"
+
+msgid "Buscando actualizaciones..."
+msgstr "جارٍ التحقق من التحديثات..."
+
+msgid "Sin actividad"
+msgstr "خامل"
+
+msgid "Preparando la actualización"
+msgstr "جارٍ تجهيز التحديث"
+
+msgid "Instalando la actualización. No apague el PDU."
+msgstr "جارٍ تثبيت التحديث. لا تُطفئ وحدة PDU."
+
+msgid "Descargando"
+msgstr "جارٍ التنزيل"
+
+msgid "Verificando la actualización"
+msgstr "جارٍ التحقق من التحديث"
+
+msgid "Actualización instalada. Reinicie el PDU para terminar."
+msgstr "تم تثبيت التحديث. أعد تشغيل وحدة PDU لإكماله."
+
+msgid "Esperando la confirmación en la pantalla del PDU"
+msgstr "بانتظار التأكيد على شاشة PDU"
+
+msgid "Buscando actualizaciones"
+msgstr "جارٍ التحقق من التحديثات"
+
+msgid "La actualización ha fallado"
+msgstr "فشل التحديث"
+
+msgid "El PDU no responde. Puede estar reiniciándose."
+msgstr "وحدة PDU لا تستجيب. قد تكون في طور إعادة التشغيل."
+
+msgid "archivo subido"
+msgstr "الملف المرفوع"
+
+msgid "en línea"
+msgstr "عبر الإنترنت"
+
+msgid "Hay una actualización en curso"
+msgstr "يوجد تحديث قيد التنفيذ"
+
+msgid "Apellidos"
+msgstr "اسم العائلة"
+
+msgid "Acciones"
+msgstr "الإجراءات"
+
+msgid "Adicionar Usuario"
+msgstr "إضافة مستخدم"
+
+msgid "Solicitud Incorrecta"
+msgstr "طلب غير صالح"
+
+msgid "Error guardando datos"
+msgstr "خطأ أثناء حفظ البيانات"
+
+msgid "Error actualizando datos"
+msgstr "خطأ أثناء تحديث البيانات"
+
+msgid "Error borrando datos"
+msgstr "خطأ أثناء حذف البيانات"
+
+msgid "Ud no tiene permisos para ejecutar esta acción"
+msgstr "ليست لديك صلاحية لتنفيذ هذا الإجراء"
+
+msgid "Error generando la información"
+msgstr "خطأ أثناء إنشاء المعلومات"
+
+msgid "Credenciales Incorrectas"
+msgstr "بيانات الاعتماد غير صحيحة"
+
+msgid "Objeto no existe"
+msgstr "الكائن غير موجود"
+
+msgid "Inputs"
+msgstr "المدخلات"
+
+msgid "Datos - Resumen"
+msgstr "البيانات - ملخص"
+
+msgid "Datos - Entradas"
+msgstr "البيانات - المدخلات"
+
+msgid "Datos - Salidas"
+msgstr "البيانات - المخارج"
+
+msgid "Presión (pa)"
+msgstr "الضغط (Pa)"
+
+msgid "Datos - Sensores"
+msgstr "البيانات - أجهزة الاستشعار"
+
+msgid "Ingreso"
+msgstr "تسجيل الدخول"
+
+msgid "Olvidar Contraseña"
+msgstr "نسيت كلمة المرور"
+
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Actualizar Limites"
+msgstr "تحديث الحدود"
+
+msgid "model_name es requerido"
+msgstr "الحقل model_name مطلوب"
+
+msgid "obj_id es requerido"
+msgstr "الحقل obj_id مطلوب"
+
+msgid "low limit es requerido"
+msgstr "الحد الأدنى مطلوب"
+
+msgid "high limit es requerido"
+msgstr "الحد الأقصى مطلوب"
+
+msgid "Entrada - Descargar Ultimos Datos"
+msgstr "المدخل - تنزيل آخر البيانات"
+
+msgid "Salida - Descargar Ultimos Datos"
+msgstr "المخرج - تنزيل آخر البيانات"
+
+msgid "Configuraciones"
+msgstr "الإعدادات"
+
+msgid "Extensión Incorrecta. Tiene que ser .crt"
+msgstr "امتداد غير صالح. الامتداد الصالح: .crt"
+
+msgid "Extensión Incorrecta. Tiene que ser .key"
+msgstr "امتداد غير صالح. الامتداد الصالح: .key"
+
+msgid "Update uploaded. Confirm it on the PDU display."
+msgstr "تم رفع التحديث. أكّده على شاشة PDU."
+
+msgid "Update uploaded. Device update will start shortly."
+msgstr "تم رفع التحديث. سيبدأ تحديث الجهاز قريبًا."
+
+msgid "Update blocked: %(reason)s"
+msgstr "التحديث محظور: %(reason)s"
+
+msgid "action es requerido"
+msgstr "الحقل action مطلوب"
+
+msgid "host_id es requerido"
+msgstr "الحقل host_id مطلوب"
+
+msgid "name es requerido"
+msgstr "الحقل name مطلوب"
+
+msgid "ip es requerido"
+msgstr "الحقل ip مطلوب"
+
+msgid "La IP está siendo usada por otro host"
+msgstr "عنوان IP مستخدم من مضيف آخر"
+
+msgid "creado"
+msgstr "تم الإنشاء"
+
+msgid "actualizado"
+msgstr "تم التحديث"
+
+msgid "borrado"
+msgstr "تم الحذف"
+
+msgid "Host exitosamente"
+msgstr "تم حفظ المضيف بنجاح"
+
+msgid "Sensor - Actualizar Nombre"
+msgstr "مستشعر - تحديث الاسم"
+
+msgid "Sensor - Comprobar Nuevo"
+msgstr "مستشعر - التحقق من الجديد"
+
+msgid "user_id es requerido"
+msgstr "الحقل user_id مطلوب"
+
+msgid "first_name es requerido"
+msgstr "الحقل first_name مطلوب"
+
+msgid "last_name es requerido"
+msgstr "الحقل last_name مطلوب"
+
+msgid "username es requerido"
+msgstr "الحقل username مطلوب"
+
+msgid "password es requerido"
+msgstr "الحقل password مطلوب"
+
+msgid "El nombre de usuario es usado por otro usuario"
+msgstr "اسم المستخدم مستخدم من مستخدم آخر"
+
+msgid "Usuario satisfactoriamente"
+msgstr "تم حفظ المستخدم بنجاح"
+
+msgid "Spanish"
+msgstr "الإسبانية"
+
+msgid "English"
+msgstr "الإنجليزية"

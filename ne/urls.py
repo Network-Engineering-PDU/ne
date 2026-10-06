@@ -24,6 +24,8 @@ urlpatterns = [
     path('login/', views.login_user, name='login'),
     path('logout/', views.logout_user, name='logout'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
+    # Stores the chosen language in a cookie (used on the login page, which has no URL prefix)
+    path('i18n/', include('django.conf.urls.i18n')),
 
     # Authenticated proxy to the PDU API (see app/pdu_proxy.py)
     path('pdu/<path:path>', pdu_proxy, name='pdu_proxy'),

@@ -1,0 +1,1169 @@
+# Machine-drafted translation. Review by a native speaker before release.
+# Source strings are the Spanish msgids; edit msgstr values only.
+msgid ""
+msgstr ""
+"Project-Id-Version: NE PDU web\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Alarmas"
+msgstr "Alarme"
+
+msgid "Reconocer todas"
+msgstr "Alle bestätigen"
+
+msgid ""
+"Las alarmas se calculan en el PDU y son las mismas que se muestran en su "
+"pantalla. Una alarma reconocida se oculta hasta que la condición desaparece "
+"y vuelve a producirse."
+msgstr ""
+"Alarme werden am PDU berechnet und sind dieselben, die auf dessen Display "
+"angezeigt werden. Ein bestätigter Alarm bleibt ausgeblendet, bis sein "
+"Zustand verschwindet und erneut auftritt."
+
+msgid "No se ha activado ninguna alarma"
+msgstr "Kein Alarm ausgelöst"
+
+msgid "Reconocidas"
+msgstr "Bestätigt"
+
+msgid "Reconocer"
+msgstr "Bestätigen"
+
+msgid "Desde"
+msgstr "Seit"
+
+msgid "Error"
+msgstr "Fehler"
+
+msgid "Advertencia"
+msgstr "Warnung"
+
+msgid "No se pudieron cargar las alarmas"
+msgstr "Alarme konnten nicht geladen werden"
+
+msgid "No se pudo reconocer la alarma"
+msgstr "Alarm konnte nicht bestätigt werden"
+
+msgid "Navegación principal"
+msgstr "Hauptnavigation"
+
+msgid "Panel"
+msgstr "Übersicht"
+
+msgid "Entradas"
+msgstr "Eingänge"
+
+msgid "Salidas"
+msgstr "Ausgänge"
+
+msgid "Sensores"
+msgstr "Sensoren"
+
+msgid "Redes"
+msgstr "Netzwerke"
+
+msgid "Ajustes"
+msgstr "Einstellungen"
+
+msgid "Idiomas"
+msgstr "Sprachen"
+
+msgid "Usuarios"
+msgstr "Benutzer"
+
+msgid "Salir"
+msgstr "Abmelden"
+
+msgid "Menú"
+msgstr "Menü"
+
+msgid ""
+"No se puede contactar con el PDU. Los datos pueden estar desactualizados."
+msgstr "PDU nicht erreichbar. Die Daten sind möglicherweise veraltet."
+
+msgid "No se puede contactar con el PDU"
+msgstr "PDU nicht erreichbar"
+
+msgid "Cancelar"
+msgstr "Abbrechen"
+
+msgid "Confirmar"
+msgstr "Bestätigen"
+
+msgid "Cambios guardados correctamente"
+msgstr "Änderungen erfolgreich gespeichert"
+
+msgid "Error de Sistema"
+msgstr "Systemfehler"
+
+msgid "Datos de potencia no disponibles"
+msgstr "Leistungsdaten nicht verfügbar"
+
+msgid "Sin tensión en la entrada"
+msgstr "Keine Spannung am Eingang"
+
+msgid "Corriente superior a la nominal"
+msgstr "Strom über dem Nennstrom"
+
+msgid "Corriente cercana a la nominal"
+msgstr "Strom nahe am Nennstrom"
+
+msgid "Red desconectada"
+msgstr "Netzwerk getrennt"
+
+msgid "Cargando..."
+msgstr "Wird geladen..."
+
+msgid ""
+"La configuración de red se aplicó, pero la interfaz web aún no está "
+"disponible. Compruebe el cable o la dirección IP e inténtelo de nuevo."
+msgstr ""
+"Die Netzwerkeinstellungen wurden angewendet, die Weboberfläche ist jedoch "
+"noch nicht erreichbar. Prüfen Sie das Kabel oder die IP-Adresse und "
+"versuchen Sie es erneut."
+
+msgid "{field} debe ser una dirección IPv4 válida."
+msgstr "{field} muss eine gültige IPv4-Adresse sein."
+
+msgid "{field} debe contener direcciones IPv4 válidas separadas por comas."
+msgstr "{field} muss gültige, durch Kommas getrennte IPv4-Adressen enthalten."
+
+msgid "El SSID Wi-Fi es obligatorio."
+msgstr "Die Wi-Fi-SSID ist erforderlich."
+
+msgid "Se requiere una contraseña al seleccionar una nueva red Wi-Fi."
+msgstr ""
+"Beim Auswählen eines neuen Wi-Fi-Netzwerks ist ein Passwort erforderlich."
+
+msgid "LAN 1 y LAN 2 deben usar direcciones IP diferentes."
+msgstr "LAN 1 und LAN 2 müssen unterschiedliche IP-Adressen verwenden."
+
+msgid "Ethernet y Wi-Fi deben usar direcciones IP diferentes."
+msgstr "Ethernet und Wi-Fi müssen unterschiedliche IP-Adressen verwenden."
+
+msgid "IP Ethernet"
+msgstr "Ethernet-IP"
+
+msgid "Máscara subnet Ethernet"
+msgstr "Ethernet-Subnetzmaske"
+
+msgid "Gateway Ethernet"
+msgstr "Ethernet-Gateway"
+
+msgid "DNS Ethernet"
+msgstr "Ethernet-DNS"
+
+msgid "IP LAN 1"
+msgstr "LAN 1 IP"
+
+msgid "Gateway LAN 1"
+msgstr "LAN 1 Gateway"
+
+msgid "IP LAN 2"
+msgstr "LAN 2 IP"
+
+msgid "Gateway LAN 2"
+msgstr "LAN 2 Gateway"
+
+msgid "Máscara subnet LAN"
+msgstr "LAN-Subnetzmaske"
+
+msgid "DNS LAN"
+msgstr "LAN-DNS"
+
+msgid "IP Wi-Fi"
+msgstr "Wi-Fi-IP"
+
+msgid "Máscara subnet Wi-Fi"
+msgstr "Wi-Fi-Subnetzmaske"
+
+msgid "Gateway Wi-Fi"
+msgstr "Wi-Fi-Gateway"
+
+msgid "DNS Wi-Fi"
+msgstr "Wi-Fi-DNS"
+
+msgid "Conectado"
+msgstr "Verbunden"
+
+msgid "Emparejado"
+msgstr "Gekoppelt"
+
+msgid "Disponible"
+msgstr "Verfügbar"
+
+msgid "Conectar"
+msgstr "Verbinden"
+
+msgid "Desconectar"
+msgstr "Trennen"
+
+msgid "Emparejar"
+msgstr "Koppeln"
+
+msgid "Eliminar"
+msgstr "Entfernen"
+
+msgid "Buscar dispositivos"
+msgstr "Geräte suchen"
+
+msgid "Detener búsqueda"
+msgstr "Suche beenden"
+
+msgid "La acción Bluetooth ha fallado."
+msgstr "Die Bluetooth-Aktion ist fehlgeschlagen."
+
+msgid "No se pudo cargar el estado de Bluetooth."
+msgstr "Bluetooth-Status konnte nicht geladen werden."
+
+msgid "Sincronizado"
+msgstr "Synchronisiert"
+
+msgid "Sin sincronizar"
+msgstr "Nicht synchronisiert"
+
+msgid "Desactivado"
+msgstr "Deaktiviert"
+
+msgid "El servidor NTP es obligatorio"
+msgstr "Der NTP-Server ist erforderlich"
+
+msgid "No se pudieron guardar los cambios"
+msgstr "Änderungen konnten nicht gespeichert werden"
+
+msgid "La configuración SNMP se guardó pero no se pudo aplicar."
+msgstr ""
+"Die SNMP-Konfiguration wurde gespeichert, konnte aber nicht angewendet "
+"werden."
+
+msgid "La comunidad debe tener 1-64 caracteres (letras, números, . _ -)."
+msgstr ""
+"Die Community muss 1–64 Zeichen lang sein (Buchstaben, Zahlen, . _ -)."
+
+msgid "El usuario SNMPv3 debe tener 1-32 caracteres (letras, números, . _ -)."
+msgstr ""
+"Der SNMPv3-Benutzer muss 1–32 Zeichen lang sein (Buchstaben, Zahlen, . _ -)."
+
+msgid ""
+"La contraseña SNMPv3 debe tener 8-64 caracteres (letras, números y . _ @ # %"
+" + = : -)."
+msgstr ""
+"Das SNMPv3-Passwort muss 8–64 Zeichen lang sein (Buchstaben, Zahlen sowie . "
+"_ @ # % + = : -)."
+
+msgid "Gestor de traps no válido. Use una dirección IPv4 o un nombre DNS."
+msgstr ""
+"Ungültiger Trap-Manager. Verwenden Sie eine IPv4-Adresse oder einen DNS-"
+"Namen."
+
+msgid "Sin cambios"
+msgstr "Unverändert"
+
+msgid "La dirección Modbus debe ser un entero entre 0 y 255."
+msgstr "Die Modbus-Adresse muss eine ganze Zahl zwischen 0 und 255 sein."
+
+msgid "No se pudo cambiar el servicio Modbus"
+msgstr "Modbus-Dienst konnte nicht geändert werden"
+
+msgid "Configuración de Red"
+msgstr "Netzwerkeinstellungen"
+
+msgid "Modo de Red"
+msgstr "Netzwerkmodus"
+
+msgid "LAN Única"
+msgstr "Einzelnes LAN"
+
+msgid "Solo Wi-Fi"
+msgstr "Nur Wi-Fi"
+
+msgid "LAN Dual"
+msgstr "Dual-LAN"
+
+msgid "LAN + Wi-Fi"
+msgstr "LAN + Wi-Fi"
+
+msgid "DHCP"
+msgstr "DHCP"
+
+msgid "Obtener direcciones automáticamente"
+msgstr "Adressen automatisch beziehen"
+
+msgid "MAC Ethernet"
+msgstr "Ethernet-MAC"
+
+msgid "MAC Wi-Fi"
+msgstr "Wi-Fi-MAC"
+
+msgid "Configuración Ethernet"
+msgstr "Ethernet-Konfiguration"
+
+msgid "Dirección IP"
+msgstr "IP-Adresse"
+
+msgid "Máscara Subnet"
+msgstr "Subnetzmaske"
+
+msgid "Gateway IP"
+msgstr "IP-Gateway"
+
+msgid "DNS Preferido"
+msgstr "Bevorzugter DNS"
+
+msgid "Configuración LAN Dual"
+msgstr "Dual-LAN-Konfiguration"
+
+msgid "Máscara Subnet (ambas LAN)"
+msgstr "Subnetzmaske (beide LANs)"
+
+msgid "Configuración Wi-Fi"
+msgstr "Wi-Fi-Konfiguration"
+
+msgid "WiFi SSID"
+msgstr "WLAN-SSID"
+
+msgid "Contraseña WiFi"
+msgstr "WLAN-Passwort"
+
+msgid "Dejar vacío para conservarla"
+msgstr "Leer lassen, um das aktuelle Passwort beizubehalten"
+
+msgid "Dirección IP Wi-Fi"
+msgstr "Wi-Fi-IP-Adresse"
+
+msgid "Máscara Subnet Wi-Fi"
+msgstr "Wi-Fi-Subnetzmaske"
+
+msgid "Deshacer"
+msgstr "Verwerfen"
+
+msgid "Guardar Cambios"
+msgstr "Änderungen speichern"
+
+msgid "Servicios"
+msgstr "Dienste"
+
+msgid "SSH"
+msgstr "SSH"
+
+msgid "Hosts"
+msgstr "Hosts"
+
+msgid "NOMBRE"
+msgstr "NAME"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Adicionar Host"
+msgstr "Host hinzufügen"
+
+msgid "Bluetooth activado"
+msgstr "Bluetooth ein"
+
+msgid "Visible"
+msgstr "Sichtbar"
+
+msgid "Emparejable"
+msgstr "Koppelbar"
+
+msgid "Solicitud de emparejamiento"
+msgstr "Kopplungsanfrage"
+
+msgid "Código"
+msgstr "Code"
+
+msgid "Aceptar"
+msgstr "Annehmen"
+
+msgid "Rechazar"
+msgstr "Ablehnen"
+
+msgid "No hay dispositivos Bluetooth"
+msgstr "Keine Bluetooth-Geräte"
+
+msgid "Servicio SNMP activado"
+msgstr "SNMP-Dienst ein"
+
+msgid "Versión"
+msgstr "Version"
+
+msgid "Comunidad"
+msgstr "Community"
+
+msgid "Permitir escritura (SET)"
+msgstr "Schreibzugriff erlauben (SET)"
+
+msgid "Usuario"
+msgstr "Benutzer"
+
+msgid "Nivel de seguridad"
+msgstr "Sicherheitsstufe"
+
+msgid "Algoritmo de autenticación"
+msgstr "Authentifizierungsalgorithmus"
+
+msgid "Contraseña de autenticación"
+msgstr "Authentifizierungspasswort"
+
+msgid "Algoritmo de privacidad"
+msgstr "Verschlüsselungsalgorithmus"
+
+msgid "Contraseña de privacidad"
+msgstr "Verschlüsselungspasswort"
+
+msgid "Mínimo 8 caracteres. Déjela vacía para conservar la actual."
+msgstr "Mindestens 8 Zeichen. Leer lassen, um das aktuelle beizubehalten."
+
+msgid "Alarmas SNMP Trap"
+msgstr "SNMP-Trap-Alarme"
+
+msgid "Enviar traps"
+msgstr "Traps senden"
+
+msgid "Gestor"
+msgstr "Manager"
+
+msgid "Dirección IPv4 o nombre DNS."
+msgstr "IPv4-Adresse oder DNS-Name."
+
+msgid "Guardar"
+msgstr "Speichern"
+
+msgid "Servicio Modbus activado"
+msgstr "Modbus-Dienst ein"
+
+msgid "Dirección Modbus"
+msgstr "Modbus-Adresse"
+
+msgid ""
+"Al guardar una dirección el servicio Modbus se reinicia y queda activado."
+msgstr ""
+"Beim Speichern einer Adresse wird der Modbus-Dienst neu gestartet und "
+"aktiviert."
+
+msgid "Sincronizar la hora con un servidor NTP"
+msgstr "Zeit mit einem NTP-Server synchronisieren"
+
+msgid "Servidor"
+msgstr "Server"
+
+msgid "Desfase horario (UTC)"
+msgstr "Zeitversatz (UTC)"
+
+msgid "Configuraciones Detalles SNMP"
+msgstr "SNMP-Detaileinstellungen"
+
+msgid "Configuraciones Generales"
+msgstr "Allgemeine Einstellungen"
+
+msgid "Puerto SNMP"
+msgstr "SNMP-Port"
+
+msgid "Alarma para SNMP Trap"
+msgstr "Alarm an SNMP-Trap"
+
+msgid "SNMP v1/v2c"
+msgstr "SNMP v1/v2c"
+
+msgid "Comunidad Lectura"
+msgstr "Lese-Community"
+
+msgid "Público"
+msgstr "Public"
+
+msgid "Privado"
+msgstr "Private"
+
+msgid "Comunidad Escritura"
+msgstr "Schreib-Community"
+
+msgid "Configuraciones Trap"
+msgstr "Trap-Einstellungen"
+
+msgid "Manager 1"
+msgstr "Manager 1"
+
+msgid "Manager 2"
+msgstr "Manager 2"
+
+msgid "Manager 3"
+msgstr "Manager 3"
+
+msgid "Manager 4"
+msgstr "Manager 4"
+
+msgid "SNMP v3"
+msgstr "SNMP v3"
+
+msgid "Usuario USM"
+msgstr "USM-Benutzer"
+
+msgid "Lectura (r)"
+msgstr "Lesen (r)"
+
+msgid "Nivel de Seguridad"
+msgstr "Sicherheitsstufe"
+
+msgid "Accesos Correctos"
+msgstr "Zugriffsrecht"
+
+msgid "Auto Algoritmo"
+msgstr "Auto-Algorithmus"
+
+msgid "Auth Contraseña"
+msgstr "Auth-Passwort"
+
+msgid "Privacidad Algoritmo"
+msgstr "Verschlüsselungsalgorithmus"
+
+msgid "Privacidad Contraseña"
+msgstr "Verschlüsselungspasswort"
+
+msgid ""
+"Para poder acceder a otras PDU PowerIT® desde esta PDU sin tener que "
+"memorizar sus IP, puede guardarlas aquí, agregándolas una por una."
+msgstr ""
+"Um von diesem PDU aus auf andere PowerIT®-PDUs zuzugreifen, ohne deren IPs "
+"merken zu müssen, können Sie sie hier einzeln speichern."
+
+msgid "Ver todas"
+msgstr "Alle anzeigen"
+
+msgid "Detalle"
+msgstr "Details"
+
+msgid "Potencia activa total"
+msgstr "Gesamte Wirkleistung"
+
+msgid "Energia"
+msgstr "Energie"
+
+msgid "Corriente máxima"
+msgstr "Höchster Strom"
+
+msgid "Carga"
+msgstr "Last"
+
+msgid "Controlar"
+msgstr "Steuerung"
+
+msgid "activas"
+msgstr "ein"
+
+msgid "Modelo"
+msgstr "Modell"
+
+msgid "Número de serie"
+msgstr "Seriennummer"
+
+msgid "Tiempo activo"
+msgstr "Betriebszeit"
+
+msgid "Red"
+msgstr "Netzwerk"
+
+msgid "Configurar"
+msgstr "Konfigurieren"
+
+msgid "alarmas activas"
+msgstr "aktive Alarme"
+
+msgid "Desconectado"
+msgstr "Getrennt"
+
+msgid "Su licencia no permite controlar las salidas"
+msgstr "Ihre Lizenz erlaubt das Steuern der Ausgänge nicht"
+
+msgid "Actualizado"
+msgstr "Aktualisiert"
+
+msgid ""
+"¿Olvidaste tu contraseña? Introduce tu correo electrónico y te enviaremos "
+"uno nuevo."
+msgstr ""
+"Passwort vergessen? Geben Sie Ihre E-Mail-Adresse ein, und wir senden Ihnen "
+"ein neues."
+
+msgid "Email"
+msgstr "E-Mail"
+
+msgid "Enviar"
+msgstr "Senden"
+
+msgid "Ir a Ingreso"
+msgstr "Zur Anmeldung"
+
+msgid "Ingresar"
+msgstr "Anmelden"
+
+msgid "Fase"
+msgstr "Phase"
+
+msgid "Voltaje (V)"
+msgstr "Spannung (V)"
+
+msgid "Corriente (A)"
+msgstr "Strom (A)"
+
+msgid "Potencia Aparente (VA)"
+msgstr "Scheinleistung (VA)"
+
+msgid "Potencia Activa (W)"
+msgstr "Wirkleistung (W)"
+
+msgid "Potencia Reactiva (VAr)"
+msgstr "Blindleistung (VAr)"
+
+msgid "Factor Potencia"
+msgstr "Leistungsfaktor"
+
+msgid "Fase V-I (º)"
+msgstr "Phase U-I (º)"
+
+msgid "Frecuencia (Hz)"
+msgstr "Frequenz (Hz)"
+
+msgid "Descargar Fase de Corriente actual"
+msgstr "Aktuelle Phase herunterladen"
+
+msgid "Voltaje"
+msgstr "Spannung"
+
+msgid "Corriente"
+msgstr "Strom"
+
+msgid "Potencia Activa"
+msgstr "Wirkleistung"
+
+msgid ""
+"Bienvenido a PDUSoftware. Inicie sesión con las credenciales proporcionadas."
+msgstr ""
+"Willkommen bei PDU Software. Bitte melden Sie sich mit Ihren Zugangsdaten "
+"an."
+
+msgid "User"
+msgstr "Benutzer"
+
+msgid "Password"
+msgstr "Passwort"
+
+msgid "El Usuario es requerido"
+msgstr "Der Benutzername ist erforderlich"
+
+msgid "La Contraseña es requerida"
+msgstr "Das Passwort ist erforderlich"
+
+msgid "Activar todas"
+msgstr "Alle aktivieren"
+
+msgid "Desactivar todas"
+msgstr "Alle deaktivieren"
+
+msgid "No se encontraron salidas"
+msgstr "Keine Ausgänge gefunden"
+
+msgid "Activada"
+msgstr "Ein"
+
+msgid "Desactivada"
+msgstr "Aus"
+
+msgid "Tipo de Socket"
+msgstr "Steckertyp"
+
+msgid "Power Reactiva"
+msgstr "Wirkleistung"
+
+msgid "Potencia Aparente"
+msgstr "Scheinleistung"
+
+msgid "Factor de Potencia"
+msgstr "Leistungsfaktor"
+
+msgid "Fase V-I"
+msgstr "Phase U-I"
+
+msgid "Frecuencia"
+msgstr "Frequenz"
+
+msgid "Fusible"
+msgstr "Sicherung"
+
+msgid "Detalles"
+msgstr "Details"
+
+msgid "Descargar"
+msgstr "Herunterladen"
+
+msgid "Desconocido"
+msgstr "Unbekannt"
+
+msgid "Presente"
+msgstr "Vorhanden"
+
+msgid "Sin tensión"
+msgstr "Keine Spannung"
+
+msgid "No disponible"
+msgstr "Nicht verfügbar"
+
+msgid "¿Seguro que desea cambiar el estado de la salida?"
+msgstr "Möchten Sie den Zustand des Ausgangs wirklich ändern?"
+
+msgid "Activar"
+msgstr "Aktivieren"
+
+msgid "Desactivar"
+msgstr "Deaktivieren"
+
+msgid "¿Seguro que desea activar todas las salidas?"
+msgstr "Möchten Sie wirklich alle Ausgänge aktivieren?"
+
+msgid "¿Seguro que desea desactivar todas las salidas?"
+msgstr "Möchten Sie wirklich alle Ausgänge deaktivieren?"
+
+msgid "No se pudo actualizar la salida"
+msgstr "Ausgang konnte nicht aktualisiert werden"
+
+msgid "No se pudieron actualizar algunas salidas"
+msgstr "Einige Ausgänge konnten nicht aktualisiert werden"
+
+msgid "No se pudieron cargar las salidas"
+msgstr "Ausgänge konnten nicht geladen werden"
+
+msgid "Su licencia no permite ver datos ni controlar las salidas."
+msgstr ""
+"Ihre Lizenz erlaubt weder das Anzeigen der Daten noch das Steuern der "
+"Ausgänge."
+
+msgid "Su licencia no permite controlar las salidas."
+msgstr "Ihre Lizenz erlaubt das Steuern der Ausgänge nicht."
+
+msgid "Su licencia no permite ver los datos de las salidas."
+msgstr "Ihre Lizenz erlaubt das Anzeigen der Ausgangsdaten nicht."
+
+msgid "Perfil"
+msgstr "Profil"
+
+msgid "PROFILE"
+msgstr "PROFIL"
+
+msgid "Sensores y Datos"
+msgstr "Sensoren und Daten"
+
+msgid "Datos"
+msgstr "Daten"
+
+msgid "Dirección Mac"
+msgstr "MAC-Adresse"
+
+msgid "Nombre"
+msgstr "Name"
+
+msgid "Ultimo valor bateria"
+msgstr "Letzter Batteriewert"
+
+msgid "Ultimos datos recibidos"
+msgstr "Letzte Daten empfangen"
+
+msgid "Fecha/Hora"
+msgstr "Datum/Uhrzeit"
+
+msgid "Sensor"
+msgstr "Sensor"
+
+msgid "Temperatura (ºC)"
+msgstr "Temperatur (ºC)"
+
+msgid "Humedad (%)"
+msgstr "Luftfeuchtigkeit (%)"
+
+msgid "Presión (Pa)"
+msgstr "Druck (Pa)"
+
+msgid "Rssi (dB)"
+msgstr "RSSI (dB)"
+
+msgid "Bateria"
+msgstr "Batterie"
+
+msgid "Paginación"
+msgstr "Seitennummerierung"
+
+msgid "Anterior"
+msgstr "Zurück"
+
+msgid "Siguiente"
+msgstr "Weiter"
+
+msgid "Adicionar Nuevo Sensor"
+msgstr "Neuen Sensor hinzufügen"
+
+msgid "%(first)s-%(last)s de %(total)s"
+msgstr "%(first)s–%(last)s von %(total)s"
+
+msgid "Secciones"
+msgstr "Abschnitte"
+
+msgid "Pantalla"
+msgstr "Bildschirm"
+
+msgid "Actualización"
+msgstr "Aktualisierung"
+
+msgid "Certificados"
+msgstr "Zertifikate"
+
+msgid "Mantenimiento"
+msgstr "Wartung"
+
+msgid "Información del PDU"
+msgstr "PDU-Informationen"
+
+msgid "Controlador"
+msgstr "Controller"
+
+msgid "Tipo"
+msgstr "Typ"
+
+msgid "Corriente nominal"
+msgstr "Nennstrom"
+
+msgid "Las alarmas de corriente se calculan con este valor."
+msgstr "Aktuelle Alarme werden mit diesem Wert berechnet."
+
+msgid "Pantalla táctil"
+msgstr "Touchscreen"
+
+msgid "Orientación"
+msgstr "Ausrichtung"
+
+msgid "Vertical"
+msgstr "Hochformat"
+
+msgid "Horizontal"
+msgstr "Querformat"
+
+msgid "Al cambiar la orientación la aplicación de la pantalla se reinicia."
+msgstr ""
+"Beim Ändern der Ausrichtung wird die Bildschirmanwendung neu gestartet."
+
+msgid "Tiempo de inactividad (minutos)"
+msgstr "Inaktivitätszeit (Minuten)"
+
+msgid "No solicitar la contraseña en la pantalla"
+msgstr "Auf dem Bildschirm nicht nach dem Passwort fragen"
+
+msgid "Información de ubicación del PDU"
+msgstr "Standortinformationen des PDU"
+
+msgid "Empresa"
+msgstr "Firma"
+
+msgid "Sistema"
+msgstr "System"
+
+msgid "Cuadro eléctrico"
+msgstr "Elektrotafel"
+
+msgid "Interruptor"
+msgstr "Schutzschalter"
+
+msgid "Servicio"
+msgstr "Service"
+
+msgid "Actualización de software"
+msgstr "Software-Update"
+
+msgid "Buscar ahora"
+msgstr "Jetzt prüfen"
+
+msgid "Versión instalada"
+msgstr "Installierte Version"
+
+msgid "Versión disponible"
+msgstr "Verfügbare Version"
+
+msgid "Última comprobación"
+msgstr "Letzte Prüfung"
+
+msgid "Estado"
+msgstr "Status"
+
+msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
+msgstr "Ein Update steht an. Bestätigen Sie es auf dem Display des PDU."
+
+msgid "Comprobar actualizaciones en línea"
+msgstr "Online nach Updates suchen"
+
+msgid "Actualizar automáticamente"
+msgstr "Automatisch aktualisieren"
+
+msgid "Intervalo de comprobación (horas)"
+msgstr "Prüfintervall (Stunden)"
+
+msgid "Servidor de actualización"
+msgstr "Update-Server"
+
+msgid "Subir Actualización de Software"
+msgstr "Software-Update hochladen"
+
+msgid "Subir"
+msgstr "Hochladen"
+
+msgid "Certificado CA"
+msgstr "CA-Zertifikat"
+
+msgid "Clave CA"
+msgstr "CA-Schlüssel"
+
+msgid "Estas acciones afectan a todo el PDU."
+msgstr "Diese Aktionen betreffen das gesamte PDU."
+
+msgid "Reiniciar Sistema"
+msgstr "System neu starten"
+
+msgid "Resetear de Fábrica"
+msgstr "Werkseinstellungen"
+
+msgid "No se pudo cargar la información"
+msgstr "Informationen konnten nicht geladen werden"
+
+msgid "Valor fuera de rango"
+msgstr "Wert außerhalb des Bereichs"
+
+msgid "File es requerido"
+msgstr "Datei ist erforderlich"
+
+msgid "Extensión Incorrecta"
+msgstr "Falsche Dateierweiterung"
+
+msgid "Error subiendo el archivo"
+msgstr "Fehler beim Hochladen der Datei"
+
+msgid "¿Seguro que desea reiniciar el sistema?"
+msgstr "Möchten Sie das System wirklich neu starten?"
+
+msgid ""
+"¿Seguro que desea restablecer los valores de fábrica? Se perderán todos los "
+"ajustes."
+msgstr ""
+"Möchten Sie wirklich auf die Werkseinstellungen zurücksetzen? Alle "
+"Einstellungen gehen verloren."
+
+msgid "Solicitud enviada"
+msgstr "Anfrage gesendet"
+
+msgid ""
+"Al cambiar la orientación la aplicación de la pantalla se reinicia. "
+"¿Continuar?"
+msgstr ""
+"Beim Ändern der Ausrichtung wird die Bildschirmanwendung neu gestartet. "
+"Fortfahren?"
+
+msgid "Buscando actualizaciones..."
+msgstr "Suche nach Updates..."
+
+msgid "Sin actividad"
+msgstr "Inaktiv"
+
+msgid "Preparando la actualización"
+msgstr "Update wird vorbereitet"
+
+msgid "Instalando la actualización. No apague el PDU."
+msgstr "Update wird installiert. Schalten Sie das PDU nicht aus."
+
+msgid "Descargando"
+msgstr "Herunterladen"
+
+msgid "Verificando la actualización"
+msgstr "Update wird überprüft"
+
+msgid "Actualización instalada. Reinicie el PDU para terminar."
+msgstr ""
+"Update installiert. Starten Sie das PDU neu, um den Vorgang abzuschließen."
+
+msgid "Esperando la confirmación en la pantalla del PDU"
+msgstr "Warten auf Bestätigung am PDU-Display"
+
+msgid "Buscando actualizaciones"
+msgstr "Suche nach Updates"
+
+msgid "La actualización ha fallado"
+msgstr "Das Update ist fehlgeschlagen"
+
+msgid "El PDU no responde. Puede estar reiniciándose."
+msgstr "Das PDU antwortet nicht. Es wird möglicherweise neu gestartet."
+
+msgid "archivo subido"
+msgstr "hochgeladene Datei"
+
+msgid "en línea"
+msgstr "online"
+
+msgid "Hay una actualización en curso"
+msgstr "Ein Update läuft gerade"
+
+msgid "Apellidos"
+msgstr "Nachname"
+
+msgid "Acciones"
+msgstr "Aktionen"
+
+msgid "Adicionar Usuario"
+msgstr "Benutzer hinzufügen"
+
+msgid "Solicitud Incorrecta"
+msgstr "Ungültige Anfrage"
+
+msgid "Error guardando datos"
+msgstr "Fehler beim Speichern der Daten"
+
+msgid "Error actualizando datos"
+msgstr "Fehler beim Aktualisieren der Daten"
+
+msgid "Error borrando datos"
+msgstr "Fehler beim Löschen der Daten"
+
+msgid "Ud no tiene permisos para ejecutar esta acción"
+msgstr "Sie haben keine Berechtigung für diese Aktion"
+
+msgid "Error generando la información"
+msgstr "Fehler beim Erzeugen der Informationen"
+
+msgid "Credenciales Incorrectas"
+msgstr "Ungültige Zugangsdaten"
+
+msgid "Objeto no existe"
+msgstr "Objekt existiert nicht"
+
+msgid "Inputs"
+msgstr "Eingänge"
+
+msgid "Datos - Resumen"
+msgstr "Daten - Zusammenfassung"
+
+msgid "Datos - Entradas"
+msgstr "Daten - Eingänge"
+
+msgid "Datos - Salidas"
+msgstr "Daten - Ausgänge"
+
+msgid "Presión (pa)"
+msgstr "Druck (Pa)"
+
+msgid "Datos - Sensores"
+msgstr "Daten - Sensoren"
+
+msgid "Ingreso"
+msgstr "Anmelden"
+
+msgid "Olvidar Contraseña"
+msgstr "Passwort vergessen"
+
+msgid "Dashboard"
+msgstr "Übersicht"
+
+msgid "Actualizar Limites"
+msgstr "Grenzwerte aktualisieren"
+
+msgid "model_name es requerido"
+msgstr "model_name ist erforderlich"
+
+msgid "obj_id es requerido"
+msgstr "obj_id ist erforderlich"
+
+msgid "low limit es requerido"
+msgstr "Untergrenze ist erforderlich"
+
+msgid "high limit es requerido"
+msgstr "Obergrenze ist erforderlich"
+
+msgid "Entrada - Descargar Ultimos Datos"
+msgstr "Eingang - letzte Daten herunterladen"
+
+msgid "Salida - Descargar Ultimos Datos"
+msgstr "Ausgang - letzte Daten herunterladen"
+
+msgid "Configuraciones"
+msgstr "Einstellungen"
+
+msgid "Extensión Incorrecta. Tiene que ser .crt"
+msgstr "Ungültige Erweiterung. Gültige Erweiterung: .crt"
+
+msgid "Extensión Incorrecta. Tiene que ser .key"
+msgstr "Ungültige Erweiterung. Gültige Erweiterung: .key"
+
+msgid "Update uploaded. Confirm it on the PDU display."
+msgstr "Update hochgeladen. Bestätigen Sie es auf dem Display des PDU."
+
+msgid "Update uploaded. Device update will start shortly."
+msgstr "Update hochgeladen. Die Geräteaktualisierung startet in Kürze."
+
+msgid "Update blocked: %(reason)s"
+msgstr "Update blockiert: %(reason)s"
+
+msgid "action es requerido"
+msgstr "action ist erforderlich"
+
+msgid "host_id es requerido"
+msgstr "host_id ist erforderlich"
+
+msgid "name es requerido"
+msgstr "name ist erforderlich"
+
+msgid "ip es requerido"
+msgstr "ip ist erforderlich"
+
+msgid "La IP está siendo usada por otro host"
+msgstr "Die IP-Adresse wird bereits von einem anderen Host verwendet"
+
+msgid "creado"
+msgstr "erstellt"
+
+msgid "actualizado"
+msgstr "aktualisiert"
+
+msgid "borrado"
+msgstr "gelöscht"
+
+msgid "Host exitosamente"
+msgstr "Host erfolgreich gespeichert"
+
+msgid "Sensor - Actualizar Nombre"
+msgstr "Sensor - Name aktualisieren"
+
+msgid "Sensor - Comprobar Nuevo"
+msgstr "Sensor - Neue prüfen"
+
+msgid "user_id es requerido"
+msgstr "user_id ist erforderlich"
+
+msgid "first_name es requerido"
+msgstr "first_name ist erforderlich"
+
+msgid "last_name es requerido"
+msgstr "last_name ist erforderlich"
+
+msgid "username es requerido"
+msgstr "username ist erforderlich"
+
+msgid "password es requerido"
+msgstr "password ist erforderlich"
+
+msgid "El nombre de usuario es usado por otro usuario"
+msgstr "Der Benutzername wird bereits von einem anderen Benutzer verwendet"
+
+msgid "Usuario satisfactoriamente"
+msgstr "Benutzer erfolgreich"
+
+msgid "Spanish"
+msgstr "Spanisch"
+
+msgid "English"
+msgstr "Englisch"
