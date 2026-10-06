@@ -1136,3 +1136,39 @@ msgstr "西班牙语"
 
 msgid "English"
 msgstr "英语"
+
+#: templates/login.html
+msgid "Gestione su infraestructura de energía con confianza."
+msgstr "安心管理您的电力基础设施。"
+
+#: templates/login.html
+msgid "Bienvenido de nuevo"
+msgstr "欢迎回来"
+
+#: templates/login.html
+msgid "Inicie sesión en su cuenta de Network Engineering"
+msgstr "登录您的 Network Engineering 账户"
+
+#: templates/login.html
+msgid "Introduzca su usuario"
+msgstr "请输入用户名"
+
+#: templates/login.html
+msgid "Introduzca su contraseña"
+msgstr "请输入密码"
+
+#: templates/login.html
+msgid "Mostrar contraseña"
+msgstr "显示密码"
+
+#: templates/login.html
+msgid "Ocultar contraseña"
+msgstr "隐藏密码"
+
+#: templates/login.html
+msgid "Recordarme"
+msgstr "记住我"
+
+#: templates/login.html
+msgid "Gestión de energía simplificada."
+msgstr "让电源管理更简单。"

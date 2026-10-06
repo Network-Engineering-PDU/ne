@@ -790,3 +790,39 @@ msgstr "IP Wi-Fi"
 #: templates/coms.html
 msgid "Máscara subnet Wi-Fi"
 msgstr "Máscara subnet Wi-Fi"
+
+#: templates/login.html
+msgid "Gestione su infraestructura de energía con confianza."
+msgstr "Gestione su infraestructura de energía con confianza."
+
+#: templates/login.html
+msgid "Bienvenido de nuevo"
+msgstr "Bienvenido de nuevo"
+
+#: templates/login.html
+msgid "Inicie sesión en su cuenta de Network Engineering"
+msgstr "Inicie sesión en su cuenta de Network Engineering"
+
+#: templates/login.html
+msgid "Introduzca su usuario"
+msgstr "Introduzca su usuario"
+
+#: templates/login.html
+msgid "Introduzca su contraseña"
+msgstr "Introduzca su contraseña"
+
+#: templates/login.html
+msgid "Mostrar contraseña"
+msgstr "Mostrar contraseña"
+
+#: templates/login.html
+msgid "Ocultar contraseña"
+msgstr "Ocultar contraseña"
+
+#: templates/login.html
+msgid "Recordarme"
+msgstr "Recordarme"
+
+#: templates/login.html
+msgid "Gestión de energía simplificada."
+msgstr "Gestión de energía simplificada."

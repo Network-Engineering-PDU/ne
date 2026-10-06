@@ -1,41 +1,46 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% load extras %}
-
+{% load static i18n extras %}
+{% block styles %}<link href="{% static_v 'css/login.css' %}" rel="stylesheet">{% endblock %}
 {% block content %}
-
-    <div class="ne-login">
-        <main class="ne-card">
-            <div class="ne-brand" role="img" aria-label="Network Engineering"></div>
-            <form method="post" action="{% url 'set_language' %}" class="d-flex flex-wrap gap-2 mb-3" aria-label="{% translate 'Idiomas' %}">
-                {% csrf_token %}
-                <input type="hidden" name="next" value="{% url 'login' %}">
-                {% for l in languages %}
-                    <button type="submit" name="language" value="{{ l.0 }}" class="ne-btn sm {% if l.0 == current_language %}primary{% endif %}" hreflang="{{ l.0 }}">{% native_name l.0 %}</button>
-                {% endfor %}
-            </form>
-            <p class="ne-muted">
-                {% translate 'Bienvenido a PDUSoftware. Inicie sesión con las credenciales proporcionadas.' %}
-            </p>
-            <form class="login" novalidate>
-                <div class="ne-field">
-                    <label for="inputUsername">{% translate 'User' %}</label>
-                    <input type="text" id="inputUsername" class="form-control" autocomplete="username" autofocus>
-                </div>
-                <div class="ne-field">
-                    <label for="inputPassword">{% translate 'Password' %}</label>
-                    <input type="password" id="inputPassword" class="form-control" autocomplete="current-password">
-                </div>
-                <p id="loginError" class="ne-alert error" role="alert" hidden></p>
-                <button id="btnLogin" type="button" class="ne-btn primary w-100">
-                    {% translate 'Ingresar' %}
-                </button>
-            </form>
-        </main>
-    </div>
-
+<div class="powerit-login">
+<main class="page">
+    <section class="showcase" aria-labelledby="product-title">
+      <img class="brand" src="{% static 'assets/svg/logo.svg' %}" alt="Network Engineering">
+      <div class="intro">
+        <h1 id="product-title">PowerIT Easy</h1>
+        <p>{% translate 'Gestione su infraestructura de energía con confianza.' %}</p>
+      </div>
+      <img class="product" src="{% static 'assets/img/powerit-device.png' %}" alt="Network Engineering rack power controller on a reflective dark surface">
+    </section>
+    <section class="login-panel" aria-labelledby="login-title">
+      <div class="login">
+        <img class="brand" src="{% static 'assets/svg/logo.svg' %}" alt="Network Engineering">
+        <h2 id="login-title">{% translate 'Bienvenido de nuevo' %}</h2>
+        <p class="subtitle">{% translate 'Inicie sesión en su cuenta de Network Engineering' %}</p>
+        <form id="login-form" novalidate>{% csrf_token %}
+          <div class="field">
+            <label for="inputUsername">{% translate 'User' %}</label>
+            <input id="inputUsername" name="username" type="text" placeholder="{% translate 'Introduzca su usuario' %}" autocomplete="username" required>
+          </div>
+          <div class="field">
+            <label for="inputPassword">{% translate 'Password' %}</label>
+            <div class="password-wrap">
+              <input id="inputPassword" name="password" type="password" placeholder="{% translate 'Introduzca su contraseña' %}" autocomplete="current-password" required>
+              <button class="toggle" type="button" id="toggle-password" aria-label="{% translate 'Mostrar contraseña' %}" aria-pressed="false" aria-controls="inputPassword">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <label class="remember"><input type="checkbox" name="remember" id="rememberMe">{% translate 'Recordarme' %}</label>
+          <button class="submit" id="btnLogin" type="submit">{% translate 'Ingresar' %}</button>
+          <p class="status" id="loginError" role="alert" hidden></p>
+        </form>
+        <footer><strong>Network Engineering</strong>{% translate 'Gestión de energía simplificada.' %}</footer><form method="post" action="{% url 'set_language' %}" class="languages" aria-label="{% translate 'Idiomas' %}">{% csrf_token %}<input type="hidden" name="next" value="{% url 'login' %}">{% for l in languages %}<button type="submit" name="language" value="{{ l.0 }}" {% if l.0 == current_language %}aria-current="true"{% endif %} hreflang="{{ l.0 }}">{% native_name l.0 %}</button>{% endfor %}</form>
+      </div>
+    </section>
+  </main>
+</div>
 {% endblock %}
-
 {% block scripts %}
 
     <script>
@@ -53,8 +58,10 @@
             let loginError = $("#loginError");
             const showError = (msg) => loginError.text(msg || '').prop('hidden', !msg);
 
-            btnLogin.click(function (){
-                let elem = $(this);
+            $("#login-form").on("submit", function (event){
+                event.preventDefault();
+                if (btnLogin.prop("disabled")) return;
+                let elem = btnLogin;
                 let originalText = elem.html();
 
                 let username = inputUsername.val();
@@ -78,7 +85,8 @@
                     data: {
                         "username": username,
                         "password": password,
-                        "next": "{{ next }}"
+                        "next": "{{ next|escapejs }}",
+                        "remember": $("#rememberMe").prop("checked") ? "1" : "0"
                     },
                     beforeSend: function (){
                         elem.attr('disabled', true).html(LOADER);
@@ -101,18 +109,10 @@
 
             });
 
-            // Enable Return Key
-            inputUsername.keypress(function(event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    btnLogin.click();
-                }
-            });
-            inputPassword.keypress(function(event) {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    btnLogin.click();
-                }
+            $("#toggle-password").on("click", function () {
+                const show = inputPassword.attr("type") === "password";
+                inputPassword.attr("type", show ? "text" : "password");
+                $(this).attr("aria-pressed", String(show)).attr("aria-label", show ? "{% translate 'Ocultar contraseña' %}" : "{% translate 'Mostrar contraseña' %}");
             });
 
         });

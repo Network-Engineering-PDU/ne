@@ -218,6 +218,8 @@ def login_user(request):
             user = authenticate(username=username.lower(), password=password)
             if user is not None:
                 login(request, user)
+                if 'remember' in request.POST:
+                    request.session.set_expiry(None if request.POST['remember'] == '1' else 0)
                 redirect_to = next if next else reverse('dashboard')
                 return ok_json(data={'redirect_to': redirect_to})
 

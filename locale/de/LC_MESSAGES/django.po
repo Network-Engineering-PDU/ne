@@ -1167,3 +1167,39 @@ msgstr "Spanisch"
 
 msgid "English"
 msgstr "Englisch"
+
+#: templates/login.html
+msgid "Gestione su infraestructura de energía con confianza."
+msgstr "Verwalten Sie Ihre Energieinfrastruktur mit Vertrauen."
+
+#: templates/login.html
+msgid "Bienvenido de nuevo"
+msgstr "Willkommen zurück"
+
+#: templates/login.html
+msgid "Inicie sesión en su cuenta de Network Engineering"
+msgstr "Melden Sie sich bei Ihrem Network Engineering-Konto an"
+
+#: templates/login.html
+msgid "Introduzca su usuario"
+msgstr "Benutzernamen eingeben"
+
+#: templates/login.html
+msgid "Introduzca su contraseña"
+msgstr "Passwort eingeben"
+
+#: templates/login.html
+msgid "Mostrar contraseña"
+msgstr "Passwort anzeigen"
+
+#: templates/login.html
+msgid "Ocultar contraseña"
+msgstr "Passwort verbergen"
+
+#: templates/login.html
+msgid "Recordarme"
+msgstr "Angemeldet bleiben"
+
+#: templates/login.html
+msgid "Gestión de energía simplificada."
+msgstr "Energieverwaltung leicht gemacht."

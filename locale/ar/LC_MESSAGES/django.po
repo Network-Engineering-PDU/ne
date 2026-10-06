@@ -1146,3 +1146,39 @@ msgstr "الإسبانية"
 
 msgid "English"
 msgstr "الإنجليزية"
+
+#: templates/login.html
+msgid "Gestione su infraestructura de energía con confianza."
+msgstr "أدر البنية التحتية للطاقة بثقة."
+
+#: templates/login.html
+msgid "Bienvenido de nuevo"
+msgstr "مرحبًا بعودتك"
+
+#: templates/login.html
+msgid "Inicie sesión en su cuenta de Network Engineering"
+msgstr "سجّل الدخول إلى حساب Network Engineering الخاص بك"
+
+#: templates/login.html
+msgid "Introduzca su usuario"
+msgstr "أدخل اسم المستخدم"
+
+#: templates/login.html
+msgid "Introduzca su contraseña"
+msgstr "أدخل كلمة المرور"
+
+#: templates/login.html
+msgid "Mostrar contraseña"
+msgstr "إظهار كلمة المرور"
+
+#: templates/login.html
+msgid "Ocultar contraseña"
+msgstr "إخفاء كلمة المرور"
+
+#: templates/login.html
+msgid "Recordarme"
+msgstr "تذكرني"
+
+#: templates/login.html
+msgid "Gestión de energía simplificada."
+msgstr "إدارة الطاقة بكل سهولة."

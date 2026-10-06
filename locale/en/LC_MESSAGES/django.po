@@ -1533,3 +1533,39 @@ msgstr "Update uploaded. Device update will start shortly."
 #: app/views.py
 msgid "Update blocked: %(reason)s"
 msgstr "Update blocked: %(reason)s"
+
+#: templates/login.html
+msgid "Gestione su infraestructura de energía con confianza."
+msgstr "Manage your power infrastructure with confidence."
+
+#: templates/login.html
+msgid "Bienvenido de nuevo"
+msgstr "Welcome back"
+
+#: templates/login.html
+msgid "Inicie sesión en su cuenta de Network Engineering"
+msgstr "Sign in to your Network Engineering account"
+
+#: templates/login.html
+msgid "Introduzca su usuario"
+msgstr "Enter your username"
+
+#: templates/login.html
+msgid "Introduzca su contraseña"
+msgstr "Enter your password"
+
+#: templates/login.html
+msgid "Mostrar contraseña"
+msgstr "Show password"
+
+#: templates/login.html
+msgid "Ocultar contraseña"
+msgstr "Hide password"
+
+#: templates/login.html
+msgid "Recordarme"
+msgstr "Remember me"
+
+#: templates/login.html
+msgid "Gestión de energía simplificada."
+msgstr "Power management made simple."

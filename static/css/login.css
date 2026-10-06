@@ -1,0 +1,62 @@
+.powerit-login  { color-scheme: light; font-family: Inter, Arial, sans-serif; color: #1d2430; background: #fafbfc; }
+.powerit-login * { box-sizing: border-box; }
+.powerit-login .page { min-height: 100vh; min-height: 100svh; display: grid; grid-template-columns: 58% 42%; }
+.powerit-login .showcase { background: #0d1418; color: white; padding: 64px 48px 40px; display: flex; flex-direction: column; overflow: hidden; }
+.powerit-login .brand { width: 194px; height: auto; display: block; }
+.powerit-login .showcase .brand { filter: brightness(1.28); }
+.powerit-login .showcase h1 { color: #fff; }
+.powerit-login .login-panel h2 { color: #1d2430; }
+.powerit-login .intro { margin-top: clamp(64px, 10vh, 120px); position: relative; z-index: 1; }
+.powerit-login h1 { font-size: clamp(42px, 5.5vw, 80px); letter-spacing: -3px; line-height: 1.08; margin: 0 0 18px; font-weight: 750; }
+.powerit-login .intro p { font-size: clamp(17px, 1.75vw, 25px); color: #b6bcc2; line-height: 1.5; margin: 0; max-width: 680px; }
+.powerit-login .product { width: calc(100% + 96px); margin: 28px -48px 0; display: block; mask-image: linear-gradient(to bottom, transparent, #000 24%, #000 82%, transparent), linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); mask-composite: intersect; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 24%, #000 82%, transparent), linear-gradient(to right, transparent, #000 4%, #000 96%, transparent); -webkit-mask-composite: source-in; }
+.powerit-login .login-panel { display: flex; align-items: center; justify-content: center; padding: 60px 48px; background: #fafbfc; }
+.powerit-login .login { width: 100%; max-width: 430px; }
+.powerit-login .login .brand { width: 172px; margin: 0 auto 46px; }
+.powerit-login h2 { text-align: center; font-size: 40px; line-height: 1.2; letter-spacing: -1.3px; margin: 0 0 14px; }
+.powerit-login .subtitle { text-align: center; color: #727b8a; font-size: 17px; line-height: 1.6; margin: 0 0 40px; }
+.powerit-login .field { margin-bottom: 25px; }
+.powerit-login label { display: block; font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+.powerit-login input[type=text], .powerit-login input[type=password] { width: 100%; height: 56px; border: 1px solid #bbc3cd; border-radius: 9px; padding: 0 18px; font: inherit; font-size: 15px; color: #1d2430; background: white; transition: border-color .15s, box-shadow .15s; }
+.powerit-login input::placeholder { color: #929aa7; }
+.powerit-login input:focus-visible { outline: none; border-color: #789904; box-shadow: 0 0 0 3px #a6ce2426; }
+.powerit-login .password-wrap { position: relative; }
+.powerit-login .password-wrap input { padding-right: 58px; }
+.powerit-login .toggle { position: absolute; right: 8px; top: 6px; width: 44px; height: 44px; display: grid; place-items: center; border: 0; background: transparent; color: #667080; border-radius: 6px; cursor: pointer; }
+.powerit-login button:focus-visible, .powerit-login a:focus-visible { outline: 3px solid #789904; outline-offset: 3px; }
+.powerit-login .toggle svg { width: 23px; height: 23px; }
+.powerit-login .remember { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 400; margin: 0 0 29px; cursor: pointer; width: fit-content; }
+.powerit-login .remember input { width: 20px; height: 20px; margin: 0; accent-color: #789904; }
+.powerit-login .submit { width: 100%; border: 0; border-radius: 9px; min-height: 58px; background: #a6ce24; color: #152005; font: inherit; font-size: 19px; font-weight: 700; cursor: pointer; transition: background .15s, transform .15s; }
+.powerit-login .submit:hover { background: #97bd1b; }
+.powerit-login .submit:active { transform: translateY(1px); }
+.powerit-login .status { font-size: 14px; color: #596472; line-height: 1.5; min-height: 21px; margin: 14px 0 0; text-align: center; }
+.powerit-login footer { margin-top: 36px; padding-top: 30px; border-top: 1px solid #e0e4e9; text-align: center; color: #7b8390; font-size: 14px; line-height: 1.7; }
+.powerit-login footer strong { font-weight: 600; display: block; }
+    @media (min-width: 1600px) {.powerit-login .showcase { padding-left: 7vw; padding-right: 5vw; } }
+    @media (max-width: 1000px) {.powerit-login .showcase { padding: 40px 28px; }
+.powerit-login .login-panel { padding: 40px 28px; }
+.powerit-login h2 { font-size: 32px; }
+.powerit-login h1 { letter-spacing: -2px; }
+.powerit-login .intro { margin-top: 70px; } }
+    @media (max-width: 700px) {.powerit-login .page { grid-template-columns: 1fr; }
+.powerit-login .showcase { padding: 30px 25px 20px; }
+.powerit-login .showcase .brand { width: 140px; }
+.powerit-login .intro { margin-top: 30px; }
+.powerit-login h1 { font-size: 43px; letter-spacing: -1.8px; }
+.powerit-login .intro p { font-size: 16px; }
+.powerit-login .product { width: calc(100% + 30px); margin: 18px -15px 0; max-height: 230px; object-fit: contain; }
+.powerit-login .login-panel { padding: 40px 25px; }
+.powerit-login .login .brand { display: none; }
+.powerit-login .subtitle { margin-bottom: 28px; font-size: 16px; }
+.powerit-login footer { margin-top: 24px; padding-top: 24px; } }
+
+.powerit-login { font-family: Arial, sans-serif; color-scheme: light; }
+.powerit-login h1, .powerit-login h2, .powerit-login p, .powerit-login label { font-family: inherit; }
+.powerit-login .languages { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 24px; }
+.powerit-login .languages button { border: 1px solid #d4dae1; border-radius: 6px; padding: 5px 10px; background: white; color: #596472; font: inherit; font-size: 12px; cursor: pointer; }
+.powerit-login .languages button[aria-current=true] { border-color: #789904; color: #526b02; }
+.powerit-login .status { color: #b42318; }
+.powerit-login .submit:disabled { opacity: .65; cursor: wait; }
+[dir=rtl] .powerit-login { font-family: "Noto Sans Arabic", Arial, sans-serif; }
+[dir=rtl] .powerit-login h1 { letter-spacing: normal; }
