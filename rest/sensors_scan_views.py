@@ -1,11 +1,12 @@
 from rest_framework import status, viewsets
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.decorators import action
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from app import minew_scanner
 from rest.auth import AjaxSessionAuthentication
+from rest.display_token import DisplayTokenOrAuthenticated
 
 
 class SensorsScanViewSet(viewsets.ViewSet):
@@ -13,12 +14,13 @@ class SensorsScanViewSet(viewsets.ViewSet):
 
     authentication_classes = [BasicAuthentication, AjaxSessionAuthentication]
     # Reads stay open: the SNMP service polls sensors-scan/live/ without a
-    # login. Starting or stopping a scan and adding sensors needs a session.
+    # login. Starting or stopping a scan and adding sensors needs a session or
+    # the touchscreen's device token (rest/display_token.py).
     write_actions = ('start', 'stop', 'confirm')
 
     def get_permissions(self):
         if self.action in self.write_actions:
-            return [IsAuthenticated()]
+            return [DisplayTokenOrAuthenticated()]
         return [AllowAny()]
 
     @action(detail=False, methods=['post'], url_path='start')
