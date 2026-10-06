@@ -17,6 +17,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from app.helpers import bad_json, ok_json, export_last_data_to_csv
+from app.inputs_layout import build_layout
 from app.models import Input, Output, Host, Sensor, DataSensor
 from ne.settings import BASE_URL_PDU, MEDIA_ROOT
 
@@ -279,10 +280,11 @@ def inputs(request):
             'name': x.__str__(),
             'items': items,
         })
-    data['inputs_live'] = [
-        {'input': input_obj, 'live': build_input_live_record(input_obj)}
-        for input_obj in inputs
-    ]
+    # Active inputs follow the DIP switches; the page renders only those.
+    data['input_csv_urls'] = {
+        x.line_id: reverse('input_download_last_data', args=[x.id]) for x in inputs
+    }
+    data['layout'] = build_layout(get_pdu_local_data('inputs/switches', timeout=2))
     return render(request, 'inputs.html', data)
 
 
@@ -293,7 +295,8 @@ def get_inputs_live_data(request):
             build_input_live_record(input_obj)
             for input_obj in Input.objects.all()
         ]
-        return ok_json(data={'inputs': inputs_data})
+        layout = build_layout(get_pdu_local_data('inputs/switches', timeout=2))
+        return ok_json(data={'inputs': inputs_data, 'layout': layout})
     except Exception as ex:
         print(ex.__str__())
         return bad_json(message=ex.__str__())

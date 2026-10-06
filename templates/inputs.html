@@ -12,7 +12,22 @@
     <script>
         const INPUTS_COUNT = 6;
         const LIVE_DATA_URL = "{% url 'get_inputs_live_data' %}";
+        const INPUT_LABELS = {
+            voltage: "{% translate 'Voltaje (V)' as s %}{{ s|escapejs }}",
+            current: "{% translate 'Corriente (A)' as s %}{{ s|escapejs }}",
+            apparent_power: "{% translate 'Potencia Aparente (VA)' as s %}{{ s|escapejs }}",
+            active_power: "{% translate 'Potencia Activa (W)' as s %}{{ s|escapejs }}",
+            reactive_power: "{% translate 'Potencia Reactiva (VAr)' as s %}{{ s|escapejs }}",
+            power_factor: "{% translate 'Factor Potencia' as s %}{{ s|escapejs }}",
+            phase_vi: "{% translate 'Fase V-I (º)' as s %}{{ s|escapejs }}",
+            frequency: "{% translate 'Frecuencia (Hz)' as s %}{{ s|escapejs }}",
+            energy: "{% translate 'Energia' as s %}{{ s|escapejs }}",
+            phase: "{% translate 'Fase' as s %}{{ s|escapejs }}",
+            noConfig: "{% translate 'No se pudo leer la configuración de entradas del PDU.' as s %}{{ s|escapejs }}"
+        };
     </script>
+    {{ input_csv_urls|json_script:"inputCsvUrls" }}
+    {{ layout|json_script:"initialLayout" }}
     <script src="{% static_v 'js/app/live_inputs.js' %}"></script>
 
 {% endblock %}
@@ -30,83 +45,31 @@
                 </div>
             </div>
             <div class="row pt-2 ">
-                <!-- Data -->
+                <!-- Data: only the inputs selected by the DIP switches -->
                 <div class="col-lg-5">
-                    <div class="borderGreen p-4 mb-2">
+                    <div class="borderGreen p-4 mb-3">
                         <div class="iconAbsolute"><span class="iconPhase"></span></div>
                         <h3 class="textGreen ml-50 little2">
-                            {% translate 'Fase' %}
+                            {% translate 'Información de alimentación' %}
                         </h3>
-                        <ul class="nav nav-tabs pt-3" id="tabInputs" role="tablist">
-                            {% for item in inputs_live %}
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link {% if forloop.first %}active{% endif %}" data-bs-toggle="tab" data-bs-target="#tab_{{ item.input.id }}" type="button" role="tab" aria-controls="home" aria-selected="true">
-                                        {{ item.input }}
-                                    </button>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <div class="tab-content card3 mb-3">
-                            {% for item in inputs_live %}
-                                <div class="tab-pane fade show {% if forloop.first %}active{% endif %}" id="tab_{{ item.input.id }}" role="tabpanel" aria-labelledby="inputstab" data-line-id="{{ item.input.line_id }}">
-                                    <div class="table-responsive px-4">
-                                        <table class="table table-borderless align-middle">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Voltaje (V)' %}</td>
-                                                    <td class="text-end w-20" data-field="voltage">{% if item.live.voltage != None %}{{ item.live.voltage|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Corriente (A)' %}</td>
-                                                    <td class="text-end" data-field="current">{% if item.live.current != None %}{{ item.live.current|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Potencia Aparente (VA)' %}</td>
-                                                    <td class="text-end" data-field="apparent_power">{% if item.live.apparent_power != None %}{{ item.live.apparent_power|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Potencia Activa (W)' %}</td>
-                                                    <td class="text-end" data-field="active_power">{% if item.live.active_power != None %}{{ item.live.active_power|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Potencia Reactiva (VAr)' %}</td>
-                                                    <td class="text-end" data-field="reactive_power">{% if item.live.reactive_power != None %}{{ item.live.reactive_power|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Factor Potencia' %}</td>
-                                                    <td class="text-end" data-field="power_factor">{% if item.live.power_factor != None %}{{ item.live.power_factor|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Energia' %}</td>
-                                                    <td class="text-end" data-field="energy">{% if item.live.energy != None %}{{ item.live.energy|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Fase V-I (º)' %}</td>
-                                                    <td class="text-end" data-field="phase_vi">{% if item.live.phase_vi != None %}{{ item.live.phase_vi|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="bold">{% translate 'Frecuencia (Hz)' %}</td>
-                                                    <td class="text-end" data-field="frequency">{% if item.live.frequency != None %}{{ item.live.frequency|floatformat:2|intcomma }}{% else %}--{% endif %}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="row pb-4">
-                                        <div class="col">
-                                            <a href="{% url 'input_download_last_data' item.input.id %}" class="btn btn-primary2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
-                                                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                                                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-                                                </svg> &nbsp; {% translate 'Descargar Fase de Corriente actual' %}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                        <dl class="ne-kv mt-3">
+                            <dt>{% translate 'Rama' %}</dt><dd id="infoBranch">-</dd>
+                            <dt>{% translate 'Tipo' %}</dt><dd id="infoType">-</dd>
+                            <dt>{% translate 'Tipo de corriente' %}</dt><dd id="infoCurrent">-</dd>
+                        </dl>
                     </div>
+                    <div class="borderGreen p-4 mb-3">
+                        <h3 class="textGreen little2">{% translate 'Total' %}</h3>
+                        <dl class="ne-kv mt-3">
+                            <dt>{% translate 'Potencia total' %}</dt><dd><span id="totalPower">-</span> W</dd>
+                            <dt>{% translate 'Energía total' %}</dt><dd><span id="totalEnergy">-</span> Wh</dd>
+                        </dl>
+                    </div>
+                    <div id="branchCards"></div>
+                    <p class="text-danger" id="inputsUnavailable" hidden>
+                        {% translate 'No se pudo leer la configuración de entradas del PDU.' %}
+                    </p>
                 </div>
-
                 <!-- Charts -->
                 <div class="col-lg-7">
                     <div class="row">

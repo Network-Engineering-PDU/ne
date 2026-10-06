@@ -1172,3 +1172,67 @@ msgstr "记住我"
 #: templates/login.html
 msgid "Gestión de energía simplificada."
 msgstr "让电源管理更简单。"
+
+#: app/inputs_layout.py
+msgid "Información de alimentación"
+msgstr "供电信息"
+
+#: app/inputs_layout.py
+msgid "Rama"
+msgstr "分支"
+
+#: app/inputs_layout.py
+msgid "Tipo de corriente"
+msgstr "电流类型"
+
+#: app/inputs_layout.py
+msgid "Total"
+msgstr "总计"
+
+#: app/inputs_layout.py
+msgid "Potencia total"
+msgstr "总功率"
+
+#: app/inputs_layout.py
+msgid "Energía total"
+msgstr "总电能"
+
+#: app/inputs_layout.py
+msgid "No se pudo leer la configuración de entradas del PDU."
+msgstr "无法读取 PDU 的输入配置。"
+
+#: app/inputs_layout.py
+msgid "Main branch"
+msgstr "主分支"
+
+#: app/inputs_layout.py
+msgid "Aux branch"
+msgstr "副分支"
+
+#: app/inputs_layout.py
+msgid "Main and aux branches"
+msgstr "主分支和副分支"
+
+#: app/inputs_layout.py
+msgid "Single-phase"
+msgstr "单相"
+
+#: app/inputs_layout.py
+msgid "Bi-phase"
+msgstr "两相"
+
+#: app/inputs_layout.py
+msgid "Three-phase without neutral"
+msgstr "三相（无中性线）"
+
+#: app/inputs_layout.py
+msgid "Three-phase with neutral"
+msgstr "三相（有中性线）"
+
+#: app/inputs_layout.py
+msgid "Hall sensor (Melexis)"
+msgstr "霍尔传感器 (Melexis)"
+
+#: app/inputs_layout.py
+msgid "Current transformer"
+msgstr "电流互感器"

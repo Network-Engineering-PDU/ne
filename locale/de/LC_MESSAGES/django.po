@@ -1203,3 +1203,67 @@ msgstr "Angemeldet bleiben"
 #: templates/login.html
 msgid "Gestión de energía simplificada."
 msgstr "Energieverwaltung leicht gemacht."
+
+#: app/inputs_layout.py
+msgid "Información de alimentación"
+msgstr "Leistungsinformationen"
+
+#: app/inputs_layout.py
+msgid "Rama"
+msgstr "Zweig"
+
+#: app/inputs_layout.py
+msgid "Tipo de corriente"
+msgstr "Stromtyp"
+
+#: app/inputs_layout.py
+msgid "Total"
+msgstr "Gesamt"
+
+#: app/inputs_layout.py
+msgid "Potencia total"
+msgstr "Gesamtleistung"
+
+#: app/inputs_layout.py
+msgid "Energía total"
+msgstr "Gesamtenergie"
+
+#: app/inputs_layout.py
+msgid "No se pudo leer la configuración de entradas del PDU."
+msgstr "Die Eingangskonfiguration des PDU konnte nicht gelesen werden."
+
+#: app/inputs_layout.py
+msgid "Main branch"
+msgstr "Hauptzweig"
+
+#: app/inputs_layout.py
+msgid "Aux branch"
+msgstr "Nebenzweig"
+
+#: app/inputs_layout.py
+msgid "Main and aux branches"
+msgstr "Haupt- und Nebenzweig"
+
+#: app/inputs_layout.py
+msgid "Single-phase"
+msgstr "Einphasig"
+
+#: app/inputs_layout.py
+msgid "Bi-phase"
+msgstr "Zweiphasig"
+
+#: app/inputs_layout.py
+msgid "Three-phase without neutral"
+msgstr "Dreiphasig ohne Neutralleiter"
+
+#: app/inputs_layout.py
+msgid "Three-phase with neutral"
+msgstr "Dreiphasig mit Neutralleiter"
+
+#: app/inputs_layout.py
+msgid "Hall sensor (Melexis)"
+msgstr "Hall-Sensor (Melexis)"
+
+#: app/inputs_layout.py
+msgid "Current transformer"
+msgstr "Stromwandler"

@@ -1182,3 +1182,67 @@ msgstr "تذكرني"
 #: templates/login.html
 msgid "Gestión de energía simplificada."
 msgstr "إدارة الطاقة بكل سهولة."
+
+#: app/inputs_layout.py
+msgid "Información de alimentación"
+msgstr "معلومات التغذية"
+
+#: app/inputs_layout.py
+msgid "Rama"
+msgstr "الفرع"
+
+#: app/inputs_layout.py
+msgid "Tipo de corriente"
+msgstr "نوع التيار"
+
+#: app/inputs_layout.py
+msgid "Total"
+msgstr "الإجمالي"
+
+#: app/inputs_layout.py
+msgid "Potencia total"
+msgstr "إجمالي القدرة"
+
+#: app/inputs_layout.py
+msgid "Energía total"
+msgstr "إجمالي الطاقة"
+
+#: app/inputs_layout.py
+msgid "No se pudo leer la configuración de entradas del PDU."
+msgstr "تعذّر قراءة إعدادات مداخل PDU."
+
+#: app/inputs_layout.py
+msgid "Main branch"
+msgstr "الفرع الرئيسي"
+
+#: app/inputs_layout.py
+msgid "Aux branch"
+msgstr "الفرع الفرعي"
+
+#: app/inputs_layout.py
+msgid "Main and aux branches"
+msgstr "الفرعان الرئيسي والفرعي"
+
+#: app/inputs_layout.py
+msgid "Single-phase"
+msgstr "أحادية الطور"
+
+#: app/inputs_layout.py
+msgid "Bi-phase"
+msgstr "ثنائية الطور"
+
+#: app/inputs_layout.py
+msgid "Three-phase without neutral"
+msgstr "ثلاثية الطور بدون حيادي"
+
+#: app/inputs_layout.py
+msgid "Three-phase with neutral"
+msgstr "ثلاثية الطور مع الحيادي"
+
+#: app/inputs_layout.py
+msgid "Hall sensor (Melexis)"
+msgstr "مستشعر هول (Melexis)"
+
+#: app/inputs_layout.py
+msgid "Current transformer"
+msgstr "محول التيار"

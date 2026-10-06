@@ -114,6 +114,8 @@ function createChart(containerId, unit) {
 }
 
 function startLivePolling() {
+    const initial = JSON.parse(document.getElementById('initialLayout').textContent);
+    renderLayout(initial);
     fetchAndUpdateData();
     setInterval(fetchAndUpdateData, POLL_INTERVAL);
 }
@@ -131,20 +133,106 @@ async function fetchAndUpdateData() {
         }
 
         const payload = await response.json();
-        const inputs = payload.inputs || payload.data?.inputs || [];
-
-        if (!inputs.length) {
-            console.warn('Live data response has no inputs:', payload);
+        const layout = payload.layout || null;
+        renderLayout(layout);
+        if (!layout) {
             return;
         }
 
-        inputs.forEach(updateInputTable);
+        // Only the inputs selected by the DIP switches are shown, summed and charted
+        const active = new Set(layout.active_line_ids);
+        const activeInputs = (payload.inputs || []).filter(function (input) {
+            return active.has(input.line_id);
+        });
+        updateValues(activeInputs);
         if (chartsReady) {
-            inputs.forEach(updateCharts);
+            activeInputs.forEach(updateCharts);
         }
     } catch (error) {
         console.error('Error fetching live data:', error);
     }
+}
+
+const VALUE_FIELDS = [
+    'voltage', 'current', 'apparent_power', 'active_power',
+    'reactive_power', 'power_factor', 'phase_vi', 'frequency', 'energy',
+];
+let renderedLayoutKey = null;
+
+function escapeText(value) {
+    return String(value).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+}
+
+// Builds the power info and one card per branch, with a column per phase
+function renderLayout(layout) {
+    const unavailable = document.getElementById('inputsUnavailable');
+    const cards = document.getElementById('branchCards');
+    const key = JSON.stringify(layout);
+    if (key === renderedLayoutKey) {
+        return;
+    }
+    renderedLayoutKey = key;
+
+    if (!layout) {
+        cards.innerHTML = '';
+        unavailable.hidden = false;
+        ['infoBranch', 'infoType', 'infoCurrent'].forEach(function (id) {
+            document.getElementById(id).textContent = '-';
+        });
+        return;
+    }
+    unavailable.hidden = true;
+    document.getElementById('infoBranch').textContent = layout.branch_label;
+    document.getElementById('infoType').textContent = layout.type_label;
+    document.getElementById('infoCurrent').textContent = layout.current_type_label || '-';
+
+    const csvUrls = JSON.parse(document.getElementById('inputCsvUrls').textContent);
+    cards.innerHTML = layout.branches.map(function (branch) {
+        const head = branch.phases.map(function (phase) {
+            return `<th class="text-end">${escapeText(phase.label)}</th>`;
+        }).join('');
+        const rows = VALUE_FIELDS.map(function (field) {
+            const cells = branch.phases.map(function (phase) {
+                return `<td class="text-end" data-line="${phase.line_id}" data-field="${field}">--</td>`;
+            }).join('');
+            return `<tr><td class="bold">${escapeText(INPUT_LABELS[field])}</td>${cells}</tr>`;
+        }).join('');
+        const links = branch.phases.map(function (phase) {
+            const url = csvUrls[phase.line_id];
+            return url ? `<td class="text-end"><a href="${escapeText(url)}" class="btn btn-primary2 btn-sm">CSV</a></td>` : '<td></td>';
+        }).join('');
+        return `<div class="borderGreen p-4 mb-3">
+            <h3 class="textGreen little2">${escapeText(branch.name)}</h3>
+            <div class="table-responsive">
+              <table class="table table-borderless align-middle">
+                <thead><tr><th></th>${head}</tr></thead>
+                <tbody>${rows}<tr><td></td>${links}</tr></tbody>
+              </table>
+            </div>
+          </div>`;
+    }).join('');
+}
+
+function updateValues(activeInputs) {
+    let totalPower = 0;
+    let totalEnergy = 0;
+    activeInputs.forEach(function (input) {
+        VALUE_FIELDS.forEach(function (field) {
+            let value = input[field];
+            if (field === 'energy' && value !== null && value !== undefined) {
+                value = Math.abs(parseFloat(value));
+            }
+            document.querySelectorAll(`[data-line="${input.line_id}"][data-field="${field}"]`).forEach(function (cell) {
+                cell.textContent = formatNumber(value);
+            });
+        });
+        totalPower += parseFloat(input.active_power) || 0;
+        totalEnergy += Math.abs(parseFloat(input.energy) || 0);
+    });
+    document.getElementById('totalPower').textContent = formatNumber(totalPower);
+    document.getElementById('totalEnergy').textContent = formatNumber(totalEnergy);
 }
 
 function formatNumber(value) {
@@ -158,27 +246,6 @@ function formatNumber(value) {
     return parsed.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-    });
-}
-
-function updateInputTable(input) {
-    const tabPane = document.querySelector(`#tab_${input.id}`);
-    if (!tabPane) {
-        return;
-    }
-
-    [
-        'voltage', 'current', 'apparent_power', 'active_power',
-        'reactive_power', 'power_factor', 'energy', 'phase_vi', 'frequency',
-    ].forEach(function (fieldName) {
-        const cell = tabPane.querySelector(`[data-field="${fieldName}"]`);
-        if (cell) {
-            let value = input[fieldName];
-            if (fieldName === 'energy' && value !== null && value !== undefined) {
-                value = Math.abs(parseFloat(value));
-            }
-            cell.textContent = formatNumber(value);
-        }
     });
 }
 
