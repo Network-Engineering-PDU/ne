@@ -638,9 +638,31 @@ def sensors(request):
     # latest ones a page at a time and fetch each row's sensor in one query.
     readings = (DataSensor.objects.select_related('sensor')
                 .order_by('-data_datetime', '-id'))
+    data['selected_sensor'] = None
+    selected = request.GET.get('sensor')
+    if selected and selected.isdigit():
+        data['selected_sensor'] = Sensor.objects.filter(id=int(selected)).first()
+        if data['selected_sensor']:
+            readings = readings.filter(sensor=data['selected_sensor'])
     data['data_page'] = Paginator(readings, SENSOR_READINGS_PER_PAGE).get_page(
         request.GET.get('page'))
     return render(request, 'sensors.html', data)
+
+
+@login_required()
+def sensor_clear_data(request, sensor_id):
+    # Same AJAX-header rule as the other state-changing endpoints (CSRF middleware is off)
+    if request.method != 'POST' or request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+        return bad_json(message=_('Solicitud Incorrecta'))
+    sensor = Sensor.objects.filter(id=sensor_id).first()
+    if sensor is None:
+        return bad_json(message=_('Objeto no existe'))
+    with transaction.atomic():
+        deleted, _rows = DataSensor.objects.filter(sensor=sensor).delete()
+        sensor.last_data_received = None
+        sensor.last_battery_value = None
+        sensor.save()
+    return ok_json(data={'deleted': deleted})
 
 
 @login_required()

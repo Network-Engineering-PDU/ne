@@ -7,6 +7,10 @@
     <script>
         const SENSORS_URL = {% url 'sensors' %};
     </script>
+    <script>
+        const CLEAR_CONFIRM_TEXT = "{% translate '¿Borrar todos los datos guardados de este sensor? Esta acción no se puede deshacer.' as s %}{{ s|escapejs }}";
+        const CLEAR_FAILED_TEXT = "{% translate 'No se pudieron borrar los datos del sensor.' as s %}{{ s|escapejs }}";
+    </script>
     <script src="{% static_v 'js/app/sensors.js' %}"></script>
 {% endblock %}
 
@@ -72,6 +76,24 @@
                             </div>
 
                             <div class="tab-pane fade" id="dataTab" role="tabpanel" aria-labelledby="groupstab">
+                                <div class="d-flex flex-wrap align-items-end gap-2 pt-3">
+                                    <form method="get" class="d-flex gap-2 align-items-end">
+                                        <div>
+                                            <label class="form-label" for="sensorFilter">{% translate 'Sensor' %}</label>
+                                            <select id="sensorFilter" name="sensor" class="form-select" onchange="this.form.submit()">
+                                                <option value="">{% translate 'Todos los sensores' %}</option>
+                                                {% for sensor in sensors %}
+                                                    <option value="{{ sensor.id }}" {% if selected_sensor and selected_sensor.id == sensor.id %}selected{% endif %}>{{ sensor.name|default:sensor.mac_address }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </form>
+                                    {% if selected_sensor %}
+                                    <button type="button" class="btn btn-secondary" id="btnClearSensorData" data-sensor-id="{{ selected_sensor.id }}">
+                                        {% translate 'Limpiar datos del sensor' %}
+                                    </button>
+                                    {% endif %}
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-borderless table-striped">
                                         <thead>
@@ -104,8 +126,8 @@
                                 <nav class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-3" aria-label="{% translate 'Paginación' %}">
                                     <span class="ne-muted">{% blocktranslate with first=data_page.start_index last=data_page.end_index total=data_page.paginator.count %}{{ first }}-{{ last }} de {{ total }}{% endblocktranslate %}</span>
                                     <span class="ne-actions">
-                                        {% if data_page.has_previous %}<a class="ne-btn sm" href="?page={{ data_page.previous_page_number }}">{% translate 'Anterior' %}</a>{% endif %}
-                                        {% if data_page.has_next %}<a class="ne-btn sm" href="?page={{ data_page.next_page_number }}">{% translate 'Siguiente' %}</a>{% endif %}
+                                        {% if data_page.has_previous %}<a class="ne-btn sm" href="?page={{ data_page.previous_page_number }}{% if selected_sensor %}&sensor={{ selected_sensor.id }}{% endif %}">{% translate 'Anterior' %}</a>{% endif %}
+                                        {% if data_page.has_next %}<a class="ne-btn sm" href="?page={{ data_page.next_page_number }}{% if selected_sensor %}&sensor={{ selected_sensor.id }}{% endif %}">{% translate 'Siguiente' %}</a>{% endif %}
                                     </span>
                                 </nav>
                                 {% endif %}

@@ -135,6 +135,31 @@ let SENSORS = {
 
 
 $(function () {
+    // Clear the stored readings of the sensor selected in the Data tab
+    $('#btnClearSensorData').on('click', async function () {
+        const btn = $(this);
+        const sensorId = btn.data('sensor-id');
+        if (!window.confirm(CLEAR_CONFIRM_TEXT)) {
+            return;
+        }
+        btn.prop('disabled', true);
+        try {
+            const response = await fetch(`/${LANG_CODE}/sensors/${sensorId}/clear_data`, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            });
+            const payload = await response.json();
+            if (payload.result !== 'ok') {
+                throw new Error(payload.message || 'error');
+            }
+            window.location.reload();
+        } catch (err) {
+            alert(CLEAR_FAILED_TEXT);
+            btn.prop('disabled', false);
+        }
+    });
+
     // Paging through the readings reloads the page: reopen the Data tab
     if (new URLSearchParams(window.location.search).has('page')) {
         const tab = document.querySelector('[data-bs-target="#dataTab"]');

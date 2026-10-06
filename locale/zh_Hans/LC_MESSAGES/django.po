@@ -1236,3 +1236,21 @@ msgstr "霍尔传感器 (Melexis)"
 #: app/inputs_layout.py
 msgid "Current transformer"
 msgstr "电流互感器"
+
+#: templates/sensors.html
+msgid "Todos los sensores"
+msgstr "所有传感器"
+
+#: templates/sensors.html
+msgid "Limpiar datos del sensor"
+msgstr "清除此传感器的数据"
+
+#: templates/sensors.html
+msgid ""
+"¿Borrar todos los datos guardados de este sensor? Esta acción no se puede "
+"deshacer."
+msgstr "删除此传感器的所有已保存数据？此操作无法撤销。"
+
+#: templates/sensors.html
+msgid "No se pudieron borrar los datos del sensor."
+msgstr "无法删除传感器数据。"

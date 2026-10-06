@@ -1246,3 +1246,22 @@ msgstr "مستشعر هول (Melexis)"
 #: app/inputs_layout.py
 msgid "Current transformer"
 msgstr "محول التيار"
+
+#: templates/sensors.html
+msgid "Todos los sensores"
+msgstr "جميع أجهزة الاستشعار"
+
+#: templates/sensors.html
+msgid "Limpiar datos del sensor"
+msgstr "مسح بيانات هذا المستشعر"
+
+#: templates/sensors.html
+msgid ""
+"¿Borrar todos los datos guardados de este sensor? Esta acción no se puede "
+"deshacer."
+msgstr ""
+"حذف جميع البيانات المحفوظة لهذا المستشعر؟ لا يمكن التراجع عن هذا الإجراء."
+
+#: templates/sensors.html
+msgid "No se pudieron borrar los datos del sensor."
+msgstr "تعذّر حذف بيانات المستشعر."

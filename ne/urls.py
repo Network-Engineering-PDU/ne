@@ -53,6 +53,7 @@ urlpatterns += i18n_patterns(
     path('check_new_sensor/', views.check_new_sensor, name='check_new_sensor'),
     path('sensors/', views.sensors, name='sensors'),
     path('sensors/<int:sensor_id>/update_name', views.sensor_update_name, name='sensor_update_name'),
+    path('sensors/<int:sensor_id>/clear_data', views.sensor_clear_data, name='sensor_clear_data'),
     # path('profile/', views.profile, name='profile'),
     path('users/', views.users, name='users'),
 

@@ -1267,3 +1267,23 @@ msgstr "Hall-Sensor (Melexis)"
 #: app/inputs_layout.py
 msgid "Current transformer"
 msgstr "Stromwandler"
+
+#: templates/sensors.html
+msgid "Todos los sensores"
+msgstr "Alle Sensoren"
+
+#: templates/sensors.html
+msgid "Limpiar datos del sensor"
+msgstr "Daten dieses Sensors löschen"
+
+#: templates/sensors.html
+msgid ""
+"¿Borrar todos los datos guardados de este sensor? Esta acción no se puede "
+"deshacer."
+msgstr ""
+"Alle gespeicherten Daten dieses Sensors löschen? Dies kann nicht rückgängig "
+"gemacht werden."
+
+#: templates/sensors.html
+msgid "No se pudieron borrar los datos del sensor."
+msgstr "Die Daten des Sensors konnten nicht gelöscht werden."
