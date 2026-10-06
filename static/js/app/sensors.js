@@ -135,6 +135,19 @@ let SENSORS = {
 
 
 $(function () {
+    // The clear button sits at the bottom of the page and only applies to the Data tab
+    function syncClearButton() {
+        const btn = document.getElementById('btnClearSensorData');
+        if (!btn) {
+            return;
+        }
+        btn.hidden = !document.getElementById('dataTab').classList.contains('active');
+    }
+    document.querySelectorAll('[data-bs-target]').forEach(function (tab) {
+        tab.addEventListener('shown.bs.tab', syncClearButton);
+    });
+    syncClearButton();
+
     // Clear the stored readings of the sensor selected in the Data tab
     $('#btnClearSensorData').on('click', async function () {
         const btn = $(this);
