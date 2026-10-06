@@ -91,8 +91,10 @@ h4 { font-size: 1rem; }
 .ne-nav .ne-count { margin-left: auto; }
 .ne-side-foot { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--ne-border); display: grid; gap: 4px; }
 .ne-user { padding: 6px 12px; color: var(--ne-muted); font-size: .85rem; overflow-wrap: anywhere; }
-.ne-lang { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 12px 8px; }
-.ne-lang a { padding: 2px 8px; border: 1px solid var(--ne-border); border-radius: 999px; font-size: .8rem; color: var(--ne-muted); white-space: nowrap; line-height: 1.4; }
+.ne-side-foot, .ne-lang { min-width: 0; width: 100%; }
+.ne-sidebar { overflow-x: hidden; }
+.ne-lang { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 4px 12px 8px; }
+.ne-lang a { padding: 3px 4px; border: 1px solid var(--ne-border); border-radius: 999px; font-size: .75rem; color: var(--ne-muted); white-space: nowrap; line-height: 1.4; text-align: center; overflow: hidden; text-overflow: ellipsis; }
 .ne-lang a[aria-current="true"] { background: var(--ne-brand-soft); color: var(--ne-brand); border-color: var(--ne-brand-2); }
 .ne-main { flex: 1; min-width: 0; margin-left: var(--ne-sidebar); }
 .ne-topbar {
