@@ -45,7 +45,9 @@ class LayoutRulesTests(TestCase):
     def test_labels_describe_the_selected_configuration(self):
         layout = build_layout(sw(1, 3, 1))
         self.assertEqual("Three-phase with neutral", layout["type_label"])
-        self.assertEqual("Current transformer", layout["current_type_label"])
+        # Per the DIP-switch table: SW4 = 1 is IMC-HALL (Melexis), 0 is current transformer
+        self.assertEqual("Hall sensor (Melexis)", layout["current_type_label"])
+        self.assertEqual("Current transformer", build_layout(sw(0, 0, 0))["current_type_label"])
         self.assertEqual("Main and aux branches", layout["branch_label"])
 
     def test_unknown_or_missing_switches_give_no_layout(self):

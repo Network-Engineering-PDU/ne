@@ -24,8 +24,8 @@ def _type_label(sys_type):
 
 def _current_type_label(curr_type):
     return {
-        0: _('Hall sensor (Melexis)'),
-        1: _('Current transformer'),
+        0: _('Current transformer'),
+        1: _('Hall sensor (Melexis)'),
     }[curr_type]
 
 
