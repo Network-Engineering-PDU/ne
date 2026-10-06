@@ -24,6 +24,8 @@ class Sensor(models.Model):
     last_battery_value = models.FloatField(blank=True, null=True)
     last_data_received = models.DateTimeField(blank=True, null=True)
     is_new = models.BooleanField(default=False)     # for gw provisioning logic
+    # Sensor family: 'MST01' (MINEW) or 'MOKO' (BeaconX Pro); blank for older rows
+    kind = models.CharField(max_length=10, blank=True, default='')
 
     def __str__(self):
         return self.mac_address

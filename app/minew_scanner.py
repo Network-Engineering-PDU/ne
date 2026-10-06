@@ -1,5 +1,5 @@
 """
-Minew MST01 / BeaconX Pro BLE discovery and live monitoring for the sensors screen.
+Minew MST01 and MOKO BeaconX Pro BLE discovery and live monitoring for the sensors screen.
 
 Used by REST /api/sensors-scan/* and pushes readings for confirmed sensors.
 """
@@ -27,12 +27,12 @@ OBJ_MGR_IFACE = 'org.freedesktop.DBus.ObjectManager'
 
 MINEW_COMPANY_ID = 0x0639
 BEACONX_UUID_KEY = 'feab'
+MOKO_TH_FRAME = 0x70
+MOKO_TLM_FRAME = 0x20
 FRAME_MARKER = 0xCA
 CA05_FRAME = 0x05
 CA00_FRAME = 0x00
 MST01_NAME_BYTES = b'MST01'
-N_INDOOR = 2.7
-N_OPEN = 2.0
 
 SCAN_DURATION_SEC = 60
 PUSH_INTERVAL_SEC = 3
@@ -53,14 +53,6 @@ _ble_stop = threading.Event()
 _ble_thread: Optional[threading.Thread] = None
 _monitored_loaded = False
 _last_error = ''
-
-
-def _distance(rssi: int, tx_1m: int = -65) -> dict:
-    diff = tx_1m - rssi
-    return {
-        'open_m': round(10 ** (diff / (10 * N_OPEN)), 2),
-        'indoor_m': round(10 ** (diff / (10 * N_INDOOR)), 2),
-    }
 
 
 def _parse_ca05(payload: bytes) -> Optional[dict]:
@@ -95,37 +87,22 @@ def _parse_mst01(mfr: bytes) -> Optional[dict]:
     return None
 
 
-def _parse_beaconx(svc: bytes, rssi: int) -> dict:
+def _parse_moko(svc: bytes) -> dict:
+    """MOKO BeaconX Pro service data (UUID feab). Frame types from the MOKO SDK:
+    0x70 T&H, 0x20 TLM, 0x40 Device info (no measurements)."""
     result = {'device_name': 'BeaconX Pro'}
-    if len(svc) < 2:
+    if not svc:
         return result
-
     frame_type = svc[0]
-    tx_power = svc[1] - 256 if svc[1] > 127 else svc[1]
-    result['tx_power_dbm'] = tx_power
-    result['distance'] = _distance(rssi, tx_power)
-
-    if frame_type == 0x40 and len(svc) >= 13:
-        result['beacon_frame'] = 'iBeacon'
-        result['major'] = int.from_bytes(svc[2:4], 'big')
-        result['minor'] = int.from_bytes(svc[4:6], 'big')
-    elif frame_type == 0x60 and len(svc) >= 6:
-        result['beacon_frame'] = 'TH'
-        temp_raw = int.from_bytes(svc[2:4], 'little', signed=True)
-        hum_raw = int.from_bytes(svc[4:6], 'little', signed=True)
-        result['temperature_c'] = round(temp_raw / 100, 2)
-        result['humidity_pct'] = round(hum_raw / 100, 1)
-    elif frame_type == 0x70 and len(svc) >= 8:
-        result['beacon_frame'] = 'ENV'
-        temp_raw = int.from_bytes(svc[2:4], 'little', signed=True)
-        hum_raw = int.from_bytes(svc[4:6], 'little', signed=True)
-        press_raw = int.from_bytes(svc[6:8], 'little', signed=False)
-        result['temperature_c'] = round(temp_raw / 100, 2)
-        result['humidity_pct'] = round(hum_raw / 100, 1)
-        result['pressure_hpa'] = round(press_raw / 10, 1)
-    else:
-        result['beacon_frame'] = f'0x{frame_type:02x}'
-
+    if frame_type == MOKO_TH_FRAME and len(svc) >= 6:
+        # Verified against the sensor: little-endian, 0.1 units
+        result['temperature_c'] = round(int.from_bytes(svc[2:4], 'little', signed=True) / 10, 1)
+        result['humidity_pct'] = round(int.from_bytes(svc[4:6], 'little') / 10, 1)
+    elif frame_type == MOKO_TLM_FRAME and len(svc) >= 6:
+        # Eddystone TLM: big-endian battery (mV) and 8.8 fixed-point chip temperature
+        result['battery_mv'] = int.from_bytes(svc[2:4], 'big')
+        # Chip temperature, kept apart from the T&H (ambient) temperature
+        result['chip_temperature_c'] = round(int.from_bytes(svc[4:6], 'big', signed=True) / 256, 1)
     return result
 
 
@@ -156,7 +133,7 @@ def _mac_from_path(path: str) -> str:
     return tail.upper()
 
 
-def _is_beaconx_props(props: dict) -> Optional[bytes]:
+def _is_moko_props(props: dict) -> Optional[bytes]:
     for uuid_str, data in _service_data(props).items():
         if BEACONX_UUID_KEY in uuid_str.lower():
             return data
@@ -243,10 +220,10 @@ def _process_bluez_device(path: str, props: dict) -> None:
         kind = 'MST01'
         parsed = _parse_mst01(raw)
     else:
-        svc = _is_beaconx_props(props)
-        if svc:
-            kind = 'BeaconX'
-            parsed = _parse_beaconx(svc, rssi)
+        svc = _is_moko_props(props)
+        if svc is not None:
+            kind = 'MOKO'
+            parsed = _parse_moko(svc)
 
     if not kind:
         return
@@ -441,7 +418,7 @@ def _ensure_monitored_loaded() -> None:
                 name = sensor.name or 'BLE'
                 upper = name.upper()
                 if 'BEACON' in upper:
-                    kind = 'BeaconX'
+                    kind = 'MOKO'
                 elif 'MST' in upper:
                     kind = 'MST01'
                 else:
@@ -558,6 +535,7 @@ def confirm_sensors(macs: Optional[List[str]] = None, add_all: bool = False) -> 
         if created or not sensor.name:
             sensor.name = name
         sensor.is_new = False
+        sensor.kind = kind
         sensor.save()
         with _lock:
             _monitored[mac] = kind

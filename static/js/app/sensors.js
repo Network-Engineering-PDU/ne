@@ -41,7 +41,7 @@ let SENSORS = {
     render_discovered_list: function () {
         if (!bleDiscoveredDevices.length) {
             modalSensorsNew.find('.modal-body').html(
-                '<p class="text-center text-muted">No MST01 or BeaconX Pro devices found yet.</p>'
+                '<p class="text-center text-muted">No MINEW MST01 or MOKO BeaconX Pro devices found yet.</p>'
             );
             return;
         }
@@ -109,7 +109,7 @@ let SENSORS = {
         modalSensorsNew.find('.modal-body').html(
             '<div class="d-flex justify-content-center">' + SPINNER + '</div>' +
             '<div class="row pt-3"><div class="col text-center">' +
-            '<p class="bold">Scanning Minew MST01 / BeaconX Pro…</p>' +
+            '<p class="bold">Scanning MINEW MST01 and MOKO BeaconX Pro…</p>' +
             '<p class="text-muted fst-italic">Power on the sensor and keep it nearby</p>' +
             '</div></div>'
         );

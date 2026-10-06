@@ -53,6 +53,7 @@
                                         <tr>
                                             <th scope="col" class="text-center w-10">No.</th>
                                             <th scope="col" class="text-center">{% translate 'Dirección Mac' %}</th>
+                                            <th scope="col" class="text-center">{% translate 'Tipo' %}</th>
                                             <th scope="col" class="text-center w-25">{% translate 'Nombre' %}</th>
                                             <th scope="col" class="text-center w-25">{% translate 'Ultimo valor bateria' %}</th>
                                             <th scope="col" class="text-center w-25">{% translate 'Ultimos datos recibidos' %}</th>
@@ -63,6 +64,7 @@
                                             <tr>
                                                 <th scope="row" class="text-center">{{ forloop.counter }}</th>
                                                 <td class="text-center">{{ sensor.mac_address }}</td>
+                                                <td class="text-center">{% if sensor.kind == 'MOKO' %}MOKO BeaconX Pro{% elif sensor.kind == 'MST01' %}MINEW MST01{% else %}-{% endif %}</td>
                                                 <td class="text-center">
                                                     <input onblur="SENSORS.update_sensor_name($(this), {{ sensor.id }})" id="inputSensorName_{{ sensor.id }}" type="text" class="form-control text-center" value="{{ sensor.name|default_if_none:'' }}">
                                                 </td>
