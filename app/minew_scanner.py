@@ -37,12 +37,18 @@ N_OPEN = 2.0
 SCAN_DURATION_SEC = 60
 PUSH_INTERVAL_SEC = 3
 BLUEZ_POLL_INTERVAL_SEC = 0.5
+# Storage: a reading is saved only when a measured value changes, never more
+# often than SAVE_MIN_GAP_SEC per sensor, and at least every SAVE_HEARTBEAT_SEC
+# so a sensor with steady values still shows as alive.
+SAVE_MIN_GAP_SEC = 10
+SAVE_HEARTBEAT_SEC = 60
 
 _lock = threading.Lock()
 _scanning = False
 _discovered: Dict[str, dict] = {}
 _monitored: Dict[str, str] = {}  # normalized mac -> kind
 _live_cache: Dict[str, dict] = {}
+_last_saved: Dict[str, Tuple[float, tuple]] = {}  # mac -> (monotonic time, values)
 _ble_stop = threading.Event()
 _ble_thread: Optional[threading.Thread] = None
 _monitored_loaded = False
@@ -355,14 +361,34 @@ def _reading_from_cache(mac: str) -> Optional[dict]:
     return out
 
 
+# Values compared to decide whether a reading is new (RSSI changes constantly
+# and is not a measurement, so it is left out)
+def _value_signature(row: dict) -> tuple:
+    return tuple(row.get(key) for key in ('temperature', 'humidity', 'pressure', 'battery'))
+
+
+def _should_save(mac: str, row: dict, now: float) -> bool:
+    signature = _value_signature(row)
+    previous = _last_saved.get(mac)
+    if previous is None:
+        return True
+    last_time, last_signature = previous
+    age = now - last_time
+    if age < SAVE_MIN_GAP_SEC:
+        return False
+    return signature != last_signature or age >= SAVE_HEARTBEAT_SEC
+
+
 def _push_monitored_readings() -> None:
     readings = []
     with _lock:
         macs = list(_monitored.keys())
+    now = time.monotonic()
     for mac in macs:
         row = _reading_from_cache(mac)
-        if row:
+        if row and _should_save(mac, row, now):
             readings.append(row)
+            _last_saved[mac] = (now, _value_signature(row))
     if readings:
         save_sensor_readings(readings)
 
