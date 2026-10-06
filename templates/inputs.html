@@ -6,9 +6,10 @@
 
 {% block scripts %}
 
-    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+    {# amCharts is served from the device itself: the PDU has no internet access #}
+    <script src="{% static_v 'js/amcharts/index.js' %}"></script>
+    <script src="{% static_v 'js/amcharts/xy.js' %}"></script>
+    <script src="{% static_v 'js/amcharts/themes/Animated.js' %}"></script>
     <script>
         const INPUTS_COUNT = 6;
         const LIVE_DATA_URL = "{% url 'get_inputs_live_data' %}";
