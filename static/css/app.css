@@ -261,6 +261,8 @@ dialog.ne-dialog .ne-actions { justify-content: flex-end; margin-top: 18px; }
   border-radius: 10px; font-weight: 500; font-size: .95rem; padding: 8px 16px;
 }
 .btn-primary { background: var(--ne-brand); border-color: var(--ne-brand); color: #fff; }
+/* Sensors page: two equal buttons side by side, each half the row */
+.sensor-action { flex: 0 0 calc(50% - 0.25rem); }
 .btn-primary:hover { background: var(--ne-brand); border-color: var(--ne-brand); filter: brightness(1.1); color: #fff; }
 .btn-primary2, .btn-secondary, .btn-none { background: var(--ne-surface); color: var(--ne-text); border: 1px solid var(--ne-border); }
 .btnRed { background: var(--ne-err); border-color: var(--ne-err); color: #fff; }

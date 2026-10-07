@@ -134,12 +134,12 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex flex-wrap gap-2">
-                    <a onclick="SENSORS.add_new_sensor($(this));" class="btn btn-primary">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-flex flex-wrap gap-2">
+                    <a onclick="SENSORS.add_new_sensor($(this));" class="btn btn-primary sensor-action">
                         {% translate 'Adicionar Nuevo Sensor' %}
                     </a>
                     {% if selected_sensor %}
-                    <button type="button" class="btn btn-secondary" id="btnClearSensorData" data-sensor-id="{{ selected_sensor.id }}" hidden>
+                    <button type="button" class="btn btn-primary sensor-action" id="btnClearSensorData" data-sensor-id="{{ selected_sensor.id }}" hidden>
                         {% translate 'Limpiar datos del sensor' %}
                     </button>
                     {% endif %}
