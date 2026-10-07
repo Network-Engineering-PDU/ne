@@ -10,6 +10,7 @@ import time
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
+from app import hci_adv
 from app.sensor_ble_service import format_mac_display, normalize_mac, save_sensor_readings
 
 try:
@@ -37,6 +38,9 @@ MST01_NAME_BYTES = b'MST01'
 
 SCAN_DURATION_SEC = 60
 PUSH_INTERVAL_SEC = 3
+# A temperature/humidity value older than this is not reported: the sensor may
+# stop sending its T&H frame, and the last value must not look current.
+TH_MAX_AGE_SEC = 120
 BLUEZ_POLL_INTERVAL_SEC = 0.5
 # Storage: a reading is saved only when a measured value changes, never more
 # often than SAVE_MIN_GAP_SEC per sensor, and at least every SAVE_HEARTBEAT_SEC
@@ -52,6 +56,7 @@ _live_cache: Dict[str, dict] = {}
 _last_saved: Dict[str, Tuple[float, tuple]] = {}  # mac -> (monotonic time, values)
 _ble_stop = threading.Event()
 _ble_thread: Optional[threading.Thread] = None
+_hci_thread: Optional[threading.Thread] = None
 _monitored_loaded = False
 _last_error = ''
 
@@ -96,9 +101,10 @@ def _parse_moko(svc: bytes) -> dict:
         return result
     frame_type = svc[0]
     if frame_type == MOKO_TH_FRAME and len(svc) >= 6:
-        # Verified against the sensor: little-endian, 0.1 units
-        result['temperature_c'] = round(int.from_bytes(svc[2:4], 'little', signed=True) / 10, 1)
-        result['humidity_pct'] = round(int.from_bytes(svc[4:6], 'little') / 10, 1)
+        # Checked against the phone app on five captured frames: big-endian, 0.1 units,
+        # temperature at bytes 3-4 and humidity at bytes 5-6
+        result['temperature_c'] = round(int.from_bytes(svc[3:5], 'big', signed=True) / 10, 1)
+        result['humidity_pct'] = round(int.from_bytes(svc[5:7], 'big') / 10, 1)
     elif frame_type == MOKO_TLM_FRAME and len(svc) >= 6:
         # Eddystone TLM: big-endian battery (mV) and 8.8 fixed-point chip temperature
         result['battery_mv'] = int.from_bytes(svc[2:4], 'big')
@@ -266,6 +272,8 @@ def _process_bluez_device(path: str, props: dict) -> None:
             cache['last_seen'] = entry['last_seen']
             if parsed:
                 cache.update(parsed)
+                if 'temperature_c' in parsed or 'humidity_pct' in parsed:
+                    cache['th_seen_at'] = time.monotonic()
 
 
 def _poll_bluez_devices(bus) -> None:
@@ -275,6 +283,29 @@ def _poll_bluez_devices(bus) -> None:
         props = ifaces.get(DEVICE_IFACE)
         if props:
             _process_bluez_device(str(path), dict(props))
+
+
+def _start_hci_listener() -> None:
+    """Sees every advertisement, not just the latest one BlueZ keeps per device."""
+    global _hci_thread
+    if _hci_thread and _hci_thread.is_alive():
+        return
+    _hci_thread = threading.Thread(target=_hci_listener_loop, daemon=True, name='minew-hci')
+    _hci_thread.start()
+
+
+def _hci_listener_loop() -> None:
+    try:
+        fd = hci_adv.open_listener(0)
+    except OSError as ex:
+        print(f'minew hci listener unavailable: {ex}')
+        return
+    try:
+        hci_adv.listen(fd, lambda report: _process_bluez_device('', report), _ble_stop)
+    except OSError as ex:
+        print(f'minew hci listener stopped: {ex}')
+    finally:
+        hci_adv.close_listener(fd)
 
 
 def _run_bluez_loop() -> None:
@@ -289,6 +320,7 @@ def _run_bluez_loop() -> None:
     adapter_path, adapter = _get_bluez_adapter(bus)
     _power_adapter_on(bus, adapter_path)
     _start_discovery(adapter)
+    _start_hci_listener()
     _last_error = ''
 
     try:
@@ -319,6 +351,13 @@ def _run_bluez_loop() -> None:
         _stop_discovery(adapter)
 
 
+def _fresh_th(cache: dict, key: str) -> Optional[float]:
+    seen_at = cache.get('th_seen_at')
+    if seen_at is None or time.monotonic() - seen_at > TH_MAX_AGE_SEC:
+        return None
+    return cache.get(key)
+
+
 def _reading_from_cache(mac: str) -> Optional[dict]:
     with _lock:
         cache = _live_cache.get(mac)
@@ -332,10 +371,10 @@ def _reading_from_cache(mac: str) -> Optional[dict]:
         'datetime': dt_str,
         'rssi': data.get('rssi'),
     }
-    temp = data.get('temperature_c')
+    temp = _fresh_th(data, 'temperature_c')
     if temp is not None:
         out['temperature'] = int(round(temp * 100))
-    hum = data.get('humidity_pct')
+    hum = _fresh_th(data, 'humidity_pct')
     if hum is not None:
         out['humidity'] = int(round(hum))
     press = data.get('pressure_hpa')
@@ -507,8 +546,8 @@ def get_live_readings(mac: Optional[str] = None) -> dict:
                 'kind': cache.get('kind', kind),
                 'name': cache.get('name', kind),
                 'rssi': cache.get('rssi'),
-                'temperature_c': cache.get('temperature_c'),
-                'humidity_pct': cache.get('humidity_pct'),
+                'temperature_c': _fresh_th(cache, 'temperature_c'),
+                'humidity_pct': _fresh_th(cache, 'humidity_pct'),
                 'pressure_hpa': cache.get('pressure_hpa'),
                 'battery_mv': cache.get('battery_mv'),
                 'battery_pct': cache.get('battery_pct'),
