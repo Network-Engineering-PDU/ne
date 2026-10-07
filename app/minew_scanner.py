@@ -27,6 +27,7 @@ OBJ_MGR_IFACE = 'org.freedesktop.DBus.ObjectManager'
 
 MINEW_COMPANY_ID = 0x0639
 BEACONX_UUID_KEY = 'feab'
+EDDYSTONE_UUID_KEY = 'feaa'
 MOKO_TH_FRAME = 0x70
 MOKO_TLM_FRAME = 0x20
 FRAME_MARKER = 0xCA
@@ -140,6 +141,14 @@ def _is_moko_props(props: dict) -> Optional[bytes]:
     return None
 
 
+def _moko_tlm_props(props: dict) -> Optional[bytes]:
+    """The MOKO battery (TLM) frame is sent under the Eddystone UUID (feaa), not feab."""
+    for uuid_str, data in _service_data(props).items():
+        if EDDYSTONE_UUID_KEY in uuid_str and data and data[0] == MOKO_TLM_FRAME:
+            return data
+    return None
+
+
 def _is_mst01_props(props: dict) -> Optional[bytes]:
     raw = _manufacturer_data(props).get(MINEW_COMPANY_ID)
     if raw and len(raw) >= 9 and raw[0] == FRAME_MARKER:
@@ -220,10 +229,14 @@ def _process_bluez_device(path: str, props: dict) -> None:
         kind = 'MST01'
         parsed = _parse_mst01(raw)
     else:
+        # BlueZ often shows only the battery (TLM) frame, so either frame identifies a MOKO
         svc = _is_moko_props(props)
-        if svc is not None:
+        tlm = _moko_tlm_props(props)
+        if svc is not None or tlm is not None:
             kind = 'MOKO'
-            parsed = _parse_moko(svc)
+            parsed = _parse_moko(svc or b'')
+            if tlm is not None:
+                parsed.update(_parse_moko(tlm))
 
     if not kind:
         return

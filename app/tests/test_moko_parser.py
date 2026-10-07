@@ -65,3 +65,48 @@ class MokoScannerIntegrationTests(SimpleTestCase):
         row = m._reading_from_cache("DCB3477EFA23")
         self.assertEqual(2660, row["temperature"])   # stored as hundredths of a degree
         self.assertEqual(53, row["humidity"])         # whole percent, as for MINEW
+
+
+class MokoBatteryFrameTests(SimpleTestCase):
+    """The battery (TLM) frame comes under the Eddystone UUID, not feab."""
+
+    def test_battery_is_read_from_the_feaa_frame(self):
+        from app import minew_scanner as m
+        th = bytes.fromhex('70000a01060230 0b4503dcb3477efa23'.replace(' ', ''))
+        tlm = bytes.fromhex('2000 0b4517800000 2d99 0000f204'.replace(' ', ''))
+        props = {'ServiceData': {
+            '0000feab-0000-1000-8000-00805f9b34fb': th,
+            '0000feaa-0000-1000-8000-00805f9b34fb': tlm}}
+        self.assertEqual(tlm, m._moko_tlm_props(props))
+        parsed = m._parse_moko(th)
+        parsed.update(m._parse_moko(m._moko_tlm_props(props)))
+        self.assertEqual(2885, parsed['battery_mv'])
+        self.assertEqual(26.6, parsed['temperature_c'])
+
+
+class MokoTlmOnlyTests(SimpleTestCase):
+    """BlueZ may show only the battery frame for a BeaconX; it must still be found."""
+
+    def test_tlm_only_advert_is_recognised_as_moko(self):
+        from app import minew_scanner as m
+        tlm = bytes.fromhex('2000 0b4517800000 2e c3 00 00 f7 d6'.replace(' ', ''))
+        props = {'Address': 'DC:B3:47:7E:FA:23', 'RSSI': -46, 'ServiceData': {
+            '0000feaa-0000-1000-8000-00805f9b34fb': tlm}}
+        m._process_bluez_device('/org/bluez/hci0/dev_DC_B3_47_7E_FA_23', props)
+        found = [d for d in m._discovered.values() if d['mac'] == 'DC:B3:47:7E:FA:23']
+        self.assertEqual([], found)  # only collected during a scan
+        m._scanning = True
+        try:
+            m._process_bluez_device('/org/bluez/hci0/dev_DC_B3_47_7E_FA_23', props)
+            found = [d for d in m._discovered.values() if d['mac'] == 'DC:B3:47:7E:FA:23']
+            self.assertEqual('MOKO', found[0]['kind'])
+            self.assertEqual(2885, found[0]['battery_mv'])
+        finally:
+            m._scanning = False
+            m._discovered.clear()
+
+    def test_other_eddystone_frames_are_not_moko(self):
+        from app import minew_scanner as m
+        uid = bytes.fromhex('00e3 12345678901234567890 0000 00000000'.replace(' ', ''))
+        self.assertIsNone(m._moko_tlm_props({'ServiceData': {
+            '0000feaa-0000-1000-8000-00805f9b34fb': uid}}))
