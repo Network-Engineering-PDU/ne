@@ -225,11 +225,50 @@
     });
 
     // ---- Modbus --------------------------------------------------------------
+    // The "ACC" ports are a door/handle accessory interface, not Modbus, so
+    // they are not offered here. Each "485" jack can only be switched on its
+    // own on boards that report rtu_port_control; on current boards both
+    // jacks share one transceiver, so their switches are shown but disabled.
+    const MODBUS_ID_MIN = 1;
+    const MODBUS_ID_MAX = 247;
+    let portControl = false;
+
+    const isMaster = () => $('modbusRole').value === 'master';
+
+    function updateModbusForm() {
+        const master = isMaster();
+        $('modbusAddrLabel').textContent = NE.t(master ? 'modbusPduNumberLabel' : 'modbusAddrLabel');
+        $('modbusDaisy').hidden = !master;
+        $('modbusPort1').disabled = !portControl;
+        $('modbusPort2').disabled = !portControl;
+        $('modbusPortNote').hidden = portControl;
+        // With both 485 ports off the RTU settings do nothing.
+        const rtuUsed = !portControl || $('modbusPort1').checked || $('modbusPort2').checked;
+        ['modbusRole', 'modbusAddr', 'modbusBaud', 'modbusParity', 'modbusStopBits',
+            'modbusScanFirst', 'modbusScanLast', 'modbusTimeout', 'modbusPoll', 'modbusOffline']
+            .forEach((id) => { $(id).disabled = !rtuUsed; });
+    }
+
     async function loadModbus() {
         try {
-            const [addr, services] = await Promise.all([NE.api('GET', 'settings/modbus'), NE.api('GET', 'network/services')]);
-            if (document.activeElement !== $('modbusAddr')) { $('modbusAddr').value = addr.addr; }
+            const [settings, services] = await Promise.all([NE.api('GET', 'settings/modbus'), NE.api('GET', 'network/services')]);
+            if (document.activeElement !== $('modbusAddr')) { $('modbusAddr').value = settings.addr; }
+            $('modbusBaud').value = String(settings.baud_rate);
+            $('modbusParity').value = settings.parity;
+            $('modbusStopBits').value = String(settings.stop_bits);
+            $('modbusEth1').checked = !!settings.tcp_eth1_enabled;
+            $('modbusEth2').checked = !!settings.tcp_eth2_enabled;
+            $('modbusPort1').checked = settings.rtu_port1_enabled !== false;
+            $('modbusPort2').checked = settings.rtu_port2_enabled !== false;
+            portControl = !!settings.rtu_port_control;
+            $('modbusRole').value = settings.role === 'master' ? 'master' : 'slave';
+            $('modbusScanFirst').value = settings.scan_first;
+            $('modbusScanLast').value = settings.scan_last;
+            $('modbusTimeout').value = String(settings.timeout_ms);
+            $('modbusPoll').value = String(settings.poll_interval_s);
+            $('modbusOffline').value = String(settings.offline_after);
             $('modbusEnabled').checked = !!services.modbus;
+            updateModbusForm();
         } catch (err) { /* keep the current values */ }
     }
 
@@ -240,12 +279,59 @@
         await loadModbus();
     });
 
+    ['modbusPort1', 'modbusPort2'].forEach((id) => {
+        $(id).addEventListener('change', () => {
+            if (!$(id).checked && !isMaster()) { NE.toast(NE.t('modbusPortOffWarning')); }
+            updateModbusForm();
+        });
+    });
+
+    $('modbusRole').addEventListener('change', () => {
+        if (isMaster()) { NE.toast(NE.t('modbusMasterWarning')); }
+        updateModbusForm();
+    });
+
+    function modbusId(id) {
+        const text = $(id).value.trim();
+        const value = Number(text);
+        return text !== '' && Number.isInteger(value) && value >= MODBUS_ID_MIN && value <= MODBUS_ID_MAX ? value : null;
+    }
+
+    function modbusError(payload) {
+        if (payload.addr === null) { return { message: NE.t(isMaster() ? 'modbusPduNumberInvalid' : 'modbusAddrInvalid'), field: 'modbusAddr' }; }
+        if (payload.role !== 'master') { return null; }
+        if (portControl && !payload.rtu_port1_enabled && !payload.rtu_port2_enabled) { return { message: NE.t('modbusMasterNeedsPort'), field: 'modbusPort1' }; }
+        if (payload.scan_first === null || payload.scan_last === null || payload.scan_first > payload.scan_last) { return { message: NE.t('modbusScanInvalid'), field: 'modbusScanFirst' }; }
+        if (payload.addr >= payload.scan_first && payload.addr <= payload.scan_last) { return { message: NE.t('modbusScanIncludesSelf'), field: 'modbusAddr' }; }
+        return null;
+    }
+
     $('formModbus').addEventListener('submit', async (ev) => {
         ev.preventDefault();
-        const text = $('modbusAddr').value.trim();
-        const addr = Number(text);
-        if (text === '' || !Number.isInteger(addr) || addr < 0 || addr > 255) { NE.toast(NE.t('modbusAddrInvalid'), 'error'); $('modbusAddr').focus(); return; }
-        try { await NE.api('PUT', 'settings/modbus', {addr: addr}); NE.toast(NE.t('saved'), 'ok'); }
+        const payload = {
+            addr: modbusId('modbusAddr'),
+            baud_rate: Number($('modbusBaud').value),
+            parity: $('modbusParity').value,
+            stop_bits: Number($('modbusStopBits').value),
+            tcp_eth1_enabled: $('modbusEth1').checked,
+            tcp_eth2_enabled: $('modbusEth2').checked,
+            rtu_port1_enabled: $('modbusPort1').checked,
+            rtu_port2_enabled: $('modbusPort2').checked,
+            role: $('modbusRole').value,
+            scan_first: modbusId('modbusScanFirst'),
+            scan_last: modbusId('modbusScanLast'),
+            timeout_ms: Number($('modbusTimeout').value),
+            poll_interval_s: Number($('modbusPoll').value),
+            offline_after: Number($('modbusOffline').value),
+        };
+        const error = modbusError(payload);
+        if (error) { NE.toast(error.message, 'error'); $(error.field).focus(); return; }
+        // A slave doesn't use the scan range; leave the stored one as it is.
+        if (payload.role !== 'master') {
+            if (payload.scan_first === null) { delete payload.scan_first; }
+            if (payload.scan_last === null) { delete payload.scan_last; }
+        }
+        try { await NE.api('PUT', 'settings/modbus', payload); NE.toast(NE.t('saved'), 'ok'); }
         catch (err) { NE.toast(NE.t('saveFailed') + (err.message ? ': ' + err.message : ''), 'error'); }
         await loadModbus();
     });

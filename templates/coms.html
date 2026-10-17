@@ -60,7 +60,15 @@
             snmpPwdInvalid: "{% translate 'La contraseña SNMPv3 debe tener 8-64 caracteres (letras, números y . _ @ # % + = : -).' as s %}{{ s|escapejs }}",
             snmpMgrInvalid: "{% translate 'Gestor de traps no válido. Use una dirección IPv4 o un nombre DNS.' as s %}{{ s|escapejs }}",
             snmpPwdKeep: "{% translate 'Sin cambios' as s %}{{ s|escapejs }}",
-            modbusAddrInvalid: "{% translate 'La dirección Modbus debe ser un entero entre 0 y 255.' as s %}{{ s|escapejs }}",
+            modbusAddrInvalid: "{% translate 'La dirección Modbus debe ser un entero entre 1 y 247.' as s %}{{ s|escapejs }}",
+            modbusPduNumberInvalid: "{% translate 'El número de PDU debe ser un entero entre 1 y 247.' as s %}{{ s|escapejs }}",
+            modbusAddrLabel: "{% translate 'Dirección Modbus' as s %}{{ s|escapejs }}",
+            modbusPduNumberLabel: "{% translate 'Número de PDU' as s %}{{ s|escapejs }}",
+            modbusScanInvalid: "{% translate 'Los IDs a buscar deben estar entre 1 y 247, y el primero no puede ser mayor que el último.' as s %}{{ s|escapejs }}",
+            modbusScanIncludesSelf: "{% translate 'El rango de búsqueda incluye el número de este PDU. Cambie uno de los dos.' as s %}{{ s|escapejs }}",
+            modbusMasterNeedsPort: "{% translate 'Active al menos un puerto 485 para que el maestro llegue a la cadena.' as s %}{{ s|escapejs }}",
+            modbusPortOffWarning: "{% translate 'Los PDUs conectados a este puerto perderán el contacto con la cadena.' as s %}{{ s|escapejs }}",
+            modbusMasterWarning: "{% translate 'Este PDU dejará de responder a Modbus RTU en sus puertos 485. Modbus TCP sigue funcionando.' as s %}{{ s|escapejs }}",
             modbusFailed: "{% translate 'No se pudo cambiar el servicio Modbus' as s %}{{ s|escapejs }}"
         });
     </script>
@@ -528,10 +536,74 @@
                     <h2 class="ne-card-h" id="modbusTitle"><svg class="ne-icon"><use href="#i-network"/></svg>Modbus</h2>
                     <form id="formModbus" novalidate>
                         <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="modbusEnabled"><span></span></span>{% translate 'Servicio Modbus activado' %}</label></div>
-                        <div class="ne-field" style="max-width:220px"><label for="modbusAddr">{% translate 'Dirección Modbus' %}</label>
-                            <input id="modbusAddr" type="number" min="0" max="255" class="form-control"><span class="ne-hint">0 – 255</span></div>
+                        <h3 class="mt-2 mb-2" style="font-size:.95rem">{% translate 'Modbus TCP' %}</h3>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="modbusEth1"><span></span></span>{% translate 'Ethernet 1' %}</label></div>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="modbusEth2"><span></span></span>{% translate 'Ethernet 2' %}</label></div>
+                        <h3 class="mt-2 mb-2" style="font-size:.95rem">{% translate 'Modbus RTU (RS-485)' %}</h3>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="modbusPort1"><span></span></span>{% translate 'Puerto 485 1' %}</label></div>
+                        <div class="ne-field"><label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="modbusPort2"><span></span></span>{% translate 'Puerto 485 2' %}</label></div>
+                        <p class="ne-hint" id="modbusPortNote" hidden>{% translate 'Para activar o desactivar cada puerto 485 por separado hace falta una nueva revisión de la placa.' %}</p>
+                        <div class="ne-field" style="max-width:220px"><label for="modbusRole">{% translate 'Función' %}</label>
+                            <select id="modbusRole" class="form-select">
+                                <option value="slave">{% translate 'Esclavo' %}</option>
+                                <option value="master">{% translate 'Maestro (cadena de PDUs)' %}</option>
+                            </select></div>
+                        <div class="ne-field" style="max-width:220px"><label for="modbusAddr" id="modbusAddrLabel">{% translate 'Dirección Modbus' %}</label>
+                            <input id="modbusAddr" type="number" min="1" max="247" class="form-control"><span class="ne-hint">1 – 247</span></div>
+                        <div class="ne-field" style="max-width:220px"><label for="modbusBaud">{% translate 'Velocidad (baudios)' %}</label>
+                            <select id="modbusBaud" class="form-select">
+                                <option value="9600">9600</option>
+                                <option value="19200">19200</option>
+                                <option value="38400">38400</option>
+                                <option value="57600">57600</option>
+                                <option value="115200">115200</option>
+                            </select></div>
+                        <div class="ne-field" style="max-width:220px"><label for="modbusParity">{% translate 'Paridad' %}</label>
+                            <select id="modbusParity" class="form-select">
+                                <option value="N">{% translate 'Ninguna' %}</option>
+                                <option value="E">{% translate 'Par' %}</option>
+                                <option value="O">{% translate 'Impar' %}</option>
+                            </select></div>
+                        <div class="ne-field" style="max-width:220px"><label for="modbusStopBits">{% translate 'Bits de parada' %}</label>
+                            <select id="modbusStopBits" class="form-select">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select></div>
+                        <div id="modbusDaisy" hidden>
+                            <h3 class="mt-2 mb-2" style="font-size:.95rem">{% translate 'Cadena de PDUs (daisy chain)' %}</h3>
+                            <p class="ne-hint">{% translate 'Este PDU consulta a los demás PDUs conectados a los puertos 485.' %}</p>
+                            <div class="ne-form-grid">
+                                <div class="ne-field"><label for="modbusScanFirst">{% translate 'Primer ID a buscar' %}</label>
+                                    <input id="modbusScanFirst" type="number" min="1" max="247" class="form-control"></div>
+                                <div class="ne-field"><label for="modbusScanLast">{% translate 'Último ID a buscar' %}</label>
+                                    <input id="modbusScanLast" type="number" min="1" max="247" class="form-control"></div>
+                                <div class="ne-field"><label for="modbusTimeout">{% translate 'Tiempo de espera de respuesta' %}</label>
+                                    <select id="modbusTimeout" class="form-select">
+                                        <option value="100">100 ms</option>
+                                        <option value="200">200 ms</option>
+                                        <option value="500">500 ms</option>
+                                        <option value="1000">1000 ms</option>
+                                    </select></div>
+                                <div class="ne-field"><label for="modbusPoll">{% translate 'Consultar cada' %}</label>
+                                    <select id="modbusPoll" class="form-select">
+                                        <option value="1">1 s</option>
+                                        <option value="2">2 s</option>
+                                        <option value="5">5 s</option>
+                                        <option value="10">10 s</option>
+                                        <option value="30">30 s</option>
+                                    </select></div>
+                                <div class="ne-field"><label for="modbusOffline">{% translate 'Desconectado tras' %}</label>
+                                    <select id="modbusOffline" class="form-select">
+                                        <option value="1">1 {% translate 'sin respuesta' %}</option>
+                                        <option value="2">2 {% translate 'sin respuesta' %}</option>
+                                        <option value="3">3 {% translate 'sin respuesta' %}</option>
+                                        <option value="5">5 {% translate 'sin respuesta' %}</option>
+                                        <option value="10">10 {% translate 'sin respuesta' %}</option>
+                                    </select></div>
+                            </div>
+                        </div>
                         <div class="ne-actions"><button type="submit" class="ne-btn primary">{% translate 'Guardar' %}</button></div>
-                        <p class="ne-hint mt-2">{% translate 'Al guardar una dirección el servicio Modbus se reinicia y queda activado.' %}</p>
+                        <p class="ne-hint mt-2">{% translate 'Al guardar, el servicio Modbus se reinicia si está activado.' %}</p>
                     </form>
                 </section>
 
