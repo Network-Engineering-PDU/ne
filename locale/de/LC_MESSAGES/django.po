@@ -1287,3 +1287,119 @@ msgstr ""
 #: templates/sensors.html
 msgid "No se pudieron borrar los datos del sensor."
 msgstr "Die Daten des Sensors konnten nicht gelöscht werden."
+
+#: templates/coms.html
+msgid "Puerto 485 1"
+msgstr "485-Anschluss 1"
+
+#: templates/coms.html
+msgid "Puerto 485 2"
+msgstr "485-Anschluss 2"
+
+#: templates/coms.html
+msgid "Para activar o desactivar cada puerto 485 por separado hace falta una nueva revisión de la placa."
+msgstr "Um jeden 485-Anschluss einzeln ein- oder auszuschalten, ist eine neuere Platinenrevision nötig."
+
+#: templates/coms.html
+msgid "Función"
+msgstr "Rolle"
+
+#: templates/coms.html
+msgid "Esclavo"
+msgstr "Slave"
+
+#: templates/coms.html
+msgid "Maestro (cadena de PDUs)"
+msgstr "Master (PDU-Kette)"
+
+#: templates/coms.html
+msgid "Velocidad (baudios)"
+msgstr "Geschwindigkeit (Baud)"
+
+#: templates/coms.html
+msgid "Paridad"
+msgstr "Parität"
+
+#: templates/coms.html
+msgid "Ninguna"
+msgstr "Keine"
+
+#: templates/coms.html
+msgid "Par"
+msgstr "Gerade"
+
+#: templates/coms.html
+msgid "Impar"
+msgstr "Ungerade"
+
+#: templates/coms.html
+msgid "Bits de parada"
+msgstr "Stoppbits"
+
+#: templates/coms.html
+msgid "Cadena de PDUs (daisy chain)"
+msgstr "PDU-Kette (Daisy Chain)"
+
+#: templates/coms.html
+msgid "Este PDU consulta a los demás PDUs conectados a los puertos 485."
+msgstr "Diese PDU fragt die anderen an ihren 485-Anschlüssen angeschlossenen PDUs ab."
+
+#: templates/coms.html
+msgid "Primer ID a buscar"
+msgstr "Erste zu suchende ID"
+
+#: templates/coms.html
+msgid "Último ID a buscar"
+msgstr "Letzte zu suchende ID"
+
+#: templates/coms.html
+msgid "Tiempo de espera de respuesta"
+msgstr "Antwort-Timeout"
+
+#: templates/coms.html
+msgid "Consultar cada"
+msgstr "Abfrage alle"
+
+#: templates/coms.html
+msgid "Desconectado tras"
+msgstr "Offline nach"
+
+#: templates/coms.html
+msgid "sin respuesta"
+msgstr "ohne Antwort"
+
+#: templates/coms.html
+msgid "Al guardar, el servicio Modbus se reinicia si está activado."
+msgstr "Beim Speichern wird der Modbus-Dienst neu gestartet, wenn er aktiviert ist."
+
+#: templates/coms.html
+msgid "La dirección Modbus debe ser un entero entre 1 y 247."
+msgstr "Die Modbus-Adresse muss eine ganze Zahl von 1 bis 247 sein."
+
+#: templates/coms.html
+msgid "El número de PDU debe ser un entero entre 1 y 247."
+msgstr "Die PDU-Nummer muss eine ganze Zahl von 1 bis 247 sein."
+
+#: templates/coms.html
+msgid "Número de PDU"
+msgstr "PDU-Nummer"
+
+#: templates/coms.html
+msgid "Los IDs a buscar deben estar entre 1 y 247, y el primero no puede ser mayor que el último."
+msgstr "Die Such-IDs müssen zwischen 1 und 247 liegen, und die erste darf nicht größer als die letzte sein."
+
+#: templates/coms.html
+msgid "El rango de búsqueda incluye el número de este PDU. Cambie uno de los dos."
+msgstr "Der Suchbereich enthält die Nummer dieser PDU. Ändern Sie eines von beiden."
+
+#: templates/coms.html
+msgid "Active al menos un puerto 485 para que el maestro llegue a la cadena."
+msgstr "Aktivieren Sie mindestens einen 485-Anschluss, damit der Master die Kette erreicht."
+
+#: templates/coms.html
+msgid "Los PDUs conectados a este puerto perderán el contacto con la cadena."
+msgstr "An diesen Anschluss angeschlossene PDUs verlieren die Verbindung zur Kette."
+
+#: templates/coms.html
+msgid "Este PDU dejará de responder a Modbus RTU en sus puertos 485. Modbus TCP sigue funcionando."
+msgstr "Diese PDU beantwortet Modbus RTU an ihren 485-Anschlüssen nicht mehr. Modbus TCP funktioniert weiterhin."

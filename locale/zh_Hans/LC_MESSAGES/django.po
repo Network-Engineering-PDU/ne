@@ -1254,3 +1254,127 @@ msgstr "删除此传感器的所有已保存数据？此操作无法撤销。"
 #: templates/sensors.html
 msgid "No se pudieron borrar los datos del sensor."
 msgstr "无法删除传感器数据。"
+
+#: templates/coms.html
+msgid "Ethernet 1"
+msgstr "以太网 1"
+
+#: templates/coms.html
+msgid "Ethernet 2"
+msgstr "以太网 2"
+
+#: templates/coms.html
+msgid "Puerto 485 1"
+msgstr "485 端口 1"
+
+#: templates/coms.html
+msgid "Puerto 485 2"
+msgstr "485 端口 2"
+
+#: templates/coms.html
+msgid "Para activar o desactivar cada puerto 485 por separado hace falta una nueva revisión de la placa."
+msgstr "单独开关每个 485 端口需要更新版本的电路板。"
+
+#: templates/coms.html
+msgid "Función"
+msgstr "角色"
+
+#: templates/coms.html
+msgid "Esclavo"
+msgstr "从站"
+
+#: templates/coms.html
+msgid "Maestro (cadena de PDUs)"
+msgstr "主站（PDU 菊花链）"
+
+#: templates/coms.html
+msgid "Velocidad (baudios)"
+msgstr "速率（波特）"
+
+#: templates/coms.html
+msgid "Paridad"
+msgstr "校验"
+
+#: templates/coms.html
+msgid "Ninguna"
+msgstr "无"
+
+#: templates/coms.html
+msgid "Par"
+msgstr "偶校验"
+
+#: templates/coms.html
+msgid "Impar"
+msgstr "奇校验"
+
+#: templates/coms.html
+msgid "Bits de parada"
+msgstr "停止位"
+
+#: templates/coms.html
+msgid "Cadena de PDUs (daisy chain)"
+msgstr "PDU 菊花链"
+
+#: templates/coms.html
+msgid "Este PDU consulta a los demás PDUs conectados a los puertos 485."
+msgstr "此 PDU 轮询连接到其 485 端口的其他 PDU。"
+
+#: templates/coms.html
+msgid "Primer ID a buscar"
+msgstr "扫描起始 ID"
+
+#: templates/coms.html
+msgid "Último ID a buscar"
+msgstr "扫描结束 ID"
+
+#: templates/coms.html
+msgid "Tiempo de espera de respuesta"
+msgstr "响应超时"
+
+#: templates/coms.html
+msgid "Consultar cada"
+msgstr "轮询间隔"
+
+#: templates/coms.html
+msgid "Desconectado tras"
+msgstr "离线判定"
+
+#: templates/coms.html
+msgid "sin respuesta"
+msgstr "次无响应"
+
+#: templates/coms.html
+msgid "Al guardar, el servicio Modbus se reinicia si está activado."
+msgstr "保存后，如果 Modbus 服务已启用，将重新启动该服务。"
+
+#: templates/coms.html
+msgid "La dirección Modbus debe ser un entero entre 1 y 247."
+msgstr "Modbus 地址必须是 1 到 247 之间的整数。"
+
+#: templates/coms.html
+msgid "El número de PDU debe ser un entero entre 1 y 247."
+msgstr "PDU 编号必须是 1 到 247 之间的整数。"
+
+#: templates/coms.html
+msgid "Número de PDU"
+msgstr "PDU 编号"
+
+#: templates/coms.html
+msgid "Los IDs a buscar deben estar entre 1 y 247, y el primero no puede ser mayor que el último."
+msgstr "扫描 ID 必须在 1 到 247 之间，且起始 ID 不能大于结束 ID。"
+
+#: templates/coms.html
+msgid "El rango de búsqueda incluye el número de este PDU. Cambie uno de los dos."
+msgstr "扫描范围包含此 PDU 自己的编号，请修改其中之一。"
+
+#: templates/coms.html
+msgid "Active al menos un puerto 485 para que el maestro llegue a la cadena."
+msgstr "请至少启用一个 485 端口，以便主站能访问菊花链。"
+
+#: templates/coms.html
+msgid "Los PDUs conectados a este puerto perderán el contacto con la cadena."
+msgstr "连接到此端口的 PDU 将与菊花链断开联系。"
+
+#: templates/coms.html
+msgid "Este PDU dejará de responder a Modbus RTU en sus puertos 485. Modbus TCP sigue funcionando."
+msgstr "此 PDU 将不再在其 485 端口上响应 Modbus RTU。Modbus TCP 仍可正常使用。"
