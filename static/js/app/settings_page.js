@@ -1,5 +1,5 @@
-/* Settings page: PDU info + rated current, touchscreen settings, software
-   update, certificates and maintenance. Reads and writes the PDU API through
+/* Settings page: PDU info + rated current, touchscreen settings and
+   translations, software update, certificates and maintenance. Reads and writes the PDU API through
    the proxy; file uploads, reboot and factory reset go through this page's own
    Django endpoint (they need server side file handling). */
 (function () {
@@ -70,6 +70,121 @@
         const saved = await guarded(() => NE.api('PUT', 'display-config', body), NE.t('saveFailed'));
         if (saved) { fillDisplay(saved); NE.toast(NE.t('saved'), 'ok'); }
     });
+
+    // ---- Translation files: touchscreen and web interface ---------------------
+    /* One card per translation file (templates/partials/translations_card.html).
+       p prefixes its element ids and its messages (falling back to the tr_
+       ones); files is {file, info}: the table's URL (GET download, POST the CSV
+       as the body, DELETE to reset) and its status URL. With reload, the page
+       reloads after a change to show the new texts, keeping the report. */
+    function translationSection(p, files, reload) {
+        const el = (id) => $(p + id);
+        const msg = (key, fallback) => NE.t(p + '_' + key, NE.t('tr_' + key, fallback));
+        const storedReport = p + 'Report';
+        let names = {};
+
+        async function request(method, url, body) {
+            const options = {method: method, credentials: 'same-origin', headers: {'X-Requested-With': 'XMLHttpRequest'}};
+            if (body) { options.body = body; options.headers['Content-Type'] = 'text/csv'; }
+            let response;
+            try { response = await fetch(url, options); } catch (err) { throw new Error(NE.t('apiUnreachable', 'PDU API unreachable')); }
+            if (response.status === 401) { window.location.href = '/login/'; throw new Error('Unauthorized'); }
+            const data = await response.json().catch(() => null);
+            if (!response.ok || !data) {
+                const e = new Error(data && data.code ? msg('err_' + data.code, data.detail) : ((data && (data.message || data.detail)) || 'HTTP ' + response.status));
+                throw e;
+            }
+            return data;
+        }
+
+        function fill(info) {
+            names = {};
+            info.languages.forEach((l) => { names[l.code] = l.name; });
+            setText(p + 'State', info.custom ? NE.t('tr_custom') + ' · ' + NE.formatTime(info.modified) : NE.t('tr_original'));
+            setText(p + 'Langs', info.languages.map((l) => l.name).join(', '));
+            el('Reset').disabled = !info.custom;
+        }
+
+        function reasonText(r) {
+            let text = msg(r.reason, r.reason);
+            if (r.reason === 'placeholders' && r.detail) { text += ' ' + NE.t('tr_mustContain') + ': ' + r.detail; }
+            else if (r.reason !== 'colour_marks' && r.reason !== 'too_long' && r.detail) { text += ': ' + r.detail; }
+            return text;
+        }
+
+        function showReport(report) {
+            const lines = [NE.t('tr_summary').replace('{accepted}', report.accepted)
+                .replace('{changed}', report.changed).replace('{rejected}', report.rejected.length)];
+            if (report.new_languages.length) {
+                lines.push(NE.t('tr_newLangs') + ': ' + report.new_languages.map((c) => names[c] || c).join(', '));
+            }
+            if (report.ignored_columns.length) { lines.push(NE.t('tr_ignored') + ': ' + report.ignored_columns.join(', ')); }
+            const summary = el('Summary');
+            summary.textContent = lines.join(' ');
+            summary.className = 'ne-alert' + (report.rejected.length ? ' warning' : '');
+            const esc = NE.escapeHtml;
+            el('Rejected').innerHTML = report.rejected.map((r) => '<tr><td>' + esc(r.row) + '</td><td>' + esc(r.id) +
+                '</td><td>' + esc(names[r.language] || r.language) + '</td><td style="white-space:normal">' +
+                esc(reasonText(r)) + '</td></tr>').join('');
+            el('RejectedWrap').hidden = report.rejected.length === 0;
+            el('Report').hidden = false;
+        }
+
+        // A reload shows the new texts: the report waits in the session.
+        function reloadWith(report) {
+            try { sessionStorage.setItem(storedReport, JSON.stringify(report)); } catch (err) { /* shown nowhere */ }
+            window.location.reload();
+        }
+
+        el('Form').addEventListener('submit', async (ev) => {
+            ev.preventDefault();
+            const input = el('File');
+            const file = input.files && input.files[0];
+            if (!file) { NE.toast(NE.t('fileRequired'), 'error'); return; }
+            if (!/\.csv$/i.test(file.name)) { NE.toast(NE.t('wrongExt') + ' .csv', 'error'); return; }
+            const button = el('Form').querySelector('button[type="submit"]');
+            button.disabled = true;
+            let data;
+            try {
+                data = await request('POST', files.file, file);
+            } catch (err) {
+                NE.toast(NE.t('uploadFailed') + ': ' + err.message, 'error');
+                return;
+            } finally {
+                button.disabled = false;
+            }
+            input.value = '';
+            if (reload) { reloadWith(data.report); return; }
+            fill(data);
+            showReport(data.report);
+            NE.toast(NE.t('saved'), 'ok');
+        });
+
+        el('Reset').addEventListener('click', async () => {
+            if (!(await NE.confirm(NE.t('tr_resetTitle'), msg('resetQ'), {danger: true, confirmLabel: NE.t('tr_resetTitle')}))) { return; }
+            const info = await guarded(() => request('DELETE', files.file), NE.t('saveFailed'));
+            if (!info) { return; }
+            if (reload) { reloadWith(null); return; }
+            fill(info);
+            el('Report').hidden = true;
+            NE.toast(msg('restarting'), 'ok');
+        });
+
+        return async function load() {
+            fill(await request('GET', files.info));
+            let report = null;
+            try {
+                report = JSON.parse(sessionStorage.getItem(storedReport));
+                sessionStorage.removeItem(storedReport);
+            } catch (err) { report = null; }
+            if (report) { showReport(report); NE.toast(NE.t('saved'), 'ok'); }
+        };
+    }
+
+    const loadTranslations = translationSection('tr',
+        {file: '/pdu/display-translations', info: '/pdu/display-translations/info'}, false);
+    const loadWebTranslations = translationSection('wtr',
+        {file: '/web-translations/', info: '/web-translations/info'}, true);
 
     // ---- Software update ----------------------------------------------------
     const BADGE_KIND = {ok: 'ok', info: 'info', warning: 'warning', error: 'error'};
@@ -201,7 +316,7 @@
     $('btnFactory').addEventListener('click', () => maintenance('settings/factory-reset', NE.t('factoryTitle'), NE.t('factoryQ'), true));
 
     // ---- Init ---------------------------------------------------------------
-    [loadPdu, loadDisplay].forEach((loader) => {
+    [loadPdu, loadDisplay, loadTranslations, loadWebTranslations].forEach((loader) => {
         loader().catch((err) => NE.toast(NE.t('loadFailed') + (err.message ? ': ' + err.message : ''), 'error'));
     });
 })();

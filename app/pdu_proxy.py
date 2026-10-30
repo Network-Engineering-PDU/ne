@@ -32,6 +32,10 @@ ALLOWED = (
     ("POST", r"alarms/ack-all"),
     ("GET", r"display-config"),
     ("PUT", r"display-config"),
+    ("GET", r"display-translations"),
+    ("GET", r"display-translations/info"),
+    ("POST", r"display-translations"),
+    ("DELETE", r"display-translations"),
     ("GET", r"settings/license"),
     ("GET", r"settings/pdu-info"),
     ("PUT", r"settings/pdu-info"),
@@ -97,7 +101,10 @@ def pdu_proxy(request, path):
     kwargs = {"params": params, "timeout": TIMEOUT_S, "verify": False}
     if method in ("POST", "PUT") and request.body:
         kwargs["data"] = request.body
-        kwargs["headers"] = {"Content-Type": "application/json"}
+        # JSON, or a file sent as the body (touchscreen translations: CSV)
+        content_type = request.content_type if request.content_type == "text/csv" \
+            else "application/json"
+        kwargs["headers"] = {"Content-Type": content_type}
 
     api_path = path + "/" if path in TRAILING_SLASH else path
     last_error = None
@@ -108,12 +115,16 @@ def pdu_proxy(request, path):
         except requests.RequestException as ex:
             last_error = ex
             continue
-        return HttpResponse(
+        result = HttpResponse(
             response.content,
             status=response.status_code,
             content_type=response.headers.get("Content-Type",
                                               "application/json"),
         )
+        # File downloads (touchscreen translations) keep their file name
+        if "Content-Disposition" in response.headers:
+            result["Content-Disposition"] = response.headers["Content-Disposition"]
+        return result
     return JsonResponse({"result": "error",
                          "message": f"PDU API unreachable: {last_error}"},
                         status=502)

@@ -27,6 +27,10 @@ class AllowlistTests(TestCase):
             ("PUT", "network/snmp/display-settings"),
             ("PUT", "settings/modbus"),
             ("POST", "settings/start-modbus"),
+            ("GET", "display-translations"),
+            ("GET", "display-translations/info"),
+            ("POST", "display-translations"),
+            ("DELETE", "display-translations"),
         ]
         denied = [
             ("DELETE", "outputs/3/switch-status"),
@@ -88,6 +92,26 @@ class ProxyViewTests(TestCase):
                             content_type="application/json", **XHR)
         self.assertEqual(200, r.status_code)
         self.assertEqual(body.encode(), request_mock.call_args[1]["data"])
+
+    @patch("app.pdu_proxy.requests.request")
+    def test_translation_file_upload_and_download(self, request_mock):
+        self.client.force_login(self.user)
+        request_mock.return_value = api_response()
+        body = "English (en),Français (fr)\nAlarms,Alarmes\n".encode()
+        r = self.client.post(self.url("display-translations"), body,
+                             content_type="text/csv", **XHR)
+        self.assertEqual(200, r.status_code)
+        self.assertEqual(body, request_mock.call_args[1]["data"])
+        self.assertEqual({"Content-Type": "text/csv"},
+                         request_mock.call_args[1]["headers"])
+
+        request_mock.return_value = Mock(
+            content=b"ID,English (en)\r\n", status_code=200,
+            headers={"Content-Type": "text/csv; charset=utf-8",
+                     "Content-Disposition": 'attachment; filename="t.csv"'})
+        r = self.client.get(self.url("display-translations"))
+        self.assertEqual('attachment; filename="t.csv"', r["Content-Disposition"])
+        self.assertEqual("text/csv; charset=utf-8", r["Content-Type"])
 
     @patch("app.pdu_proxy.requests.request")
     def test_not_allowed_path_never_reaches_the_api(self, request_mock):

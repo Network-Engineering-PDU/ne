@@ -1389,3 +1389,146 @@ msgstr "ستفقد وحدات PDU المتصلة بهذا المنفذ الات�
 #: templates/coms.html
 msgid "Este PDU dejará de responder a Modbus RTU en sus puertos 485. Modbus TCP sigue funcionando."
 msgstr "ستتوقف وحدة PDU هذه عن الرد على Modbus RTU في منافذ 485. يستمر Modbus TCP في العمل."
+
+#: templates/settings.html
+msgid "Traducciones"
+msgstr "الترجمات"
+
+
+#: templates/settings.html
+msgid "Cambie los textos de la pantalla táctil sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "غيّر نصوص الشاشة اللمسية دون تحديث البرنامج الثابت: نزّل الملف، وعدّله في Excel، واحفظه بصيغة «CSV UTF-8» ثم ارفعه. لإضافة لغة، أضف عمودًا باسمها ورمزها، مثل «Français (fr)»."
+
+#: templates/settings.html
+msgid "Textos en uso"
+msgstr "النصوص المستخدمة"
+
+#: templates/settings.html
+msgid "Descargar archivo"
+msgstr "تنزيل الملف"
+
+#: templates/settings.html
+msgid "Restaurar textos originales"
+msgstr "استعادة النصوص الأصلية"
+
+#: templates/settings.html
+msgid "Subir archivo editado"
+msgstr "رفع الملف المعدّل"
+
+#: templates/settings.html
+msgid "La pantalla táctil se reinicia con los nuevos textos."
+msgstr "تُعاد تشغيل الشاشة اللمسية بالنصوص الجديدة."
+
+#: templates/settings.html
+msgid "Fila"
+msgstr "الصف"
+
+#: templates/settings.html
+msgid "Idioma"
+msgstr "اللغة"
+
+#: templates/settings.html
+msgid "Motivo"
+msgstr "السبب"
+
+#: templates/settings.html
+msgid "Originales"
+msgstr "الأصلية"
+
+#: templates/settings.html
+msgid "Personalizados"
+msgstr "مخصّصة"
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la pantalla táctil? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "هل تريد استعادة النصوص الأصلية للشاشة اللمسية؟ ستُحذف تغييراتك واللغات المضافة."
+
+#: templates/settings.html
+msgid "{accepted} textos aceptados ({changed} cambiados), {rejected} rechazados."
+msgstr "قُبل {accepted} نصًا ({changed} معدّلة)، ورُفض {rejected}."
+
+#: templates/settings.html
+msgid "Idiomas añadidos"
+msgstr "اللغات المضافة"
+
+#: templates/settings.html
+msgid "Columnas ignoradas"
+msgstr "الأعمدة المتجاهَلة"
+
+#: templates/settings.html
+msgid "Debe contener"
+msgstr "يجب أن يحتوي على"
+
+#: templates/settings.html
+msgid "El texto en inglés no coincide con ningún texto de la pantalla: no cambie la columna English."
+msgstr "النص الإنجليزي لا يطابق أي نص في الشاشة: لا تغيّر عمود English."
+
+#: templates/settings.html
+msgid "El texto es demasiado largo."
+msgstr "النص طويل جدًا."
+
+#: templates/settings.html
+msgid "Contiene caracteres no válidos, por ejemplo tabulaciones."
+msgstr "يحتوي على أحرف غير صالحة، مثل علامات الجدولة."
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto en inglés."
+msgstr "عناصر القيم النائبة لا تطابق النص الإنجليزي."
+
+#: templates/settings.html
+msgid "Las marcas de color (#) no coinciden con el texto en inglés."
+msgstr "علامات اللون (#) لا تطابق النص الإنجليزي."
+
+#: templates/settings.html
+msgid "La pantalla no puede mostrar estos caracteres"
+msgstr "لا تستطيع الشاشة عرض هذه الأحرف"
+
+#: templates/settings.html
+msgid "El archivo no está en UTF-8. En Excel use Guardar como > «CSV UTF-8»."
+msgstr "الملف ليس بترميز UTF-8. في Excel استخدم حفظ باسم > «CSV UTF-8»."
+
+#: templates/settings.html
+msgid "No se encontró la columna de inglés, «English (en)»."
+msgstr "لم يُعثر على عمود الإنجليزية «English (en)»."
+
+#: templates/settings.html
+msgid "El archivo es demasiado grande."
+msgstr "الملف كبير جدًا."
+
+#: templates/settings.html
+msgid "Demasiados idiomas: la pantalla admite 16 como máximo."
+msgstr "لغات كثيرة جدًا: تدعم الشاشة 16 لغة كحد أقصى."
+
+#: templates/settings.html
+msgid "El archivo está vacío."
+msgstr "الملف فارغ."
+
+
+
+#: templates/settings.html
+msgid "Cambie los textos de esta interfaz web sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. La columna del texto original identifica cada texto: no la cambie. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "غيّر نصوص واجهة الويب هذه دون تحديث البرنامج الثابت: نزّل الملف، وعدّله في Excel، واحفظه بصيغة «CSV UTF-8» ثم ارفعه. عمود النص الأصلي يحدّد كل نص: لا تغيّره. لإضافة لغة، أضف عمودًا باسمها ورمزها، مثل «Français (fr)»."
+
+#: templates/settings.html
+msgid "La página se recarga con los nuevos textos."
+msgstr "تُعاد تحميل الصفحة بالنصوص الجديدة."
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la interfaz web? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "هل تريد استعادة النصوص الأصلية لواجهة الويب؟ ستُحذف تغييراتك واللغات المضافة."
+
+#: templates/settings.html
+msgid "El texto original no coincide con ningún texto de la interfaz web: no cambie esa columna."
+msgstr "النص الأصلي لا يطابق أي نص في واجهة الويب: لا تغيّر ذلك العمود."
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto original."
+msgstr "عناصر القيم النائبة لا تطابق النص الأصلي."
+
+#: templates/settings.html
+msgid "No se encontró la columna del texto original, «Original text (key)»."
+msgstr "لم يُعثر على عمود النص الأصلي «Original text (key)»."
+
+#: templates/settings.html
+msgid "Interfaz web"
+msgstr "واجهة الويب"

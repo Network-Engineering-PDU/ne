@@ -1378,3 +1378,146 @@ msgstr "连接到此端口的 PDU 将与菊花链断开联系。"
 #: templates/coms.html
 msgid "Este PDU dejará de responder a Modbus RTU en sus puertos 485. Modbus TCP sigue funcionando."
 msgstr "此 PDU 将不再在其 485 端口上响应 Modbus RTU。Modbus TCP 仍可正常使用。"
+
+#: templates/settings.html
+msgid "Traducciones"
+msgstr "翻译"
+
+
+#: templates/settings.html
+msgid "Cambie los textos de la pantalla táctil sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "无需更新固件即可修改触摸屏文本：下载文件，在 Excel 中编辑，另存为“CSV UTF-8”后上传。要添加语言，请添加一列并写上语言名称和代码，例如“Français (fr)”。"
+
+#: templates/settings.html
+msgid "Textos en uso"
+msgstr "当前文本"
+
+#: templates/settings.html
+msgid "Descargar archivo"
+msgstr "下载文件"
+
+#: templates/settings.html
+msgid "Restaurar textos originales"
+msgstr "恢复原始文本"
+
+#: templates/settings.html
+msgid "Subir archivo editado"
+msgstr "上传编辑后的文件"
+
+#: templates/settings.html
+msgid "La pantalla táctil se reinicia con los nuevos textos."
+msgstr "触摸屏将使用新文本重新启动。"
+
+#: templates/settings.html
+msgid "Fila"
+msgstr "行"
+
+#: templates/settings.html
+msgid "Idioma"
+msgstr "语言"
+
+#: templates/settings.html
+msgid "Motivo"
+msgstr "原因"
+
+#: templates/settings.html
+msgid "Originales"
+msgstr "原始文本"
+
+#: templates/settings.html
+msgid "Personalizados"
+msgstr "已自定义"
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la pantalla táctil? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "要恢复触摸屏的原始文本吗？您的修改和添加的语言将被删除。"
+
+#: templates/settings.html
+msgid "{accepted} textos aceptados ({changed} cambiados), {rejected} rechazados."
+msgstr "已接受 {accepted} 条文本（{changed} 条已修改），已拒绝 {rejected} 条。"
+
+#: templates/settings.html
+msgid "Idiomas añadidos"
+msgstr "添加的语言"
+
+#: templates/settings.html
+msgid "Columnas ignoradas"
+msgstr "已忽略的列"
+
+#: templates/settings.html
+msgid "Debe contener"
+msgstr "必须包含"
+
+#: templates/settings.html
+msgid "El texto en inglés no coincide con ningún texto de la pantalla: no cambie la columna English."
+msgstr "英文文本与任何触摸屏文本都不匹配：请勿修改 English 列。"
+
+#: templates/settings.html
+msgid "El texto es demasiado largo."
+msgstr "文本过长。"
+
+#: templates/settings.html
+msgid "Contiene caracteres no válidos, por ejemplo tabulaciones."
+msgstr "包含无效字符，例如制表符。"
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto en inglés."
+msgstr "数值占位符与英文文本不一致。"
+
+#: templates/settings.html
+msgid "Las marcas de color (#) no coinciden con el texto en inglés."
+msgstr "颜色标记 (#) 与英文文本不一致。"
+
+#: templates/settings.html
+msgid "La pantalla no puede mostrar estos caracteres"
+msgstr "触摸屏无法显示这些字符"
+
+#: templates/settings.html
+msgid "El archivo no está en UTF-8. En Excel use Guardar como > «CSV UTF-8»."
+msgstr "文件不是 UTF-8 编码。请在 Excel 中使用“另存为”>“CSV UTF-8”。"
+
+#: templates/settings.html
+msgid "No se encontró la columna de inglés, «English (en)»."
+msgstr "未找到英文列“English (en)”。"
+
+#: templates/settings.html
+msgid "El archivo es demasiado grande."
+msgstr "文件过大。"
+
+#: templates/settings.html
+msgid "Demasiados idiomas: la pantalla admite 16 como máximo."
+msgstr "语言过多：触摸屏最多支持 16 种。"
+
+#: templates/settings.html
+msgid "El archivo está vacío."
+msgstr "文件为空。"
+
+
+
+#: templates/settings.html
+msgid "Cambie los textos de esta interfaz web sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. La columna del texto original identifica cada texto: no la cambie. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "无需更新固件即可修改本网页界面的文本：下载文件，在 Excel 中编辑，另存为“CSV UTF-8”后上传。原文列用于识别每条文本：请勿修改。要添加语言，请添加一列并写上语言名称和代码，例如“Français (fr)”。"
+
+#: templates/settings.html
+msgid "La página se recarga con los nuevos textos."
+msgstr "页面将使用新文本重新加载。"
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la interfaz web? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "要恢复网页界面的原始文本吗？您的修改和添加的语言将被删除。"
+
+#: templates/settings.html
+msgid "El texto original no coincide con ningún texto de la interfaz web: no cambie esa columna."
+msgstr "原文与任何网页界面文本都不匹配：请勿修改该列。"
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto original."
+msgstr "数值占位符与原文不一致。"
+
+#: templates/settings.html
+msgid "No se encontró la columna del texto original, «Original text (key)»."
+msgstr "未找到原文列“Original text (key)”。"
+
+#: templates/settings.html
+msgid "Interfaz web"
+msgstr "网页界面"

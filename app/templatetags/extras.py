@@ -83,7 +83,11 @@ NATIVE_LANGUAGE_NAMES = {
 
 @register.simple_tag
 def native_name(code):
-    return NATIVE_LANGUAGE_NAMES.get(code, code)
+    if code in NATIVE_LANGUAGE_NAMES:
+        return NATIVE_LANGUAGE_NAMES[code]
+    # A language added by the web translation file: the name it gives
+    from app import web_translations
+    return web_translations.native_name(code)
 
 
 @register.simple_tag

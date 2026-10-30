@@ -1767,3 +1767,146 @@ msgstr "PDUs connected to this port will lose contact with the chain."
 #: templates/coms.html
 msgid "Este PDU dejará de responder a Modbus RTU en sus puertos 485. Modbus TCP sigue funcionando."
 msgstr "This PDU will stop answering Modbus RTU on its 485 ports. Modbus TCP keeps working."
+
+#: templates/settings.html
+msgid "Traducciones"
+msgstr "Translations"
+
+
+#: templates/settings.html
+msgid "Cambie los textos de la pantalla táctil sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "Change the touchscreen texts without a firmware update: download the file, edit it in Excel, save it as “CSV UTF-8” and upload it. To add a language, add a column with its name and code, for example “Français (fr)”."
+
+#: templates/settings.html
+msgid "Textos en uso"
+msgstr "Texts in use"
+
+#: templates/settings.html
+msgid "Descargar archivo"
+msgstr "Download file"
+
+#: templates/settings.html
+msgid "Restaurar textos originales"
+msgstr "Restore original texts"
+
+#: templates/settings.html
+msgid "Subir archivo editado"
+msgstr "Upload edited file"
+
+#: templates/settings.html
+msgid "La pantalla táctil se reinicia con los nuevos textos."
+msgstr "The touchscreen restarts with the new texts."
+
+#: templates/settings.html
+msgid "Fila"
+msgstr "Row"
+
+#: templates/settings.html
+msgid "Idioma"
+msgstr "Language"
+
+#: templates/settings.html
+msgid "Motivo"
+msgstr "Reason"
+
+#: templates/settings.html
+msgid "Originales"
+msgstr "Original"
+
+#: templates/settings.html
+msgid "Personalizados"
+msgstr "Customized"
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la pantalla táctil? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "Restore the original touchscreen texts? Your changes and added languages will be removed."
+
+#: templates/settings.html
+msgid "{accepted} textos aceptados ({changed} cambiados), {rejected} rechazados."
+msgstr "{accepted} texts accepted ({changed} changed), {rejected} rejected."
+
+#: templates/settings.html
+msgid "Idiomas añadidos"
+msgstr "Added languages"
+
+#: templates/settings.html
+msgid "Columnas ignoradas"
+msgstr "Ignored columns"
+
+#: templates/settings.html
+msgid "Debe contener"
+msgstr "It must contain"
+
+#: templates/settings.html
+msgid "El texto en inglés no coincide con ningún texto de la pantalla: no cambie la columna English."
+msgstr "The English text matches no touchscreen text: do not change the English column."
+
+#: templates/settings.html
+msgid "El texto es demasiado largo."
+msgstr "The text is too long."
+
+#: templates/settings.html
+msgid "Contiene caracteres no válidos, por ejemplo tabulaciones."
+msgstr "It contains invalid characters, such as tabs."
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto en inglés."
+msgstr "The value placeholders do not match the English text."
+
+#: templates/settings.html
+msgid "Las marcas de color (#) no coinciden con el texto en inglés."
+msgstr "The colour marks (#) do not match the English text."
+
+#: templates/settings.html
+msgid "La pantalla no puede mostrar estos caracteres"
+msgstr "The touchscreen cannot show these characters"
+
+#: templates/settings.html
+msgid "El archivo no está en UTF-8. En Excel use Guardar como > «CSV UTF-8»."
+msgstr "The file is not UTF-8. In Excel use Save As > “CSV UTF-8”."
+
+#: templates/settings.html
+msgid "No se encontró la columna de inglés, «English (en)»."
+msgstr "The English column, “English (en)”, was not found."
+
+#: templates/settings.html
+msgid "El archivo es demasiado grande."
+msgstr "The file is too large."
+
+#: templates/settings.html
+msgid "Demasiados idiomas: la pantalla admite 16 como máximo."
+msgstr "Too many languages: the touchscreen supports up to 16."
+
+#: templates/settings.html
+msgid "El archivo está vacío."
+msgstr "The file is empty."
+
+
+
+#: templates/settings.html
+msgid "Cambie los textos de esta interfaz web sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. La columna del texto original identifica cada texto: no la cambie. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "Change the texts of this web interface without a firmware update: download the file, edit it in Excel, save it as “CSV UTF-8” and upload it. The original text column identifies each text: do not change it. To add a language, add a column with its name and code, for example “Français (fr)”."
+
+#: templates/settings.html
+msgid "La página se recarga con los nuevos textos."
+msgstr "The page reloads with the new texts."
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la interfaz web? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "Restore the original web interface texts? Your changes and added languages will be removed."
+
+#: templates/settings.html
+msgid "El texto original no coincide con ningún texto de la interfaz web: no cambie esa columna."
+msgstr "The original text matches no web interface text: do not change that column."
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto original."
+msgstr "The value placeholders do not match the original text."
+
+#: templates/settings.html
+msgid "No se encontró la columna del texto original, «Original text (key)»."
+msgstr "The original text column, “Original text (key)”, was not found."
+
+#: templates/settings.html
+msgid "Interfaz web"
+msgstr "Web interface"

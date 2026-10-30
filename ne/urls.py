@@ -6,6 +6,7 @@ from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from app import views
 from app.pdu_proxy import pdu_proxy
+from app.web_translations_views import web_translations_file, web_translations_info
 from rest.routers import api_router
 from ne.settings import MEDIA_URL, MEDIA_ROOT, STATIC_URL, STATIC_ROOT
 
@@ -29,6 +30,10 @@ urlpatterns = [
 
     # Authenticated proxy to the PDU API (see app/pdu_proxy.py)
     path('pdu/<path:path>', pdu_proxy, name='pdu_proxy'),
+
+    # Web interface translation file (Settings page, see app/web_translations.py)
+    path('web-translations/', web_translations_file, name='web_translations'),
+    path('web-translations/info', web_translations_info, name='web_translations_info'),
 
     # API router
     path('api/', include(api_router.urls)),

@@ -87,6 +87,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # Before LocaleMiddleware: a changed translation file can add languages
+    'app.web_translations.WebTranslationsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -173,10 +175,22 @@ LANGUAGES = (
     (LANGUAGE_AR, _('Arabic')),
 )
 
+# The firmware's languages; the web translation file can add others, which
+# app/web_translations.py appends to LANGUAGES at run time.
+BUILTIN_LANGUAGES = LANGUAGES
+BUILTIN_LANGUAGE_CODES = tuple(code for code, _ in LANGUAGES)
+
 # Right-to-left languages need a mirrored layout (see templates/base.html)
 RTL_LANGUAGES = (LANGUAGE_AR,)
 
+# Web translation file uploaded by the customer (Settings page), and the
+# catalogs compiled from it. Listed first, its texts win over the built-in
+# ones (locale/). Both live in /home, kept by firmware updates.
+WEB_TRANSLATIONS_FILE = os.path.join('/', 'home', 'root', '.ne', 'web_translations.csv')
+WEB_TRANSLATIONS_LOCALE = os.path.join('/', 'home', 'root', '.ne', 'locale')
+
 LOCALE_PATHS = (
+    WEB_TRANSLATIONS_LOCALE,
     os.path.join(BASE_DIR, 'locale'),
 )
 

@@ -10,6 +10,7 @@
     <nav class="ne-tabs" aria-label="{% translate 'Secciones' %}">
         <a href="#pdu">PDU</a>
         <a href="#display">{% translate 'Pantalla' %}</a>
+        <a href="#translations">{% translate 'Traducciones' %}</a>
         <a href="#update">{% translate 'Actualización' %}</a>
         <a href="#certs">{% translate 'Certificados' %}</a>
         <a href="#maintenance">{% translate 'Mantenimiento' %}</a>
@@ -76,6 +77,22 @@
                 </div>
                 <div class="ne-actions"><button type="submit" class="ne-btn primary">{% translate 'Guardar' %}</button></div>
             </form>
+        </section>
+
+        <!-- Translation files: touchscreen and web interface -->
+        <section class="ne-card" id="translations" aria-labelledby="translationsTitle">
+            <h2 class="ne-card-h" id="translationsTitle"><svg class="ne-icon"><use href="#i-settings"/></svg>{% translate 'Traducciones' %}</h2>
+            <div class="ne-subsections">
+                {% translate 'Pantalla táctil' as tr_title %}
+                {% translate 'Cambie los textos de la pantalla táctil sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)».' as tr_hint %}
+                {% translate 'La pantalla táctil se reinicia con los nuevos textos.' as tr_after %}
+                {% include 'partials/translation_file.html' with p='tr' icon='i-display' title=tr_title hint=tr_hint after_upload=tr_after file_url='/pdu/display-translations' download_name='touchscreen-translations.csv' %}
+
+                {% translate 'Interfaz web' as wtr_title %}
+                {% translate 'Cambie los textos de esta interfaz web sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. La columna del texto original identifica cada texto: no la cambie. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)».' as wtr_hint %}
+                {% translate 'La página se recarga con los nuevos textos.' as wtr_after %}
+                {% include 'partials/translation_file.html' with p='wtr' icon='i-network' title=wtr_title hint=wtr_hint after_upload=wtr_after file_url='/web-translations/' download_name='web-translations.csv' %}
+            </div>
         </section>
 
         <!-- Update -->
@@ -175,7 +192,32 @@
             src_web: "{% translate 'archivo subido' as s %}{{ s|escapejs }}",
             src_usb: "USB",
             src_ota: "{% translate 'en línea' as s %}{{ s|escapejs }}",
-            updateBusy: "{% translate 'Hay una actualización en curso' as s %}{{ s|escapejs }}"
+            updateBusy: "{% translate 'Hay una actualización en curso' as s %}{{ s|escapejs }}",
+            tr_original: "{% translate 'Originales' as s %}{{ s|escapejs }}",
+            tr_custom: "{% translate 'Personalizados' as s %}{{ s|escapejs }}",
+            tr_resetQ: "{% translate '¿Restaurar los textos originales de la pantalla táctil? Se eliminarán sus cambios y los idiomas añadidos.' as s %}{{ s|escapejs }}",
+            tr_resetTitle: "{% translate 'Restaurar textos originales' as s %}{{ s|escapejs }}",
+            tr_restarting: "{% translate 'La pantalla táctil se reinicia con los nuevos textos.' as s %}{{ s|escapejs }}",
+            tr_summary: "{% translate '{accepted} textos aceptados ({changed} cambiados), {rejected} rechazados.' as s %}{{ s|escapejs }}",
+            tr_newLangs: "{% translate 'Idiomas añadidos' as s %}{{ s|escapejs }}",
+            tr_ignored: "{% translate 'Columnas ignoradas' as s %}{{ s|escapejs }}",
+            tr_mustContain: "{% translate 'Debe contener' as s %}{{ s|escapejs }}",
+            tr_unknown_text: "{% translate 'El texto en inglés no coincide con ningún texto de la pantalla: no cambie la columna English.' as s %}{{ s|escapejs }}",
+            tr_too_long: "{% translate 'El texto es demasiado largo.' as s %}{{ s|escapejs }}",
+            tr_control_chars: "{% translate 'Contiene caracteres no válidos, por ejemplo tabulaciones.' as s %}{{ s|escapejs }}",
+            tr_placeholders: "{% translate 'Los marcadores de valores no coinciden con el texto en inglés.' as s %}{{ s|escapejs }}",
+            tr_colour_marks: "{% translate 'Las marcas de color (#) no coinciden con el texto en inglés.' as s %}{{ s|escapejs }}",
+            tr_unsupported_chars: "{% translate 'La pantalla no puede mostrar estos caracteres' as s %}{{ s|escapejs }}",
+            tr_err_not_utf8: "{% translate 'El archivo no está en UTF-8. En Excel use Guardar como > «CSV UTF-8».' as s %}{{ s|escapejs }}",
+            tr_err_no_english: "{% translate 'No se encontró la columna de inglés, «English (en)».' as s %}{{ s|escapejs }}",
+            tr_err_too_large: "{% translate 'El archivo es demasiado grande.' as s %}{{ s|escapejs }}",
+            tr_err_too_many_languages: "{% translate 'Demasiados idiomas: la pantalla admite 16 como máximo.' as s %}{{ s|escapejs }}",
+            tr_err_empty: "{% translate 'El archivo está vacío.' as s %}{{ s|escapejs }}",
+            wtr_resetQ: "{% translate '¿Restaurar los textos originales de la interfaz web? Se eliminarán sus cambios y los idiomas añadidos.' as s %}{{ s|escapejs }}",
+            wtr_restarting: "{% translate 'La página se recarga con los nuevos textos.' as s %}{{ s|escapejs }}",
+            wtr_unknown_text: "{% translate 'El texto original no coincide con ningún texto de la interfaz web: no cambie esa columna.' as s %}{{ s|escapejs }}",
+            wtr_placeholders: "{% translate 'Los marcadores de valores no coinciden con el texto original.' as s %}{{ s|escapejs }}",
+            wtr_err_no_key: "{% translate 'No se encontró la columna del texto original, «Original text (key)».' as s %}{{ s|escapejs }}"
         });
         const SETTINGS_URL = "{% url 'settings' %}";
     </script>

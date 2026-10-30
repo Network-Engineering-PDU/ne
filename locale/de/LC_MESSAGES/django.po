@@ -1403,3 +1403,146 @@ msgstr "An diesen Anschluss angeschlossene PDUs verlieren die Verbindung zur Ket
 #: templates/coms.html
 msgid "Este PDU dejará de responder a Modbus RTU en sus puertos 485. Modbus TCP sigue funcionando."
 msgstr "Diese PDU beantwortet Modbus RTU an ihren 485-Anschlüssen nicht mehr. Modbus TCP funktioniert weiterhin."
+
+#: templates/settings.html
+msgid "Traducciones"
+msgstr "Übersetzungen"
+
+
+#: templates/settings.html
+msgid "Cambie los textos de la pantalla táctil sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "Ändern Sie die Texte des Touchscreens ohne Firmware-Update: Laden Sie die Datei herunter, bearbeiten Sie sie in Excel, speichern Sie sie als „CSV UTF-8“ und laden Sie sie hoch. Um eine Sprache hinzuzufügen, fügen Sie eine Spalte mit ihrem Namen und Code hinzu, zum Beispiel „Français (fr)“."
+
+#: templates/settings.html
+msgid "Textos en uso"
+msgstr "Verwendete Texte"
+
+#: templates/settings.html
+msgid "Descargar archivo"
+msgstr "Datei herunterladen"
+
+#: templates/settings.html
+msgid "Restaurar textos originales"
+msgstr "Originaltexte wiederherstellen"
+
+#: templates/settings.html
+msgid "Subir archivo editado"
+msgstr "Bearbeitete Datei hochladen"
+
+#: templates/settings.html
+msgid "La pantalla táctil se reinicia con los nuevos textos."
+msgstr "Der Touchscreen startet mit den neuen Texten neu."
+
+#: templates/settings.html
+msgid "Fila"
+msgstr "Zeile"
+
+#: templates/settings.html
+msgid "Idioma"
+msgstr "Sprache"
+
+#: templates/settings.html
+msgid "Motivo"
+msgstr "Grund"
+
+#: templates/settings.html
+msgid "Originales"
+msgstr "Original"
+
+#: templates/settings.html
+msgid "Personalizados"
+msgstr "Angepasst"
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la pantalla táctil? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "Die ursprünglichen Touchscreen-Texte wiederherstellen? Ihre Änderungen und hinzugefügten Sprachen werden entfernt."
+
+#: templates/settings.html
+msgid "{accepted} textos aceptados ({changed} cambiados), {rejected} rechazados."
+msgstr "{accepted} Texte angenommen ({changed} geändert), {rejected} abgelehnt."
+
+#: templates/settings.html
+msgid "Idiomas añadidos"
+msgstr "Hinzugefügte Sprachen"
+
+#: templates/settings.html
+msgid "Columnas ignoradas"
+msgstr "Ignorierte Spalten"
+
+#: templates/settings.html
+msgid "Debe contener"
+msgstr "Er muss enthalten"
+
+#: templates/settings.html
+msgid "El texto en inglés no coincide con ningún texto de la pantalla: no cambie la columna English."
+msgstr "Der englische Text entspricht keinem Text des Touchscreens: Ändern Sie die Spalte „English“ nicht."
+
+#: templates/settings.html
+msgid "El texto es demasiado largo."
+msgstr "Der Text ist zu lang."
+
+#: templates/settings.html
+msgid "Contiene caracteres no válidos, por ejemplo tabulaciones."
+msgstr "Er enthält ungültige Zeichen, zum Beispiel Tabulatoren."
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto en inglés."
+msgstr "Die Platzhalter für Werte stimmen nicht mit dem englischen Text überein."
+
+#: templates/settings.html
+msgid "Las marcas de color (#) no coinciden con el texto en inglés."
+msgstr "Die Farbmarkierungen (#) stimmen nicht mit dem englischen Text überein."
+
+#: templates/settings.html
+msgid "La pantalla no puede mostrar estos caracteres"
+msgstr "Der Touchscreen kann diese Zeichen nicht anzeigen"
+
+#: templates/settings.html
+msgid "El archivo no está en UTF-8. En Excel use Guardar como > «CSV UTF-8»."
+msgstr "Die Datei ist nicht in UTF-8. Verwenden Sie in Excel Speichern unter > „CSV UTF-8“."
+
+#: templates/settings.html
+msgid "No se encontró la columna de inglés, «English (en)»."
+msgstr "Die englische Spalte „English (en)“ wurde nicht gefunden."
+
+#: templates/settings.html
+msgid "El archivo es demasiado grande."
+msgstr "Die Datei ist zu groß."
+
+#: templates/settings.html
+msgid "Demasiados idiomas: la pantalla admite 16 como máximo."
+msgstr "Zu viele Sprachen: Der Touchscreen unterstützt höchstens 16."
+
+#: templates/settings.html
+msgid "El archivo está vacío."
+msgstr "Die Datei ist leer."
+
+
+
+#: templates/settings.html
+msgid "Cambie los textos de esta interfaz web sin actualizar el firmware: descargue el archivo, edítelo en Excel, guárdelo como «CSV UTF-8» y súbalo. La columna del texto original identifica cada texto: no la cambie. Para añadir un idioma, añada una columna con su nombre y su código, por ejemplo «Français (fr)»."
+msgstr "Ändern Sie die Texte dieser Weboberfläche ohne Firmware-Update: Laden Sie die Datei herunter, bearbeiten Sie sie in Excel, speichern Sie sie als „CSV UTF-8“ und laden Sie sie hoch. Die Spalte mit dem Originaltext kennzeichnet jeden Text: Ändern Sie sie nicht. Um eine Sprache hinzuzufügen, fügen Sie eine Spalte mit ihrem Namen und Code hinzu, zum Beispiel „Français (fr)“."
+
+#: templates/settings.html
+msgid "La página se recarga con los nuevos textos."
+msgstr "Die Seite wird mit den neuen Texten neu geladen."
+
+#: templates/settings.html
+msgid "¿Restaurar los textos originales de la interfaz web? Se eliminarán sus cambios y los idiomas añadidos."
+msgstr "Die ursprünglichen Texte der Weboberfläche wiederherstellen? Ihre Änderungen und hinzugefügten Sprachen werden entfernt."
+
+#: templates/settings.html
+msgid "El texto original no coincide con ningún texto de la interfaz web: no cambie esa columna."
+msgstr "Der Originaltext entspricht keinem Text der Weboberfläche: Ändern Sie diese Spalte nicht."
+
+#: templates/settings.html
+msgid "Los marcadores de valores no coinciden con el texto original."
+msgstr "Die Platzhalter für Werte stimmen nicht mit dem Originaltext überein."
+
+#: templates/settings.html
+msgid "No se encontró la columna del texto original, «Original text (key)»."
+msgstr "Die Spalte mit dem Originaltext, „Original text (key)“, wurde nicht gefunden."
+
+#: templates/settings.html
+msgid "Interfaz web"
+msgstr "Weboberfläche"

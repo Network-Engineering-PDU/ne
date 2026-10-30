@@ -1,0 +1,37 @@
+{% load i18n %}
+{% comment %}
+One translation file of the Settings page's Translations card
+(static/js/app/settings_page.js, translationSection()). Parameters: p
+(element id prefix), icon, title, hint, after_upload, file_url,
+download_name.
+{% endcomment %}
+<div aria-labelledby="{{ p }}Title">
+    <h3 id="{{ p }}Title"><svg class="ne-icon"><use href="#{{ icon }}"/></svg>{{ title }}</h3>
+    <p class="ne-muted">{{ hint }}</p>
+    <dl class="ne-kv">
+        <dt>{% translate 'Textos en uso' %}</dt><dd id="{{ p }}State">-</dd>
+        <dt>{% translate 'Idiomas' %}</dt><dd id="{{ p }}Langs">-</dd>
+    </dl>
+    <div class="ne-actions mt-2">
+        <a class="ne-btn" id="{{ p }}Download" href="{{ file_url }}" download="{{ download_name }}">{% translate 'Descargar archivo' %}</a>
+        <button type="button" class="ne-btn danger" id="{{ p }}Reset">{% translate 'Restaurar textos originales' %}</button>
+    </div>
+    <hr>
+    <form id="{{ p }}Form" novalidate>
+        <div class="ne-field">
+            <label for="{{ p }}File">{% translate 'Subir archivo editado' %} (.csv)</label>
+            <input id="{{ p }}File" type="file" accept=".csv,text/csv" class="form-control">
+            <span class="ne-hint">{{ after_upload }}</span>
+        </div>
+        <button type="submit" class="ne-btn primary">{% translate 'Subir' %}</button>
+    </form>
+    <div id="{{ p }}Report" class="mt-3" hidden>
+        <div class="ne-alert" id="{{ p }}Summary" role="status"></div>
+        <div class="ne-table-wrap mt-2" id="{{ p }}RejectedWrap" hidden>
+            <table class="ne-table">
+                <thead><tr><th>{% translate 'Fila' %}</th><th>ID</th><th>{% translate 'Idioma' %}</th><th>{% translate 'Motivo' %}</th></tr></thead>
+                <tbody id="{{ p }}Rejected"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
