@@ -112,17 +112,21 @@
             <hr>
             <form id="formUpdate" novalidate>
                 <div class="ne-field">
-                    <label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="otaEnabled"><span></span></span>{% translate 'Comprobar actualizaciones en línea' %}</label>
-                </div>
-                <div class="ne-field">
                     <label class="d-flex align-items-center gap-2"><span class="ne-switch"><input type="checkbox" id="otaAuto"><span></span></span>{% translate 'Actualizar automáticamente' %}</label>
                 </div>
                 <div class="ne-form-grid">
-                    <div class="ne-field"><label for="otaInterval">{% translate 'Intervalo de comprobación (horas)' %}</label>
-                        <input id="otaInterval" type="number" min="1" max="8760" class="form-control"></div>
+                    <div class="ne-field"><label for="otaInterval">{% translate 'Intervalo de comprobación' %}</label>
+                        <select id="otaInterval" class="form-select">
+                            <option value="24">{% translate 'Diario' %}</option>
+                            <option value="168">{% translate 'Semanal' %}</option>
+                            <option value="720">{% translate 'Mensual' %}</option>
+                            <option value="8760">{% translate 'Anual' %}</option>
+                        </select></div>
                     <div class="ne-field"><label for="otaServer">{% translate 'Servidor de actualización' %}</label>
-                        <input id="otaServer" type="text" maxlength="255" class="form-control"></div>
+                        <input id="otaServer" type="text" maxlength="127" class="form-control" dir="ltr"
+                               placeholder="https://github.com/Network-Engineering-PDU/firmware-update"></div>
                 </div>
+                <p class="ne-muted small">{% translate 'Por defecto, GitHub. Otro servidor: su dirección IP o nombre DNS, con puerto y carpeta opcionales (por ejemplo 192.168.1.50/firmware). La carpeta debe contener metadata.json y ttfile.bin. Cada actualización encontrada se confirma en la pantalla del PDU.' %}</p>
                 <div class="ne-actions"><button type="submit" class="ne-btn primary">{% translate 'Guardar' %}</button></div>
             </form>
             <hr>

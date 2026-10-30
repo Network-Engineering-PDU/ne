@@ -882,14 +882,8 @@ msgstr "الحالة"
 msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
 msgstr "يوجد تحديث معلّق. أكّده على شاشة PDU."
 
-msgid "Comprobar actualizaciones en línea"
-msgstr "التحقق من التحديثات عبر الإنترنت"
-
 msgid "Actualizar automáticamente"
 msgstr "التحديث تلقائيًا"
-
-msgid "Intervalo de comprobación (horas)"
-msgstr "فترة الفحص (بالساعات)"
 
 msgid "Servidor de actualización"
 msgstr "خادم التحديث"
@@ -1532,3 +1526,21 @@ msgstr "لم يُعثر على عمود النص الأصلي «Original text (k
 #: templates/settings.html
 msgid "Interfaz web"
 msgstr "واجهة الويب"
+
+msgid "Intervalo de comprobación"
+msgstr "فترة الفحص"
+
+msgid "Diario"
+msgstr "يوميًا"
+
+msgid "Semanal"
+msgstr "أسبوعيًا"
+
+msgid "Mensual"
+msgstr "شهريًا"
+
+msgid "Anual"
+msgstr "سنويًا"
+
+msgid "Por defecto, GitHub. Otro servidor: su dirección IP o nombre DNS, con puerto y carpeta opcionales (por ejemplo 192.168.1.50/firmware). La carpeta debe contener metadata.json y ttfile.bin. Cada actualización encontrada se confirma en la pantalla del PDU."
+msgstr "افتراضيًا GitHub. خادم آخر: عنوان IP الخاص به أو اسم DNS، مع منفذ ومجلد اختياريين (مثل 192.168.1.50/firmware). يجب أن يحتوي المجلد على metadata.json و ttfile.bin. يُؤكَّد كل تحديث يُعثر عليه على شاشة PDU."

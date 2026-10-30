@@ -1279,16 +1279,8 @@ msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
 msgstr "An update is pending. Confirm it on the PDU screen."
 
 #: templates/settings.html
-msgid "Comprobar actualizaciones en línea"
-msgstr "Check for updates online"
-
-#: templates/settings.html
 msgid "Actualizar automáticamente"
 msgstr "Update automatically"
-
-#: templates/settings.html
-msgid "Intervalo de comprobación (horas)"
-msgstr "Check interval (hours)"
 
 #: templates/settings.html
 msgid "Servidor de actualización"
@@ -1910,3 +1902,21 @@ msgstr "The original text column, “Original text (key)”, was not found."
 #: templates/settings.html
 msgid "Interfaz web"
 msgstr "Web interface"
+
+msgid "Intervalo de comprobación"
+msgstr "Check interval"
+
+msgid "Diario"
+msgstr "Daily"
+
+msgid "Semanal"
+msgstr "Weekly"
+
+msgid "Mensual"
+msgstr "Monthly"
+
+msgid "Anual"
+msgstr "Yearly"
+
+msgid "Por defecto, GitHub. Otro servidor: su dirección IP o nombre DNS, con puerto y carpeta opcionales (por ejemplo 192.168.1.50/firmware). La carpeta debe contener metadata.json y ttfile.bin. Cada actualización encontrada se confirma en la pantalla del PDU."
+msgstr "GitHub by default. Another server: its IP address or DNS name, with an optional port and folder (for example 192.168.1.50/firmware). The folder must hold metadata.json and ttfile.bin. Each update found is confirmed on the PDU screen."

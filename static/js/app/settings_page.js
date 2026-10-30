@@ -227,8 +227,8 @@
         setText('otaLast', st.last_check_time);
         renderSummary(st);
         if (document.activeElement && document.activeElement.closest('#formUpdate')) { return; }   // do not overwrite edits
-        $('otaEnabled').checked = !!st.ota_enabled; $('otaAuto').checked = !!st.auto_update;
-        $('otaInterval').value = st.check_interval_hours; $('otaServer').value = st.update_server || '';
+        $('otaAuto').checked = !!st.auto_update;
+        $('otaInterval').value = String(st.check_interval_hours); $('otaServer').value = st.update_server || '';
     }
 
     async function loadUpdate() {
@@ -262,12 +262,11 @@
     $('formUpdate').addEventListener('submit', async (ev) => {
         ev.preventDefault();
         const hours = Number($('otaInterval').value);
-        if (!Number.isInteger(hours) || hours < 1 || hours > 8760) {
-            NE.toast(NE.t('invalidRange') + ' (1 – 8760)', 'error'); $('otaInterval').focus(); return;
-        }
         const ok = await guarded(async () => {
+            // An empty server is the default GitHub repository; the PDU
+            // refuses an invalid one with the reason.
             await NE.api('PUT', 'settings/update-settings', {
-                auto_update: $('otaAuto').checked, ota_enabled: $('otaEnabled').checked,
+                auto_update: $('otaAuto').checked, ota_enabled: $('otaAuto').checked,
                 check_interval_hours: hours, update_server: $('otaServer').value.trim(),
             });
             return true;

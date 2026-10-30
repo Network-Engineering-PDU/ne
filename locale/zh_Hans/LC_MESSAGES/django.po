@@ -872,14 +872,8 @@ msgstr "状态"
 msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
 msgstr "有待处理的更新。请在 PDU 屏幕上确认。"
 
-msgid "Comprobar actualizaciones en línea"
-msgstr "在线检查更新"
-
 msgid "Actualizar automáticamente"
 msgstr "自动更新"
-
-msgid "Intervalo de comprobación (horas)"
-msgstr "检查间隔（小时）"
 
 msgid "Servidor de actualización"
 msgstr "更新服务器"
@@ -1521,3 +1515,21 @@ msgstr "未找到原文列“Original text (key)”。"
 #: templates/settings.html
 msgid "Interfaz web"
 msgstr "网页界面"
+
+msgid "Intervalo de comprobación"
+msgstr "检查间隔"
+
+msgid "Diario"
+msgstr "每天"
+
+msgid "Semanal"
+msgstr "每周"
+
+msgid "Mensual"
+msgstr "每月"
+
+msgid "Anual"
+msgstr "每年"
+
+msgid "Por defecto, GitHub. Otro servidor: su dirección IP o nombre DNS, con puerto y carpeta opcionales (por ejemplo 192.168.1.50/firmware). La carpeta debe contener metadata.json y ttfile.bin. Cada actualización encontrada se confirma en la pantalla del PDU."
+msgstr "默认使用 GitHub。其他服务器：输入其 IP 地址或 DNS 名称，可附带端口和文件夹（例如 192.168.1.50/firmware）。该文件夹必须包含 metadata.json 和 ttfile.bin。找到的每个更新都需在 PDU 屏幕上确认。"

@@ -898,14 +898,8 @@ msgstr "Status"
 msgid "Hay una actualización pendiente. Confírmela en la pantalla del PDU."
 msgstr "Ein Update steht an. Bestätigen Sie es auf dem Display des PDU."
 
-msgid "Comprobar actualizaciones en línea"
-msgstr "Online nach Updates suchen"
-
 msgid "Actualizar automáticamente"
 msgstr "Automatisch aktualisieren"
-
-msgid "Intervalo de comprobación (horas)"
-msgstr "Prüfintervall (Stunden)"
 
 msgid "Servidor de actualización"
 msgstr "Update-Server"
@@ -1546,3 +1540,21 @@ msgstr "Die Spalte mit dem Originaltext, „Original text (key)“, wurde nicht 
 #: templates/settings.html
 msgid "Interfaz web"
 msgstr "Weboberfläche"
+
+msgid "Intervalo de comprobación"
+msgstr "Prüfintervall"
+
+msgid "Diario"
+msgstr "Täglich"
+
+msgid "Semanal"
+msgstr "Wöchentlich"
+
+msgid "Mensual"
+msgstr "Monatlich"
+
+msgid "Anual"
+msgstr "Jährlich"
+
+msgid "Por defecto, GitHub. Otro servidor: su dirección IP o nombre DNS, con puerto y carpeta opcionales (por ejemplo 192.168.1.50/firmware). La carpeta debe contener metadata.json y ttfile.bin. Cada actualización encontrada se confirma en la pantalla del PDU."
+msgstr "Standardmäßig GitHub. Anderer Server: seine IP-Adresse oder sein DNS-Name, optional mit Port und Ordner (zum Beispiel 192.168.1.50/firmware). Der Ordner muss metadata.json und ttfile.bin enthalten. Jedes gefundene Update wird auf dem PDU-Bildschirm bestätigt."
